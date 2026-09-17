@@ -1,0 +1,2 @@
+Model,AA_Intelligence_Index_v4_3,AA_Measured_Cost_per_Task_USD,OpenRouter_Standard_Input_USD_per_1M,OpenRouter_Standard_Output_USD_per_1M,OpenRouter_URL,AA_Source,Reason_Not_Plotted
+Qwen3 Coder 30B A3B Instruct,10,,0.07,0.27,https://openrouter.ai/qwen/qwen3-coder-30b-a3b-instruct,https://artificialanalysis.ai/models/qwen3-coder-30b-a3b-instruct,"AA currently reports Cost per Intelligence Index task = N/A, so the workload cannot be normalized honestly."
