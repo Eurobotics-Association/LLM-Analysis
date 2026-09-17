@@ -1,0 +1,20 @@
+Model,Level,AA_Intelligence_Index_v4_3,OpenRouter_Input_USD_per_1M,OpenRouter_Output_USD_per_1M,Eurobotics_Blended_USD_per_1M,Current_OpenRouter_Promo,OpenRouter_URL,AA_Source
+GPT-5.6 Luna,Low,22,0.2,1.2,0.45,False,https://openrouter.ai/openai/gpt-5.6-luna,https://artificialanalysis.ai/
+GPT-5.6 Luna,Medium,25,0.2,1.2,0.45,False,https://openrouter.ai/openai/gpt-5.6-luna,https://artificialanalysis.ai/
+GPT-5.6 Luna,High,32,0.2,1.2,0.45,False,https://openrouter.ai/openai/gpt-5.6-luna,https://artificialanalysis.ai/
+GPT-5.6 Luna,XHigh,35,0.2,1.2,0.45,False,https://openrouter.ai/openai/gpt-5.6-luna,https://artificialanalysis.ai/
+GPT-5.6 Luna,Max,38,0.2,1.2,0.45,False,https://openrouter.ai/openai/gpt-5.6-luna,https://artificialanalysis.ai/
+GPT-5.6 Terra,Low,28,2.0,12.0,4.5,False,https://openrouter.ai/openai/gpt-5.6-terra,https://artificialanalysis.ai/
+GPT-5.6 Terra,Medium,30,2.0,12.0,4.5,False,https://openrouter.ai/openai/gpt-5.6-terra,https://artificialanalysis.ai/
+GPT-5.6 Terra,High,34,2.0,12.0,4.5,False,https://openrouter.ai/openai/gpt-5.6-terra,https://artificialanalysis.ai/
+GPT-5.6 Terra,XHigh,38,2.0,12.0,4.5,False,https://openrouter.ai/openai/gpt-5.6-terra,https://artificialanalysis.ai/
+GPT-5.6 Terra,Max,42,2.0,12.0,4.5,False,https://openrouter.ai/openai/gpt-5.6-terra,https://artificialanalysis.ai/
+GPT-5.6 Sol,Low,34,2.0,10.0,4.0,True,https://openrouter.ai/openai/gpt-5.6-sol,https://artificialanalysis.ai/
+GPT-5.6 Sol,Medium,39,2.0,10.0,4.0,True,https://openrouter.ai/openai/gpt-5.6-sol,https://artificialanalysis.ai/
+GPT-5.6 Sol,High,42,2.0,10.0,4.0,True,https://openrouter.ai/openai/gpt-5.6-sol,https://artificialanalysis.ai/
+GPT-5.6 Sol,XHigh,44,2.0,10.0,4.0,True,https://openrouter.ai/openai/gpt-5.6-sol,https://artificialanalysis.ai/
+GPT-5.6 Sol,Max,47,2.0,10.0,4.0,True,https://openrouter.ai/openai/gpt-5.6-sol,https://artificialanalysis.ai/
+GLM-5.3 Flash,Current,42,0.075,0.25,0.11875,True,https://openrouter.ai/z-ai/glm-5.3-flash,https://artificialanalysis.ai/
+DeepSeek V4.1 Flash,Max,40,0.15,0.6,0.2625,False,https://openrouter.ai/deepseek/deepseek-v4.1-flash,https://artificialanalysis.ai/
+GLM-5.3 Max,Max,45,0.8775,2.97,1.400625,True,https://openrouter.ai/z-ai/glm-5.3,https://artificialanalysis.ai/
+Qwen3 Coder 30B A3B,Current,10,0.07,0.27,0.12,False,https://openrouter.ai/qwen/qwen3-coder-30b-a3b-instruct,https://artificialanalysis.ai/
