@@ -1,48 +1,59 @@
-# Methodology and data provenance
+# Eurobotics LLM comparison methodology
 
-## Purpose
+## Version 1.0 - 17 September 2026
 
-The charts in this repository are built for practical AI-assisted software engineering and DevOps model selection. The central requirement is auditability: a reviewer should be able to trace every plotted coordinate to a source and understand the unit represented on each axis.
+The main Eurobotics chart intentionally combines **two independent sources**:
 
-## Panel A: Coding Agent Index v1.1
+- **Performance / Y-axis:** Artificial Analysis Intelligence Index v4.3
+- **API pricing / X-axis:** current OpenRouter model pricing
 
-Panel A is a historical reconstruction of the Artificial Analysis Coding Agent Index v1.1 cost/performance view from July 2026.
+This separation is deliberate. Artificial Analysis is used as the independent evaluation source; OpenRouter is used as the practical market-price source for models consumed through an API gateway.
 
-The score series and cost trajectories are based on the accessible Greenbyte digitization/reconstruction of the AA v1.1 chart, with best/max scores cross-checked against OpenAI's GPT-5.6 launch material. The chart uses a logarithmic x-axis because benchmark-run costs span orders of magnitude.
+## X-axis definition
 
-The source trajectory labels P1...P5/Max are mapped to the documented OpenAI reasoning-effort ladder for display. Source-point IDs are retained in the CSV. The Luna P1/None point is retained in data but omitted from the visible curve because it is anomalous and not useful for the intended operational comparison.
+OpenRouter publishes input and output prices separately. To put every model on one x-axis, Eurobotics defines a simple reference tariff:
 
-## Panel B: Intelligence Index v4.3
+`Eurobotics blended price = 0.75 x input price + 0.25 x output price`
 
-Panel B uses the current Artificial Analysis Intelligence Index v4.3 and **total cost to run the full Intelligence Index**.
+All values are USD per 1 million tokens.
 
-Snapshot date: **2026-09-17**.
+Why 75/25?
 
-Current plotted values:
+1. Input and output prices are available for every model in the comparison.
+2. It avoids mixing in cache discounts that are unavailable or structured differently for some providers.
+3. It is simple, reproducible, and easy for another professional or AI system to audit.
 
-| Model | AA Intelligence Index | Total AA Index evaluation cost (USD) | Status |
-|---|---:|---:|---|
-| GLM-5.3-Flash | 42 | 280.28 | measured/published |
-| DeepSeek V4 Flash 0731 Max | 35 | 474.19 | measured/published |
-| Z.ai GLM-5.3 Max | 45 | 2,503.48 | measured/published |
-| GPT-5.6 Luna Max | 38 | 319.93 | measured/published |
-| GPT-5.6 Terra Max | 42 | 2,500.72 | measured/published |
-| GPT-5.6 Sol Max | 47 | 3,465 | measured/published |
-| Qwen3 Coder 30B A3B | 10 (estimated by AA) | unavailable | horizontal reference only |
+The blended price is a **reference API tariff**, not a prediction of the cost of a real job.
 
-### Why Sol is around USD 3,465, not USD 3.08
+## Reasoning effort
 
-Both figures are valid but measure different things:
+For GPT-5.6 Luna, Terra and Sol, OpenRouter's per-token price does not change between Low, Medium, High, XHigh and Max reasoning effort. Therefore those points share the same x-coordinate.
 
-- approximately **USD 3.08 per 1M tokens** = Artificial Analysis blended API token price for GPT-5.6 Sol Max;
-- approximately **USD 3,465** = Artificial Analysis total cost to run all evaluations in the current Intelligence Index.
+A higher reasoning effort may consume more tokens and therefore produce a larger final invoice. That is intentionally *not* represented by this tariff chart.
 
-The earlier chart accidentally used the first quantity while the intended comparison was the second. The current chart corrects this.
+A future Eurobotics workload benchmark can measure real cost per completed DevOps task.
 
-## Missing values
+## Promotions and price snapshots
 
-If a model does not have a published comparable total evaluation cost, the generator must not fabricate one from its list token price. Such a model may be shown as a horizontal score reference, with a clear note that the x-coordinate is unavailable.
+Where OpenRouter's model page currently displays a promotional headline tariff, the chart uses that price and marks it as promotional.
 
-## Reproducibility
+Therefore every chart is a dated snapshot. Pricing must be refreshed before making a procurement decision.
 
-The Matplotlib source is in `src/generate_latest_chart.py`. Numeric inputs are stored in `data/`. The chart outputs are generated as PNG, PDF and SVG so they can be reviewed visually, embedded in documentation, or inspected as vector graphics.
+Current snapshot: **17 September 2026**.
+
+## Current model set
+
+- GPT-5.6 Luna: Low / Medium / High / XHigh / Max
+- GPT-5.6 Terra: Low / Medium / High / XHigh / Max
+- GPT-5.6 Sol: Low / Medium / High / XHigh / Max
+- GLM-5.3 Flash
+- DeepSeek V4.1 Flash (latest Flash generation)
+- GLM-5.3 Max
+- Qwen3 Coder 30B A3B
+
+## Sources
+
+- Artificial Analysis: https://artificialanalysis.ai/
+- OpenRouter: https://openrouter.ai/
+
+The CSV committed under `data/` records the exact OpenRouter model URLs used for the price snapshot.
