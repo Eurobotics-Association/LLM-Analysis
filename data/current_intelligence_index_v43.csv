@@ -1,0 +1,8 @@
+Model,Intelligence_Index,Total_Index_Cost_USD,Vendor,Status
+GLM-5.3-Flash,42,280.28,Z.ai,measured
+DeepSeek V4 Flash 0731 Max,35,474.19,DeepSeek,measured
+Z.ai GLM-5.3 Max,45,2503.48,Z.ai,measured
+Qwen3 Coder 30B A3B,10,,Alibaba,index estimated; total eval cost unavailable
+GPT-5.6 Luna Max,38,319.93,OpenAI,measured
+GPT-5.6 Terra Max,42,2500.72,OpenAI,measured
+GPT-5.6 Sol Max,47,3465.0,OpenAI,measured
