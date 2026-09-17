@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator, FuncFormatter
 
+# Eurobotics methodology v1.1 — AA workload repriced to standard OpenRouter tariffs.
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "eurobotics_v11_aa_v43_openrouter_normalized_2026-09-17.csv"
 OUT = ROOT / "charts" / "latest" / "llm_cost_performance_latest"
