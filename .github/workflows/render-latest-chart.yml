@@ -1,0 +1,44 @@
+name: Render latest charts
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'data/**'
+      - 'requirements.txt'
+      - '.github/workflows/render-latest-chart.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate charts
+        run: python src/generate_latest_chart.py
+
+      - name: Commit rendered charts
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add charts/latest data
+          if git diff --cached --quiet; then
+            echo 'No chart changes to commit.'
+          else
+            git commit -m 'Render latest LLM analysis charts'
+            git push
+          fi
