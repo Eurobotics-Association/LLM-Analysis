@@ -1,0 +1,28 @@
+Model,SourcePoint,Aug21_estimated_cost_USD,Index_score,Launch_estimated_cost_USD,EffortLabel
+GPT-5.6 Sol,P1,396.0,57.3,495.0,None
+GPT-5.6 Sol,P2,499.0,68.3,623.75,Low
+GPT-5.6 Sol,P3,857.0,73.7,1071.25,Medium
+GPT-5.6 Sol,P4,1182.0,76.4,1477.5,High
+GPT-5.6 Sol,P5,1492.0,78.1,1865.0,Extra-high
+GPT-5.6 Sol,Max,2018.0,80.0,2522.5,Max
+GPT-5.6 Terra,P1,114.0,38.6,142.5,None
+GPT-5.6 Terra,P2,146.0,52.5,182.5,Low
+GPT-5.6 Terra,P3,260.0,63.2,325.0,Medium
+GPT-5.6 Terra,P4,456.0,71.0,570.0,High
+GPT-5.6 Terra,P5,537.0,72.4,671.25,Extra-high
+GPT-5.6 Terra,Max,776.0,77.4,970.0,Max
+GPT-5.6 Luna,P1,27.1,35.6,135.5,None
+GPT-5.6 Luna,P2,17.6,40.8,88.0,Low
+GPT-5.6 Luna,P3,35.3,57.6,176.49999999999997,Medium
+GPT-5.6 Luna,P4,69.2,66.9,346.0,High
+GPT-5.6 Luna,P5,90.8,69.8,453.99999999999994,Extra-high
+GPT-5.6 Luna,Max,111.0,74.6,555.0,Max
+GPT-5.5,P1,346.0,44.1,346.0,None
+GPT-5.5,P2,420.0,56.6,420.0,Low
+GPT-5.5,P3,963.0,69.7,963.0,Medium
+GPT-5.5,P4,970.0,71.7,970.0,High
+GPT-5.5,XHigh,1763.0,76.4,1763.0,Extra-high
+Claude Opus 4.8,P1,1080.0,67.0,1080.0,P1
+Claude Opus 4.8,Max,2534.0,72.5,2534.0,Max
+Claude Fable 5,Max,3864.0,77.2,3864.0,Max
+Gemini 3.1 Pro Preview,Preview,664.0,42.7,664.0,Preview
