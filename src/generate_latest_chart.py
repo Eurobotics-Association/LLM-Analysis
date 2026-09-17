@@ -3,110 +3,148 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator, FuncFormatter
 
-OUT = Path(__file__).resolve().parents[1]
-(OUT / 'charts' / 'latest').mkdir(parents=True, exist_ok=True)
-(OUT / 'data').mkdir(parents=True, exist_ok=True)
-(OUT / 'src').mkdir(parents=True, exist_ok=True)
-(OUT / 'docs').mkdir(parents=True, exist_ok=True)
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "data" / "eurobotics_llm_index_v43_openrouter_2026-09-17.csv"
+OUT = ROOT / "charts" / "latest" / "llm_cost_performance_latest"
 
-historical_rows = [
-    ('GPT-5.6 Sol','P1',396,57.3), ('GPT-5.6 Sol','P2',499,68.3),
-    ('GPT-5.6 Sol','P3',857,73.7), ('GPT-5.6 Sol','P4',1182,76.4),
-    ('GPT-5.6 Sol','P5',1492,78.1), ('GPT-5.6 Sol','Max',2018,80.0),
-    ('GPT-5.6 Terra','P1',114,38.6), ('GPT-5.6 Terra','P2',146,52.5),
-    ('GPT-5.6 Terra','P3',260,63.2), ('GPT-5.6 Terra','P4',456,71.0),
-    ('GPT-5.6 Terra','P5',537,72.4), ('GPT-5.6 Terra','Max',776,77.4),
-    ('GPT-5.6 Luna','P1',27.1,35.6), ('GPT-5.6 Luna','P2',17.6,40.8),
-    ('GPT-5.6 Luna','P3',35.3,57.6), ('GPT-5.6 Luna','P4',69.2,66.9),
-    ('GPT-5.6 Luna','P5',90.8,69.8), ('GPT-5.6 Luna','Max',111,74.6),
-    ('GPT-5.5','P1',346,44.1), ('GPT-5.5','P2',420,56.6),
-    ('GPT-5.5','P3',963,69.7), ('GPT-5.5','P4',970,71.7),
-    ('GPT-5.5','XHigh',1763,76.4),
-    ('Claude Opus 4.8','P1',1080,67.0), ('Claude Opus 4.8','Max',2534,72.5),
-    ('Claude Fable 5','Max',3864,77.2),
-    ('Gemini 3.1 Pro Preview','Preview',664,42.7),
-]
-hist = pd.DataFrame(historical_rows, columns=['Model','SourcePoint','Aug21_estimated_cost_USD','Index_score'])
-launch_factor = {'GPT-5.6 Luna':0.2, 'GPT-5.6 Terra':0.8, 'GPT-5.6 Sol':0.8}
-hist['Launch_estimated_cost_USD'] = hist.apply(lambda r: r['Aug21_estimated_cost_USD']/launch_factor.get(r['Model'],1.0), axis=1)
-map56 = {'P1':'None','P2':'Low','P3':'Medium','P4':'High','P5':'Extra-high','Max':'Max'}
-map55 = {'P1':'None','P2':'Low','P3':'Medium','P4':'High','XHigh':'Extra-high'}
-def effort_label(row):
-    if row['Model'].startswith('GPT-5.6'):
-        return map56[row['SourcePoint']]
-    if row['Model'] == 'GPT-5.5':
-        return map55[row['SourcePoint']]
-    return row['SourcePoint']
-hist['EffortLabel'] = hist.apply(effort_label, axis=1)
-hist.to_csv(OUT/'data'/'historical_coding_agent_index_v11.csv', index=False)
-hist_plot = hist[~((hist.Model=='GPT-5.6 Luna') & (hist.SourcePoint=='P1'))].copy()
+df = pd.read_csv(DATA)
 
-current_rows = [
-    ('GLM-5.3-Flash',42,280.28,'Z.ai','measured'),
-    ('DeepSeek V4 Flash 0731 Max',35,474.19,'DeepSeek','measured'),
-    ('Z.ai GLM-5.3 Max',45,2503.48,'Z.ai','measured'),
-    ('Qwen3 Coder 30B A3B',10,None,'Alibaba','index estimated; total eval cost unavailable'),
-    ('GPT-5.6 Luna Max',38,319.93,'OpenAI','measured'),
-    ('GPT-5.6 Terra Max',42,2500.72,'OpenAI','measured'),
-    ('GPT-5.6 Sol Max',47,3465.00,'OpenAI','measured'),
-]
-current = pd.DataFrame(current_rows, columns=['Model','Intelligence_Index','Total_Index_Cost_USD','Vendor','Status'])
-current.to_csv(OUT/'data'/'current_intelligence_index_v43.csv', index=False)
-
-colors = {
-    'GPT-5.6 Luna':'#1f77b4','GPT-5.6 Terra':'#ff7f0e','GPT-5.6 Sol':'#d62728',
-    'GPT-5.5':'#9467bd','Claude Opus 4.8':'#8c564b','Claude Fable 5':'#e377c2',
-    'Gemini 3.1 Pro Preview':'#7f7f7f','GLM-5.3-Flash':'#17becf',
-    'DeepSeek V4 Flash 0731 Max':'#2ca02c','Z.ai GLM-5.3 Max':'#bcbd22',
-    'Qwen3 Coder 30B A3B':'#ff1493','GPT-5.6 Luna Max':'#1f77b4',
-    'GPT-5.6 Terra Max':'#ff7f0e','GPT-5.6 Sol Max':'#d62728',
+COLORS = {
+    "GPT-5.6 Luna": "#1f77b4",
+    "GPT-5.6 Terra": "#ff7f0e",
+    "GPT-5.6 Sol": "#d62728",
+    "GLM-5.3 Flash": "#17becf",
+    "DeepSeek V4.1 Flash": "#2ca02c",
+    "GLM-5.3 Max": "#bcbd22",
+    "Qwen3 Coder 30B A3B": "#e377c2",
 }
 
-fig = plt.figure(figsize=(16,13))
-ax1 = fig.add_axes([0.07,0.56,0.89,0.34])
-line_models=['GPT-5.6 Luna','GPT-5.6 Terra','GPT-5.6 Sol','GPT-5.5','Claude Opus 4.8']
-markers=['o','s','D','^','P']
-for model,marker in zip(line_models,markers):
-    d=hist_plot[hist_plot.Model==model]
-    ax1.plot(d['Launch_estimated_cost_USD'],d['Index_score'],marker=marker,linewidth=2.2,markersize=7.5,color=colors[model],label=model)
-    for _,r in d.iterrows():
-        ax1.annotate(f"{r['EffortLabel']}\n{r['Index_score']:.1f}",(r['Launch_estimated_cost_USD'],r['Index_score']),xytext=(5,5),textcoords='offset points',fontsize=7.8,color=colors[model])
-for model,marker in [('Claude Fable 5','X'),('Gemini 3.1 Pro Preview','v')]:
-    d=hist_plot[hist_plot.Model==model]
-    ax1.scatter(d['Launch_estimated_cost_USD'],d['Index_score'],marker=marker,s=75,color=colors[model],label=model)
-ax1.set_xscale('log'); ax1.set_xlim(70,5000); ax1.set_ylim(34,82.5)
-ticks1=[75,100,150,200,300,500,750,1000,1500,2000,3000,5000]
-ax1.xaxis.set_major_locator(FixedLocator(ticks1)); ax1.xaxis.set_major_formatter(FuncFormatter(lambda x,pos:f'${x:,.0f}'))
-ax1.grid(True,which='major',alpha=.35); ax1.grid(True,which='minor',alpha=.10)
-ax1.set_xlabel('Estimated total API cost of historical v1.1 benchmark run (USD, log scale)')
-ax1.set_ylabel('AA Coding Agent Index v1.1')
-ax1.set_title('A — Historical Coding Agent Index v1.1 reconstruction',fontsize=15,pad=10)
-ax1.legend(loc='lower right',fontsize=7.5,ncol=2)
+MARKERS = {
+    "GPT-5.6 Luna": "o",
+    "GPT-5.6 Terra": "s",
+    "GPT-5.6 Sol": "D",
+    "GLM-5.3 Flash": "P",
+    "DeepSeek V4.1 Flash": "X",
+    "GLM-5.3 Max": "^",
+    "Qwen3 Coder 30B A3B": "v",
+}
 
-ax2 = fig.add_axes([0.07,0.17,0.89,0.28])
-ax2.set_xscale('log'); ax2.set_xlim(200,4500); ax2.set_ylim(5,51)
-ticks2=[200,250,300,400,500,750,1000,1500,2000,2500,3000,3500,4000]
-ax2.xaxis.set_major_locator(FixedLocator(ticks2)); ax2.xaxis.set_major_formatter(FuncFormatter(lambda x,pos:f'${x:,.0f}'))
-ax2.grid(True,which='major',alpha=.30); ax2.grid(True,which='minor',alpha=.08)
-for _,r in current.dropna(subset=['Total_Index_Cost_USD']).iterrows():
-    model=r['Model']; x=float(r['Total_Index_Cost_USD']); y=float(r['Intelligence_Index']); c=colors[model]
-    ax2.axhline(y,color=c,linewidth=1.45,alpha=.58)
-    ax2.vlines(x,ymin=ax2.get_ylim()[0],ymax=y,color=c,linewidth=1.5,linestyle=':',alpha=.95)
-    ax2.scatter([x],[y],s=105,color=c,edgecolor='black',linewidth=.6,zorder=5)
-    ax2.annotate(f'{model}\nIndex {y:.0f} | total ${x:,.0f}',(x,y),xytext=(6,6),textcoords='offset points',fontsize=8.0,color=c,bbox=dict(boxstyle='round,pad=0.20',facecolor='white',edgecolor=c,alpha=.90))
-qwen=current[current.Model=='Qwen3 Coder 30B A3B'].iloc[0]; qy=float(qwen.Intelligence_Index); qc=colors['Qwen3 Coder 30B A3B']
-ax2.axhline(qy,color=qc,linewidth=1.5,linestyle='--',alpha=.75)
-ax2.text(0.015,(qy-5)/(51-5)+0.012,'Qwen3 Coder 30B A3B — estimated Index 10; full v4.3 evaluation cost not published',transform=ax2.transAxes,fontsize=8.5,color=qc,ha='left',va='bottom',bbox=dict(boxstyle='round,pad=0.20',facecolor='white',edgecolor=qc,alpha=.90))
-ax2.set_xlabel('Total cost to run Artificial Analysis Intelligence Index v4.3 (USD, log scale)')
-ax2.set_ylabel('AA Intelligence Index v4.3')
-ax2.set_title('B — Current Intelligence Index vs TOTAL evaluation cost (17 Sep 2026)\nhorizontal = index level; dotted vertical = total evaluation cost; point = measured intersection',fontsize=14,pad=9)
+fig, ax = plt.subplots(figsize=(16, 10))
 
-fig.text(0.07,0.100,'Correction from prior version: the previous lower panel used blended API price per 1M tokens. That is why Sol appeared near USD 3.08. Here the x-axis is TOTAL cost to run the full Artificial Analysis Intelligence Index. Sol Max is therefore about USD 3,465, Terra Max about USD 2,501, Luna Max about USD 320.',fontsize=8.8,va='top')
-fig.text(0.07,0.062,'Sources: Artificial Analysis model pages / comparison pages, accessed 17 Sep 2026. Current measured totals: GLM-5.3-Flash USD 280.28; DeepSeek V4 Flash 0731 Max USD 474.19; GLM-5.3 Max USD 2,503.48; GPT-5.6 Luna Max USD 319.93; Terra Max USD 2,500.72; Sol Max USD 3,465. Qwen3 Coder 30B A3B has an estimated Intelligence Index of 10 but no published comparable full-index total cost.',fontsize=8.1,va='top')
+# GPT-5.6 reasoning-effort trajectories. OpenRouter charges the same
+# per-token tariff at each effort level, so each family is vertical.
+for model in ["GPT-5.6 Luna", "GPT-5.6 Terra", "GPT-5.6 Sol"]:
+    d = df[df.Model == model]
+    x = d["Eurobotics_Blended_USD_per_1M"].iloc[0]
+    ax.plot(
+        [x] * len(d),
+        d["AA_Intelligence_Index_v4_3"],
+        color=COLORS[model],
+        marker=MARKERS[model],
+        linewidth=2.4,
+        markersize=8,
+        label=model,
+    )
 
-png=OUT/'charts'/'latest'/'llm_cost_performance_latest.png'
-pdf=OUT/'charts'/'latest'/'llm_cost_performance_latest.pdf'
-svg=OUT/'charts'/'latest'/'llm_cost_performance_latest.svg'
-fig.savefig(png,dpi=220,bbox_inches='tight'); fig.savefig(pdf,bbox_inches='tight'); fig.savefig(svg,bbox_inches='tight'); plt.close(fig)
+    # Place Sol labels to the left and Terra/Luna labels to the right
+    # to keep the expensive-model cluster readable.
+    dx = -48 if model == "GPT-5.6 Sol" else 8
+    for _, r in d.iterrows():
+        ax.annotate(
+            f'{r["Level"]} {int(r["AA_Intelligence_Index_v4_3"])}',
+            (x, r["AA_Intelligence_Index_v4_3"]),
+            xytext=(dx, 3),
+            textcoords="offset points",
+            fontsize=8.4,
+            color=COLORS[model],
+        )
 
-print('\n'.join(map(str,[png,pdf,svg,OUT/'data'/'historical_coding_agent_index_v11.csv',OUT/'data'/'current_intelligence_index_v43.csv'])))
+# Current single-point references.
+for model in ["GLM-5.3 Flash", "DeepSeek V4.1 Flash", "GLM-5.3 Max", "Qwen3 Coder 30B A3B"]:
+    r = df[df.Model == model].iloc[0]
+    x = float(r["Eurobotics_Blended_USD_per_1M"])
+    y = float(r["AA_Intelligence_Index_v4_3"])
+    c = COLORS[model]
+
+    ax.axhline(y, color=c, alpha=0.22, linewidth=1.25)
+    ax.vlines(x, ymin=7, ymax=y, color=c, linestyle=":", linewidth=1.5, alpha=0.95)
+    ax.scatter(
+        [x], [y], s=120, color=c, edgecolor="black", linewidth=0.6,
+        marker=MARKERS[model], zorder=5, label=model,
+    )
+
+    promo = " promo" if bool(r["Current_OpenRouter_Promo"]) else ""
+    ax.annotate(
+        f'{model}\nIndex {int(y)} | blend ${x:.3g}/M{promo}',
+        (x, y), xytext=(8, 7), textcoords="offset points",
+        fontsize=8.2, color=c,
+        bbox=dict(boxstyle="round,pad=0.22", facecolor="white", edgecolor=c, alpha=0.9),
+    )
+
+ax.set_xscale("log")
+ax.set_xlim(0.08, 7.5)
+ax.set_ylim(7, 50)
+xticks = [0.1, 0.12, 0.15, 0.2, 0.3, 0.45, 0.6, 1.0, 1.4, 2.0, 3.0, 4.0, 4.5, 6.0]
+ax.xaxis.set_major_locator(FixedLocator(xticks))
+ax.xaxis.set_major_formatter(FuncFormatter(lambda x, pos: f"${x:.2f}" if x < 1 else f"${x:.1f}"))
+ax.grid(True, which="major", alpha=0.32)
+ax.grid(True, which="minor", alpha=0.07)
+
+ax.set_xlabel(
+    "Eurobotics blended OpenRouter API tariff (USD per 1M tokens, log scale)\n"
+    "75% input + 25% output; current headline OpenRouter prices as of 17 Sep 2026",
+    fontsize=11,
+)
+ax.set_ylabel("Artificial Analysis Intelligence Index v4.3", fontsize=11)
+ax.set_title(
+    "Eurobotics LLM Cost / Intelligence Map - DevOps & AI-Agent Selection\n"
+    "AA Intelligence Index v4.3 x current OpenRouter API pricing",
+    fontsize=16,
+    pad=14,
+)
+
+handles, labels = ax.get_legend_handles_labels()
+seen, out_h, out_l = set(), [], []
+for h, label in zip(handles, labels):
+    if label not in seen:
+        out_h.append(h)
+        out_l.append(label)
+        seen.add(label)
+ax.legend(out_h, out_l, loc="lower right", fontsize=8.5, title="Model / family")
+
+ax.text(
+    0.012, 0.97,
+    "More attractive <-\nhigher index / lower API tariff",
+    transform=ax.transAxes,
+    va="top",
+    ha="left",
+    fontsize=10,
+    fontweight="bold",
+    bbox=dict(boxstyle="round,pad=0.35", facecolor="white", alpha=0.88),
+)
+
+fig.text(
+    0.08, 0.075,
+    "Eurobotics methodology v1.0 - Performance: Artificial Analysis Intelligence Index v4.3. "
+    "Price: current OpenRouter input/output tariff. Blended x = 75% input + 25% output. "
+    "GPT effort levels share the same x because OpenRouter's per-token tariff is unchanged by reasoning effort; "
+    "higher effort may still consume more tokens in a real task. Promotional OpenRouter tariffs are snapshot values and may change.",
+    fontsize=8.5,
+    va="bottom",
+)
+fig.text(
+    0.08, 0.035,
+    "Sources: https://artificialanalysis.ai/  |  https://openrouter.ai/  |  Chart generated with Matplotlib  |  Snapshot: 17 Sep 2026",
+    fontsize=8.2,
+    va="bottom",
+)
+
+plt.tight_layout(rect=[0.03, 0.12, 0.98, 0.96])
+fig.savefig(str(OUT) + ".png", dpi=220, bbox_inches="tight")
+fig.savefig(str(OUT) + ".pdf", bbox_inches="tight")
+fig.savefig(str(OUT) + ".svg", bbox_inches="tight")
+plt.close(fig)
+
+print(str(OUT) + ".png")
+print(str(OUT) + ".pdf")
+print(str(OUT) + ".svg")
