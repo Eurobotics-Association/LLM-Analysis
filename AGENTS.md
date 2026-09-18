@@ -84,3 +84,34 @@ These join the existing set in section 3 (Claude Sonnet 5 included). If AA does 
 
 The repository Issues tab is enabled for the general public. When a chart or methodology change ships, mention in the release or commit message that issues are open for corrections and improvement requests.
 
+## 7. Sol pricing correction (2026-09-18, post-v1.3 audit)
+
+### 7.1 What the audit found
+
+The v1.3 chart intended to use non-promotional OpenRouter prices, but **GPT-5.6 Sol was still plotted at a promotional price**:
+
+- The OpenRouter models API headline for `openai/gpt-5.6-sol` returns **$2.00/M input, $10.00/M output**, which v1.3 treated as the list price.
+- OpenRouter's own Sol model page contains an explicit `"discount": 0.5` on that headline price, and its provider-level listing shows the **true list price is $4.00/M input, $20.00/M output**.
+- Artificial Analysis independently lists OpenAI's Sol tariff as **$4 / $20** (cache hit $0.40), confirming the OpenRouter $2/$10 figure is the temporary 50% promotion, not a structural list price.
+- For contrast, GPT-5.6 Terra's page shows `discount: 0` at $2/$12; Terra was correctly at list price. This is why the published chart made Sol appear artificially cheap and overlapping Terra's cost range.
+
+### 7.2 The fix (mandatory from now on)
+
+- **Sol must always be priced at its un-discounted OpenRouter tariff: $4.00/M input, $20.00/M output, $0.40/M cache read** (unless a future audit shows OpenRouter has made that the actual list price with no discount field).
+- With the list tariff, the Sol OpenRouter/AA blended ratio is **1.0** (blended $3.08 = AA blended $3.08), so Sol's estimated costs equal the AA measured totals: roughly **$637 / $997 / $1,487 / $2,082 / $3,465** for Low to Max. The Sol curve sits to the **right of Terra**, consistent with its higher Intelligence Index (47 vs 42).
+- Any model whose OpenRouter page shows a `discount` field on its headline price must be repriced to the pre-discount listing (or the provider list price) for the baseline. The headline API price alone is not proof of list price.
+
+### 7.3 On-chart annotation
+
+The diagram must carry a small note near the Sol curve:
+
+> (*) About SOL: Price is un-discounted on Sept. 18 2026 - note that there was some temporary discount not taken into account for this diagram.
+
+### 7.4 Related methodology note (do at next revision)
+
+OpenRouter charges a **cache-write tariff** (e.g. $2.50/M on OpenAI models) that the 7:2:1 blended-tariff formula (cache-read/input/output) does not include, while AA measured costs do include cache-write cost. This slightly understates cache-heavy reasoning models. Consider a 7:2:1:1 blend (adding 10% cache-write) or an explicit correction in a future methodology version.
+
+### 7.5 GLM-5.3 Flash verification (no change needed)
+
+The audit also verified GLM-5.3 Flash at **$0.09/$0.30 ($0.018 cache read), discount field 0** on OpenRouter's current page - a genuine list price, not a promo. The older $0.075/$0.25 promo (discount 0.5) still appears in page data but is not the headline. The chart's GLM Flash point is valid as-is.
+
