@@ -2,15 +2,16 @@
 
 ![Latest Eurobotics LLM cost / intelligence chart](charts/latest/llm_cost_performance_latest.svg)
 
-**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest.svg) · [PNG](charts/latest/llm_cost_performance_latest.png) · [PDF](charts/latest/llm_cost_performance_latest.pdf) · [source data](data/eurobotics_v13_aa_v43_openrouter_nopromo_2026-09-18.csv) · [Matplotlib code](src/generate_latest_chart.py)
+**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.svg) · [PNG](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.png) · [PDF (clickable links)](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.pdf) · [source data](data/eurobotics_v14_aa_v43_openrouter_nopromo_eurobotics_260918_1512.csv) · [Matplotlib code](src/generate_latest_chart.py)
 
 LLM-Analysis is a public Eurobotics project for comparing language models used in **DevOps, coding-adjacent agent work, autonomous engineering workflows and AI-assisted software operations**.
 
-## Eurobotics methodology v1.3 (current)
+## Eurobotics methodology v1.4 (current)
 
 - **Y-axis — capability:** Artificial Analysis **Intelligence Index v4.3**
 - **X-axis — estimated total API cost:** AA measured evaluation workload repriced to **current non-promotional OpenRouter pricing**
 - **Rendering:** Python + Matplotlib
+- **Chart artifacts** follow the `eurobotics_YYMMDD_HHSS` naming convention and the PDF embeds clickable links to this repository and artificialanalysis.ai. See [AGENTS.md](AGENTS.md).
 
 The repricing formula:
 
@@ -20,22 +21,24 @@ with the blended tariff defined as 70% cache-read + 20% uncached input + 10% out
 
 ## Pricing policy
 
-The baseline uses **normal (non-promotional) OpenRouter list pricing**. Temporary promotional discounts are excluded because they distort structural comparisons between models. Sol's former 50% promo and GLM-5.3 Flash's 50% promo are therefore no longer in the baseline; GLM Flash is plotted at its normal $0.09/$0.30 tariff.
+The baseline uses **normal (non-promotional) OpenRouter list pricing**. The Sol price was audited after v1.3 and corrected: OpenRouter's API headline ($2/$10) carries a `"discount": 0.5` field; the true list price is **$4/M input, $20/M output**, matching Artificial Analysis' reference tariff. The chart now uses the un-discounted price and carries an on-chart annotation about it. See [AGENTS.md](AGENTS.md) section 7 for the full audit.
 
-## Model set
+## Model set (v1.4)
 
 - GPT-5.6 Luna — Low / Medium / High / XHigh / Max (curve)
 - GPT-5.6 Terra — Low / Medium / High / XHigh / Max (curve)
-- GPT-5.6 Sol — Low / Medium / High / XHigh / Max (curve)
-- GLM-5.3 Flash — single point (Index 41.9, est. $173)
-- GLM-5.3 (Max) — single point (Index 44.9, est. $2,503)
-- DeepSeek V4.1 Flash (Max) — single point (Index 39.5, est. $238)
-- Gemini 3.1 Pro Preview — single point (Index 30.4, est. $1,310)
+- GPT-5.6 Sol — Low / Medium / High / XHigh / Max (curve, un-discounted list price)
+- Claude Sonnet 5 (max) — single point (Index 38.4, est. $6,998)
 - Claude Opus 5 (Max) — single point (Index 50.7, est. $7,275)
 - Claude Fable 5.1 (Max) — single point (Index 53.4, est. $13,129)
-- Qwen3 Coder 30B A3B — intelligence reference only (Index 9.6); AA publishes no comparable total evaluation cost for it
+- Gemini 3.1 Pro Preview — single point (Index 30.4, est. $1,310)
+- GLM-5.3 (Max) — single point (Index 44.9, est. $2,503)
+- GLM-5.3 Flash — single point (Index 41.9, est. $173)
+- DeepSeek V4.1 Flash (Max) — single point (Index 39.5, est. $238)
+- Mistral Medium 3.5 (Max) — single point (Index 14.9, est. $1,160)
+- Mistral Small 3.2 (Max) — single point (Index 7.0, est. $327 at current OpenRouter tariff)
 
-Sanity check: GLM-5.3 Flash (est. $173) vs Terra High (est. $768) is a ~4.4× gap; against Terra Max it is ~14×. The user-remembered ~6× practical gap sits between these, consistent with mid-effort Terra usage. The extreme left position of GLM Flash is real at current OpenRouter tariffs.
+Intelligence reference only (AA publishes no comparable total evaluation cost): **Qwen3 Coder 30B** (Index 9.6), **Llama 3.3 70B** (Index 7.7), **Phi-4** (Index 5.9).
 
 ## Why effort levels move both directions
 
@@ -45,6 +48,11 @@ Reasoning effort changes both the AA Index (vertical) and the measured token wor
 
 - Artificial Analysis: https://artificialanalysis.ai/
 - OpenRouter: https://openrouter.ai/
+- Repository: https://github.com/Eurobotics-Association/LLM-Analysis (issues open for corrections and suggestions)
+
+## Disclaimer
+
+This is for informational use only. Do not use for budgeting. Check pricing by yourself. Eurobotics.org provides this information with no warranty and you are responsible for checking your own pricing and model intelligence requirements.
 
 ## Reproduce
 
@@ -57,7 +65,7 @@ python src/generate_latest_chart.py
 
 ## Repository structure
 
-- [`charts/latest/`](charts/latest/) — latest ready-to-use chart
+- [`charts/latest/`](charts/latest/) — latest ready-to-use chart (timestamped filenames)
 - [`data/`](data/) — auditable source and derived data
 - [`src/`](src/) — Matplotlib generator
 - [`docs/`](docs/) — methodology
