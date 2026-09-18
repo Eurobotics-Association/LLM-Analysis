@@ -1,67 +1,66 @@
 # Eurobotics LLM comparison methodology
 
-## Version 1.1 — 17 September 2026
+## Version 1.2 — 18 September 2026
 
 The main Eurobotics chart combines two independent sources:
 
 - **Capability / Y-axis:** Artificial Analysis Intelligence Index v4.3.
-- **Economic / X-axis:** Artificial Analysis measured benchmark workload, repriced using **standard non-promotional OpenRouter tariffs**.
+- **Market pricing / X-axis:** current OpenRouter headline API pricing.
+- **Workload / effort effect:** Artificial Analysis measured total cost to run the Intelligence Index at each reasoning effort.
 
-This is designed for DevOps, coding-adjacent agent work and AI engineering decisions.
+## Why v1.2
 
-## Why methodology v1.1 exists
+A raw token tariff is not enough for reasoning models. Low, Medium, High, XHigh and Max can have the same per-token price while consuming very different token volumes.
 
-A simple API price-per-token chart is not sufficient for reasoning models. Low, Medium, High, XHigh and Max can have the same tariff per token but consume very different numbers of reasoning/output tokens.
+So the x-axis is no longer a simple token tariff. It is an **estimated total OpenRouter cost to run the same Artificial Analysis Intelligence Index workload**.
 
-Therefore reasoning effort must move the model on the **cost axis**, not only on the intelligence axis.
+## Repricing formula
 
-At the same time, Artificial Analysis may benchmark a model using a different provider tariff from the price available through OpenRouter. We therefore preserve Artificial Analysis' measured task workload and normalize its cost to an OpenRouter standard-price basis.
+Artificial Analysis publishes the total cost to run its Intelligence Index for each evaluated model/effort. Eurobotics reprices that measured workload to current OpenRouter pricing:
 
-## X-axis: Eurobotics normalized cost per task
+\`Estimated OpenRouter total evaluation cost = AA total evaluation cost × (OpenRouter blended tariff / AA reference blended tariff)\`
 
-For every model/effort point for which Artificial Analysis publishes a measured `Cost per Intelligence Index task`:
+The blended tariff uses the same 7:2:1 convention:
 
-1. take the Artificial Analysis measured cost per task;
-2. calculate the Artificial Analysis reference blended tariff;
-3. calculate the OpenRouter standard blended tariff;
-4. multiply the measured cost by the ratio of the two tariffs.
+\`70% cache-read + 20% uncached input + 10% output\`
 
-Formula:
+This preserves the observed increase in workload at higher reasoning strengths while shifting the price basis to OpenRouter.
 
-`Eurobotics normalized task cost = AA measured cost/task × (OpenRouter blended tariff / AA blended tariff)`
+## Important limitation
 
-The blended tariff follows Artificial Analysis' documented **7:2:1** convention:
+This is a **repricing estimate**, not an exact OpenRouter invoice.
 
-`blended tariff = 70% cache-read + 20% uncached input + 10% output`
+Artificial Analysis exposes total evaluation cost and several token-use measures, but the complete per-model/per-effort token matrix split across cache read, cache write, uncached input, reasoning and answer tokens is not exposed as one simple downloadable table. Therefore Eurobotics uses the 7:2:1 blended-tariff ratio as the reproducible repricing factor.
 
-This normalization is a transparent approximation. Artificial Analysis does not expose the complete per-task input/cache/output token matrix as a simple downloadable table for every model, so the 7:2:1 tariff ratio is used as the auditable repricing factor.
+## OpenRouter price policy
 
-## Price selection policy
+Version 1.2 deliberately uses the **current OpenRouter headline price shown on the model/comparator pages**, because OpenRouter is the practical market source for this project.
 
-The baseline chart uses **standard, non-promotional OpenRouter prices**.
+That means active promotions are included and marked with \`*\`.
 
-- Temporary percentage discounts are excluded.
-- For proprietary OpenAI models, the underlying standard OpenAI provider list price shown on OpenRouter is used.
-- For open-weight models, a standard first-party/reference provider price is used where OpenRouter exposes it clearly.
-- Discounted spot/provider promotions are not used as the baseline.
+Examples at the 18 September 2026 snapshot:
 
-This avoids distortions such as a temporary Sol promotion making Sol look structurally cheaper than Terra.
+- GLM-5.3 Flash: $0.075/M input, $0.25/M output, $0.015/M cache read.
+- GPT-5.6 Terra: $2/M input, $12/M output, $0.20/M cache read.
+- GPT-5.6 Sol: current 50% promotion, $2/M input, $10/M output, $0.20/M cache read.
+- DeepSeek V4.1 Flash: $0.15/M input, $0.60/M output, $0.015/M cache read.
+- GLM-5.3: current headline about $1/M input, $3.41/M output, $0.20/M cache read.
 
-## Reasoning effort
+Promotions can temporarily reverse the normal list-price ordering. This is not hidden: the chart is a dated market snapshot.
 
-Artificial Analysis measures a different cost per task at different reasoning efforts because higher effort consumes more tokens.
+## Why the GLM-5.3 Flash / Terra gap is so large
 
-That behavior is retained in the Eurobotics x-axis. For example, GPT-5.6 Terra moves from Low to Max both upward in intelligence and rightward in normalized task cost.
+The gap is real at the current OpenRouter snapshot. GLM-5.3 Flash is priced at roughly 1/27 of Terra on uncached input and 1/48 on output. The resulting benchmark-cost estimate is therefore much lower even though both are near 42 on the Intelligence Index.
+
+The chart should be interpreted as a **current market cost/performance snapshot**, not as a permanent structural price ranking.
 
 ## Qwen3 Coder 30B
 
-Artificial Analysis currently reports Intelligence Index = 10 but `Cost per Intelligence Index task = N/A`.
-
-Therefore Qwen3 Coder 30B is shown only as a horizontal intelligence reference and is not assigned an invented x-coordinate.
+Artificial Analysis currently reports Intelligence Index = 10 but does not publish a comparable cost/task or total evaluation cost. It is therefore shown only as an intelligence reference and receives no invented x-coordinate.
 
 ## Sources
 
 - Artificial Analysis: https://artificialanalysis.ai/
 - OpenRouter: https://openrouter.ai/
 
-The CSV in `data/` contains all source URLs, price assumptions, tariff ratios and normalized values.
+The CSV under \`data/\` records the exact pricing URLs and all transformation fields used by the Matplotlib generator.
