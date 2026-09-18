@@ -186,3 +186,10 @@ fig.savefig(str(OUT) + ".png", dpi=220, bbox_inches="tight")
 fig.savefig(str(OUT) + ".pdf", bbox_inches="tight")
 fig.savefig(str(OUT) + ".svg", bbox_inches="tight")
 
+# Stable alias for README embedding (AGENTS.md section 6.2):
+import shutil
+ALIAS = ROOT / "charts" / "latest" / "llm_cost_performance_latest"
+shutil.copy(str(OUT) + ".png", str(ALIAS) + ".png")
+shutil.copy(str(OUT) + ".pdf", str(ALIAS) + ".pdf")
+shutil.copy(str(OUT) + ".svg", str(ALIAS) + ".svg")
+
