@@ -52,3 +52,35 @@ Keep all existing models from methodology v1.3: GPT-5.6 Luna/Terra/Sol (full eff
 - **v1.2 — 2026-09-18:** AA v4.3 × OpenRouter repricing with 7:2:1 blend (contained promotional prices; superseded).
 - **v1.1 and earlier:** historical, retained in `charts/historical/`.
 
+## 6. Additional requirements for the next version (added 2026-09-18)
+
+### 6.1 Disclaimer on the chart
+
+A short disclaimer in small type must appear at the bottom of the diagram, wrapped to chart width like the other footer lines. Suggested wording (adjust freely but keep all three ideas: informational-only, no budgeting, user verifies):
+
+> Disclaimer: For informational use only - do not use for budgeting. Pricing and benchmark data change frequently; verify current prices and model capability yourself. Eurobotics.org provides this information with no warranty. You are responsible for checking your own pricing and model intelligence requirements.
+
+### 6.2 GitHub Actions workflow issue (known defect)
+
+The `render-latest-chart.yml` workflow regenerates and commits `charts/latest/llm_cost_performance_latest.*` on every push that touches `src/` or `data/`. Problems for the next agent:
+
+1. **It bypasses the naming convention.** The workflow writes files without the `eurobotics_YYMMDD_HHSS` suffix (see section 1). Either update the script to use timestamped names, or render to timestamped filenames and keep a stable `latest` copy/alias so the README image link keeps working.
+2. **README coupling.** The README embeds a fixed chart path; if filenames become timestamped, the workflow (or the script) must update the README image/link line in the same commit, or the README must point at the stable alias.
+
+Additionally, the workflow only re-renders on push; it does not refresh source data from artificialanalysis.ai or openrouter.ai. Data refresh is still manual.
+
+### 6.3 Expanded model set (exhaustive small/medium models)
+
+Add these models as single points (max effort, or their only published point), verifying current AA Intelligence Index v4.3 values and non-promotional OpenRouter tariffs before plotting:
+
+- **Mistral Small 3**
+- **Mistral Medium 3.5**
+- **Llama 3.3**
+- **Phi-4**
+
+These join the existing set in section 3 (Claude Sonnet 5 included). If AA does not publish a comparable total evaluation cost for one of them, plot it as an intelligence reference line only (same treatment as Qwen3 Coder 30B) and note why in the CSV and methodology doc.
+
+### 6.4 Public feedback channel
+
+The repository Issues tab is enabled for the general public. When a chart or methodology change ships, mention in the release or commit message that issues are open for corrections and improvement requests.
+
