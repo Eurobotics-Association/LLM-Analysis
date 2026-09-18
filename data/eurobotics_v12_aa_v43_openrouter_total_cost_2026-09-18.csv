@@ -1,0 +1,19 @@
+Model,Effort,AA_Index,AA_Total_Cost,AA_In,AA_Out,AA_Cache,OR_In,OR_Out,OR_Cache,OpenRouter_URL,Price_Note,AA_Blend,OR_Blend,Ratio,Est_OR_Total_Cost
+GPT-5.6 Luna,Low,22,27.02,0.2,1.2,0.02,0.2,1.2,0.02,https://openrouter.ai/openai/gpt-5.6-luna,current,0.174,0.174,1.0,27.02
+GPT-5.6 Luna,Medium,25,44.32,0.2,1.2,0.02,0.2,1.2,0.02,https://openrouter.ai/openai/gpt-5.6-luna,current,0.174,0.174,1.0,44.32
+GPT-5.6 Luna,High,32,108.15,0.2,1.2,0.02,0.2,1.2,0.02,https://openrouter.ai/openai/gpt-5.6-luna,current,0.174,0.174,1.0,108.15
+GPT-5.6 Luna,XHigh,35,179.33,0.2,1.2,0.02,0.2,1.2,0.02,https://openrouter.ai/openai/gpt-5.6-luna,current,0.174,0.174,1.0,179.33
+GPT-5.6 Luna,Max,38,319.93,0.2,1.2,0.02,0.2,1.2,0.02,https://openrouter.ai/openai/gpt-5.6-luna,current,0.174,0.174,1.0,319.93
+GPT-5.6 Terra,Low,28,350.36,2.0,12.0,0.2,2.0,12.0,0.2,https://openrouter.ai/openai/gpt-5.6-terra,current,1.7400000000000002,1.7400000000000002,1.0,350.36
+GPT-5.6 Terra,Medium,30,446.53,2.0,12.0,0.2,2.0,12.0,0.2,https://openrouter.ai/openai/gpt-5.6-terra,current,1.7400000000000002,1.7400000000000002,1.0,446.53
+GPT-5.6 Terra,High,34,767.78,2.0,12.0,0.2,2.0,12.0,0.2,https://openrouter.ai/openai/gpt-5.6-terra,current,1.7400000000000002,1.7400000000000002,1.0,767.78
+GPT-5.6 Terra,XHigh,38,1186.77,2.0,12.0,0.2,2.0,12.0,0.2,https://openrouter.ai/openai/gpt-5.6-terra,current,1.7400000000000002,1.7400000000000002,1.0,1186.77
+GPT-5.6 Terra,Max,42,2500.72,2.0,12.0,0.2,2.0,12.0,0.2,https://openrouter.ai/openai/gpt-5.6-terra,current,1.7400000000000002,1.7400000000000002,1.0,2500.72
+GPT-5.6 Sol,Low,34,637.28,4.0,20.0,0.4,2.0,10.0,0.2,https://openrouter.ai/openai/gpt-5.6-sol-20260709,50% promo,3.08,1.54,0.5,318.64
+GPT-5.6 Sol,Medium,39,997.39,4.0,20.0,0.4,2.0,10.0,0.2,https://openrouter.ai/openai/gpt-5.6-sol-20260709,50% promo,3.08,1.54,0.5,498.695
+GPT-5.6 Sol,High,42,1487.34,4.0,20.0,0.4,2.0,10.0,0.2,https://openrouter.ai/openai/gpt-5.6-sol-20260709,50% promo,3.08,1.54,0.5,743.67
+GPT-5.6 Sol,XHigh,44,2082.28,4.0,20.0,0.4,2.0,10.0,0.2,https://openrouter.ai/openai/gpt-5.6-sol-20260709,50% promo,3.08,1.54,0.5,1041.14
+GPT-5.6 Sol,Max,47,3464.84,4.0,20.0,0.4,2.0,10.0,0.2,https://openrouter.ai/openai/gpt-5.6-sol-20260709,50% promo,3.08,1.54,0.5,1732.42
+GLM-5.3 Flash,Current,42,280.28,0.15,0.5,0.0255,0.075,0.25,0.015,https://openrouter.ai/z-ai/glm-5.3-flash-20260826,50% promo,0.09784999999999999,0.0505,0.5160960654062341,144.65140521205927
+DeepSeek V4.1 Flash,Max,40,476.89,0.3,1.2,0.006,0.15,0.6,0.015,https://openrouter.ai/deepseek/deepseek-v4.1-flash-20260910,current,0.18419999999999997,0.10049999999999999,0.5456026058631922,260.1924267100977
+GLM-5.3 Max,Max,45,2503.48,1.4,4.4,0.266,1.0,3.41,0.2,https://openrouter.ai/z-ai/glm-5.3,current headline,0.9062,0.681,0.7514897373648202,1881.33952769808
