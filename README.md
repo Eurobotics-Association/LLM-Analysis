@@ -2,7 +2,7 @@
 
 ![Latest Eurobotics LLM cost / intelligence chart](charts/latest/llm_cost_performance_latest.svg)
 
-**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.svg) · [PNG](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.png) · [PDF (clickable links)](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.pdf) · [source data](data/eurobotics_v14_aa_v43_openrouter_nopromo_eurobotics_260918_1512.csv) · [Matplotlib code](src/generate_latest_chart.py)
+**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.svg) · [PNG](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.png) · [PDF](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.pdf) · [source data](data/eurobotics_v14_aa_v43_openrouter_nopromo_eurobotics_260918_1512.csv) · [Matplotlib code](src/generate_latest_chart.py)
 
 LLM-Analysis is a public Eurobotics project for comparing language models used in **DevOps, coding-adjacent agent work, autonomous engineering workflows and AI-assisted software operations**.
 
@@ -11,7 +11,7 @@ LLM-Analysis is a public Eurobotics project for comparing language models used i
 - **Y-axis — capability:** Artificial Analysis **Intelligence Index v4.3**
 - **X-axis — estimated total API cost:** AA measured evaluation workload repriced to **current non-promotional OpenRouter pricing**
 - **Rendering:** Python + Matplotlib
-- **Chart artifacts** follow the `eurobotics_YYMMDD_HHSS` naming convention and the PDF embeds clickable links to this repository and artificialanalysis.ai. See [AGENTS.md](AGENTS.md).
+- **Chart artifacts** follow the `eurobotics_YYMMDD_HHSS` naming convention. See [AGENTS.md](AGENTS.md).
 
 The repricing formula:
 

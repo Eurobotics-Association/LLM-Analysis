@@ -74,6 +74,7 @@ for model in single_points:
     y = float(r.AA_Index)
     c = colors[model]
     ax.axhline(y, color=c, alpha=0.15, linewidth=1.1)
+    ax.vlines(x, 4, y, color=c, linestyle=":", linewidth=1.5)
     ax.scatter([x], [y], s=130, color=c, marker=markers[model],
                edgecolor="black", linewidth=0.6, zorder=5, label=model)
     ax.annotate(
@@ -90,8 +91,9 @@ ref_lines = [
 ]
 for label_text, yv, cv in ref_lines:
     ax.axhline(yv, color=cv, linestyle="--", alpha=0.55)
-    ax.text(0.012, max(0.02, (yv - 8) / 48.0 + 0.005), label_text,
-            transform=ax.get_yaxis_transform(), fontsize=8.3, color=cv,
+    yfrac = (yv - 4.0) / (56.0 - 4.0)
+    ax.text(0.012, yfrac + 0.012, label_text,
+            transform=ax.transAxes, fontsize=8.3, color=cv, va="bottom",
             bbox=dict(boxstyle="round,pad=.2", facecolor="white", edgecolor=cv, alpha=0.9))
 
 ax.set_xscale("log")
@@ -132,14 +134,6 @@ ax.text(
     bbox=dict(boxstyle="round,pad=.35", facecolor="white", alpha=0.88),
 )
 
-ax.annotate(
-    "(*) About SOL: Price is un-discounted on Sept. 18 2026 - note that there was some temporary discount not taken into account for this diagram",
-    xy=(3464.84, 47), xytext=(2600, 51.5),
-    fontsize=8.2, color=colors["GPT-5.6 Sol"],
-    arrowprops=dict(arrowstyle="->", color=colors["GPT-5.6 Sol"], lw=1.1),
-    bbox=dict(boxstyle="round,pad=.25", facecolor="white", edgecolor=colors["GPT-5.6 Sol"], alpha=0.92),
-)
-
 footer_1 = (
     "Eurobotics methodology v1.4: Y = Artificial Analysis Intelligence Index v4.3. "
     "X = AA measured total evaluation cost repriced to current non-promotional OpenRouter "
@@ -147,9 +141,8 @@ footer_1 = (
     "This is a reproducible estimate, not an exact OpenRouter invoice."
 )
 footer_2 = (
-    "No temporary promotional prices are used in the baseline (Sol audited and repriced to "
-    "list $4/$20). GPT effort levels (Low to Max) move both vertically and horizontally "
-    "because higher effort consumes more tokens."
+    "(*) Sol is priced at its un-discounted list tariff ($4/$20) as of Sept. 18 2026; a temporary discount was in effect and is not reflected. "
+    "GPT effort levels (Low to Max) move both vertically and horizontally because higher effort consumes more tokens."
 )
 footer_3 = (
     "Disclaimer: For informational use only - do not use for budgeting. Pricing and benchmark "
