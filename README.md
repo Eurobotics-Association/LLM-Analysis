@@ -2,37 +2,35 @@
 
 ![Latest Eurobotics LLM cost / intelligence chart](charts/latest/llm_cost_performance_latest.svg)
 
-**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest.svg) · [source data](data/eurobotics_v11_aa_v43_openrouter_normalized_2026-09-17.csv) · [Matplotlib code](src/generate_latest_chart.py)
+**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest.svg) · [PNG](charts/latest/llm_cost_performance_latest.png) · [PDF](charts/latest/llm_cost_performance_latest.pdf) · [source data](data/eurobotics_v12_aa_v43_openrouter_total_cost_2026-09-18.csv) · [Matplotlib code](src/generate_latest_chart.py)
 
 LLM-Analysis is a public Eurobotics project for comparing language models used in **DevOps, coding-adjacent agent work, autonomous engineering workflows and AI-assisted software operations**.
 
-## Eurobotics methodology v1.1
+## Eurobotics methodology v1.2
 
 The main chart uses:
 
 - **Y-axis — capability:** Artificial Analysis **Intelligence Index v4.3**
-- **X-axis — economic cost:** Artificial Analysis measured benchmark **cost per task**, normalized to **standard non-promotional OpenRouter pricing**
+- **X-axis — estimated total API cost:** Artificial Analysis measured evaluation workload repriced to **current OpenRouter headline pricing**
 - **Rendering:** Python + Matplotlib
 
-The key correction in v1.1 is that reasoning effort now changes the x-position. Low / Medium / High / XHigh / Max may have the same token tariff, but higher effort consumes more tokens. The chart therefore preserves Artificial Analysis' measured task-cost increase instead of putting all efforts on one vertical price line.
+The important point is that reasoning effort changes both performance and workload. Low / Medium / High / XHigh / Max therefore move both upward and rightward.
 
 ### Repricing rule
 
-> **Eurobotics normalized task cost = AA measured cost/task × (OpenRouter blended tariff / AA blended tariff)**
+> **Estimated OpenRouter total evaluation cost = AA total evaluation cost × (OpenRouter blended tariff / AA reference blended tariff)**
 
-Both tariff blends use Artificial Analysis' documented **7:2:1** convention:
+The blended tariff uses:
 
 > **70% cache-read + 20% uncached input + 10% output**
 
-This keeps the workload/effort measurement from Artificial Analysis while using OpenRouter as the market-pricing source.
+This is a reproducible estimate, not an exact OpenRouter invoice. See [docs/methodology.md](docs/methodology.md) for the limitation and rationale.
 
-See [docs/methodology.md](docs/methodology.md) for assumptions and limitations.
+## Current pricing policy
 
-## Price policy
+The chart uses the **current OpenRouter headline price shown on the model/comparator pages** and marks active promotions with \`*\`.
 
-The baseline uses **standard, non-promotional OpenRouter tariffs**.
-
-Temporary discounts are excluded. In particular, the current 50% Sol promotion is not used as the structural baseline; its underlying OpenAI standard price is used instead. This prevents temporary sales from reversing the normal Terra/Sol cost relationship.
+This means the chart is intentionally a dated market snapshot. At the current snapshot, both GPT-5.6 Sol and GLM-5.3 Flash have promotional pricing, so their current ordering can differ from normal list-price ordering.
 
 ## Current model set
 
@@ -40,51 +38,54 @@ Temporary discounts are excluded. In particular, the current 50% Sol promotion i
 - GPT-5.6 Terra — Low / Medium / High / XHigh / Max
 - GPT-5.6 Sol — Low / Medium / High / XHigh / Max
 - GLM-5.3 Flash
-- DeepSeek **V4.1 Flash** — latest Flash generation
+- DeepSeek **V4.1 Flash**
 - GLM-5.3 Max
-- Qwen3 Coder 30B A3B — intelligence reference only because AA cost/task is currently N/A
+- Qwen3 Coder 30B A3B — intelligence reference only because AA does not publish a comparable total evaluation cost
+
+## Current OpenRouter snapshot
+
+18 September 2026.
+
+Selected current prices used in the repricing:
+
+| Model | Input / 1M | Output / 1M | Cache read / 1M | Note |
+|---|---:|---:|---:|---|
+| GLM-5.3 Flash | $0.075 | $0.25 | $0.015 | current 50% promotion |
+| DeepSeek V4.1 Flash | $0.15 | $0.60 | $0.015 | current |
+| GPT-5.6 Luna | $0.20 | $1.20 | $0.02 | current |
+| GPT-5.6 Terra | $2.00 | $12.00 | $0.20 | current |
+| GPT-5.6 Sol | $2.00 | $10.00 | $0.20 | current 50% promotion |
+| GLM-5.3 | $1.00 | $3.41 | $0.20 | current headline |
+
+## Why GLM-5.3 Flash can look dramatically cheaper than Terra
+
+This is not a plotting error. OpenRouter currently shows GLM-5.3 Flash at $0.075/M input and $0.25/M output versus Terra at $2/M and $12/M. That is a very large market-price gap.
+
+The chart preserves Artificial Analysis' measured workload/effort pattern and reprices it to those OpenRouter rates.
 
 ## Sources
 
 - Artificial Analysis: https://artificialanalysis.ai/
 - OpenRouter: https://openrouter.ai/
 
-Snapshot: **17 September 2026**.
-
-The CSV records the exact model URLs, AA tariff assumptions, OpenRouter standard tariffs, normalization ratios and final x-values.
-
 ## Reproduce
 
-```bash
+\`\`\`bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 python src/generate_latest_chart.py
-```
-
-The GitHub Actions workflow regenerates PNG, PDF and SVG under `charts/latest/` whenever source or data changes.
+\`\`\`
 
 ## Repository structure
 
-- [`charts/latest/`](charts/latest/) — current ready-to-use chart
-- [`data/`](data/) — auditable source data
-- [`src/`](src/) — Matplotlib generation code
-- [`docs/`](docs/) — methodology and supporting notes
-- [`charts/historical/`](charts/historical/) — historical charts retained for reference
-
-## Verification principles
-
-Every update should:
-
-1. keep the benchmark name/version visible;
-2. record the price-snapshot date;
-3. keep Artificial Analysis and OpenRouter source roles explicit;
-4. exclude temporary promotions from the baseline unless a promotion-specific chart is explicitly requested;
-5. preserve reasoning-effort workload effects;
-6. never invent missing benchmark values;
-7. keep all transformation formulas reproducible.
+- [\`charts/latest/\`](charts/latest/) — latest ready-to-use chart
+- [\`data/\`](data/) — auditable source and derived data
+- [\`src/\`](src/) — Matplotlib generator
+- [\`docs/\`](docs/) — methodology
+- [\`charts/historical/\`](charts/historical/) — historical charts retained for reference
 
 ## License
 
 - **Code:** MIT License
-- **Charts, documentation and curated data:** CC BY 4.0 (see `LICENSE-CONTENT.md`)
+- **Charts, documentation and curated data:** CC BY 4.0 (see \`LICENSE-CONTENT.md\`)
