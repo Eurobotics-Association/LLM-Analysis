@@ -1,0 +1,29 @@
+Model,Effort,AA_Index,AA_Total_Cost,AA_Cache,AA_In,AA_Out,OR_Cache,OR_In,OR_Out,AA_Blend,OR_Blend,Ratio,Est_OR_Total_Cost,OpenRouter_URL
+GPT-5.6 Luna,Low,22.0,27.02,0.02,0.2,1.2,0.02,0.2,1.2,0.174,0.174,1.0,27.02,https://openrouter.ai/openai/gpt-5.6-luna
+GPT-5.6 Luna,Medium,25.0,44.32,0.02,0.2,1.2,0.02,0.2,1.2,0.174,0.174,1.0,44.32,https://openrouter.ai/openai/gpt-5.6-luna
+GPT-5.6 Luna,High,32.0,108.15,0.02,0.2,1.2,0.02,0.2,1.2,0.174,0.174,1.0,108.15,https://openrouter.ai/openai/gpt-5.6-luna
+GPT-5.6 Luna,XHigh,35.0,179.33,0.02,0.2,1.2,0.02,0.2,1.2,0.174,0.174,1.0,179.33,https://openrouter.ai/openai/gpt-5.6-luna
+GPT-5.6 Luna,Max,38.0,319.93,0.02,0.2,1.2,0.02,0.2,1.2,0.174,0.174,1.0,319.93,https://openrouter.ai/openai/gpt-5.6-luna
+GPT-5.6 Terra,Low,28.0,350.36,0.2,2.0,12.0,0.2,2.0,12.0,1.74,1.74,1.0,350.36,https://openrouter.ai/openai/gpt-5.6-terra
+GPT-5.6 Terra,Medium,30.0,446.53,0.2,2.0,12.0,0.2,2.0,12.0,1.74,1.74,1.0,446.53,https://openrouter.ai/openai/gpt-5.6-terra
+GPT-5.6 Terra,High,34.0,767.78,0.2,2.0,12.0,0.2,2.0,12.0,1.74,1.74,1.0,767.78,https://openrouter.ai/openai/gpt-5.6-terra
+GPT-5.6 Terra,XHigh,38.0,1186.77,0.2,2.0,12.0,0.2,2.0,12.0,1.74,1.74,1.0,1186.77,https://openrouter.ai/openai/gpt-5.6-terra
+GPT-5.6 Terra,Max,42.0,2500.72,0.2,2.0,12.0,0.2,2.0,12.0,1.74,1.74,1.0,2500.72,https://openrouter.ai/openai/gpt-5.6-terra
+GPT-5.6 Sol,Low,34.0,637.28,0.4,4.0,20.0,0.4,4.0,20.0,3.08,3.08,1.0,637.28,https://openrouter.ai/openai/gpt-5.6-sol
+GPT-5.6 Sol,Medium,39.0,997.39,0.4,4.0,20.0,0.4,4.0,20.0,3.08,3.08,1.0,997.39,https://openrouter.ai/openai/gpt-5.6-sol
+GPT-5.6 Sol,High,42.0,1487.34,0.4,4.0,20.0,0.4,4.0,20.0,3.08,3.08,1.0,1487.34,https://openrouter.ai/openai/gpt-5.6-sol
+GPT-5.6 Sol,XHigh,44.0,2082.28,0.4,4.0,20.0,0.4,4.0,20.0,3.08,3.08,1.0,2082.28,https://openrouter.ai/openai/gpt-5.6-sol
+GPT-5.6 Sol,Max,47.0,3464.84,0.4,4.0,20.0,0.4,4.0,20.0,3.08,3.08,1.0,3464.84,https://openrouter.ai/openai/gpt-5.6-sol
+GLM-5.3 Flash,Current,41.91,280.28,0.026,0.15,0.5,0.018,0.09,0.3,0.0982,0.0606,0.6171,172.96,https://openrouter.ai/z-ai/glm-5.3-flash
+DeepSeek V4.1 Flash,Max,39.55,476.89,0.006,0.3,1.2,0.003,0.15,0.6,0.1842,0.0921,0.5,238.45,https://openrouter.ai/deepseek/deepseek-v4.1-flash
+GLM-5.3,Max,44.86,2503.48,0.26,1.4,4.4,0.26,1.4,4.4,0.906,0.906,1.0,2503.48,https://openrouter.ai/z-ai/glm-5.3
+Gemini 3.1 Pro,Preview,30.36,1310.21,0.2,2.0,12.0,0.2,2.0,12.0,1.74,1.74,1.0,1310.21,https://openrouter.ai/google/gemini-3.1-pro-preview
+Claude Sonnet 5,Max,38.36,6998.25,0.2,2.0,10.0,0.2,2.0,10.0,1.72,1.72,1.0,6998.25,https://openrouter.ai/anthropic/claude-sonnet-5
+Claude Opus 5,Max,50.7,7274.74,0.5,5.0,25.0,0.5,5.0,25.0,4.35,4.35,1.0,7274.74,https://openrouter.ai/anthropic/claude-opus-5
+Claude Fable 5.1,Max,53.37,13128.86,0.25,10.0,50.0,0.25,10.0,50.0,8.25,8.25,1.0,13128.86,https://openrouter.ai/anthropic/claude-fable-5.1
+Mistral Medium 3.5,Max,14.89,1159.93,0.15,1.5,7.5,0.15,1.5,7.5,1.155,1.155,1.0,1159.93,https://openrouter.ai/mistralai/mistral-medium-3-5
+Mistral Small 3.2,Max,6.96,162.68,0.0,0.1,0.3,0.015,0.15,0.6,0.05,0.1005,2.01,326.99,https://openrouter.ai/mistralai/mistral-small-2603
+GPT-6 Astra,Low,45.78,1536.78,1.0,10.0,50.0,1.0,10.0,50.0,7.7,7.7,1.0,1536.78,https://openrouter.ai/openai/gpt-6-astra
+GPT-6 Astra,Medium,49.57,2434.12,1.0,10.0,50.0,1.0,10.0,50.0,7.7,7.7,1.0,2434.12,https://openrouter.ai/openai/gpt-6-astra
+GPT-6 Astra,High,50.92,2925.01,1.0,10.0,50.0,1.0,10.0,50.0,7.7,7.7,1.0,2925.01,https://openrouter.ai/openai/gpt-6-astra
+GPT-6 Astra,XHigh,52.39,3802.98,1.0,10.0,50.0,1.0,10.0,50.0,7.7,7.7,1.0,3802.98,https://openrouter.ai/openai/gpt-6-astra

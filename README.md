@@ -2,11 +2,11 @@
 
 ![Latest Eurobotics LLM cost / intelligence chart](charts/latest/llm_cost_performance_latest.svg)
 
-**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.svg) · [PNG](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.png) · [PDF](charts/latest/llm_cost_performance_latest_eurobotics_260918_1838.pdf) · [source data](data/eurobotics_v14_aa_v43_openrouter_nopromo_eurobotics_260918_1512.csv) · [Matplotlib code](src/generate_latest_chart.py)
+**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest_eurobotics_260925_0919.svg) · [PNG](charts/latest/llm_cost_performance_latest_eurobotics_260925_0919.png) · [PDF](charts/latest/llm_cost_performance_latest_eurobotics_260925_0919.pdf) · [source data](data/eurobotics_v15_aa_v43_openrouter_nopromo_eurobotics_260925_1130.csv) · [Matplotlib code](src/generate_latest_chart.py)
 
 LLM-Analysis is a public Eurobotics project for comparing language models used in **DevOps, coding-adjacent agent work, autonomous engineering workflows and AI-assisted software operations**.
 
-## Eurobotics methodology v1.4 (current)
+## Eurobotics methodology v1.5 (current)
 
 - **Y-axis — capability:** Artificial Analysis **Intelligence Index v4.3**
 - **X-axis — estimated total API cost:** AA measured evaluation workload repriced to **current non-promotional OpenRouter pricing**
@@ -28,6 +28,7 @@ The baseline uses **normal (non-promotional) OpenRouter list pricing**. The Sol 
 - GPT-5.6 Luna — Low / Medium / High / XHigh / Max (curve)
 - GPT-5.6 Terra — Low / Medium / High / XHigh / Max (curve)
 - GPT-5.6 Sol — Low / Medium / High / XHigh / Max (curve, un-discounted list price)
+- GPT-6 Astra — Low / Medium / High / XHigh (curve; Index 45.8 to 52.4, est. $1,537 to $3,803; no max variant published)
 - Claude Sonnet 5 (max) — single point (Index 38.4, est. $6,998)
 - Claude Opus 5 (Max) — single point (Index 50.7, est. $7,275)
 - Claude Fable 5.1 (Max) — single point (Index 53.4, est. $13,129)

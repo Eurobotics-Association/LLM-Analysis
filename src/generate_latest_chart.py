@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator, FuncFormatter
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data" / "eurobotics_v14_aa_v43_openrouter_nopromo_eurobotics_260918_1512.csv"
+DATA = ROOT / "data" / "eurobotics_v15_aa_v43_openrouter_nopromo_eurobotics_260925_1130.csv"
 
 now = datetime.datetime.now()
 STAMP = "eurobotics_{0:%y%m%d}_{0:%H%M}".format(now)
@@ -20,6 +20,7 @@ colors = {
     "GPT-5.6 Luna": "#1f77b4",
     "GPT-5.6 Terra": "#ff7f0e",
     "GPT-5.6 Sol": "#d62728",
+    "GPT-6 Astra": "#ff1493",
     "GLM-5.3 Flash": "#17becf",
     "DeepSeek V4.1 Flash": "#2ca02c",
     "GLM-5.3": "#bcbd22",
@@ -37,6 +38,7 @@ markers = {
     "GPT-5.6 Luna": "o",
     "GPT-5.6 Terra": "s",
     "GPT-5.6 Sol": "D",
+    "GPT-6 Astra": "*",
     "GLM-5.3 Flash": "P",
     "DeepSeek V4.1 Flash": "X",
     "GLM-5.3": "^",
@@ -50,7 +52,7 @@ markers = {
 
 fig, ax = plt.subplots(figsize=(16, 10))
 
-for model in ["GPT-5.6 Luna", "GPT-5.6 Terra", "GPT-5.6 Sol"]:
+for model in ["GPT-5.6 Luna", "GPT-5.6 Terra", "GPT-5.6 Sol", "GPT-6 Astra"]:
     d = df[df.Model == model].sort_values("Est_OR_Total_Cost")
     ax.plot(
         d.Est_OR_Total_Cost, d.AA_Index,
@@ -135,7 +137,7 @@ ax.text(
 )
 
 footer_1 = (
-    "Eurobotics methodology v1.4: Y = Artificial Analysis Intelligence Index v4.3. "
+    "Eurobotics methodology v1.5: Y = Artificial Analysis Intelligence Index v4.3. "
     "X = AA measured total evaluation cost repriced to current non-promotional OpenRouter "
     "tariffs via the ratio of 7:2:1 blended prices (70% cache-read / 20% input / 10% output). "
     "This is a reproducible estimate, not an exact OpenRouter invoice."
