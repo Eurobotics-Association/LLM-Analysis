@@ -17,6 +17,39 @@ GEN_LINE = "Generated: {0:%Y-%m-%d %H:%M:%S %Z}".format(now)
 
 df = pd.read_csv(DATA)
 
+# Derive the plotted x-coordinate from source prices at render time. The CSV keeps
+# the rounded derived columns for inspection; a mismatch stops publication.
+costed = df["AA_Total_Cost"].notna()
+uncosted = ~costed
+if df.loc[uncosted, "Est_OR_Total_Cost"].notna().any():
+    raise ValueError("Reference-only models must not have an estimated x-coordinate")
+
+aa_blend = (
+    0.7 * df.loc[costed, "AA_Cache"]
+    + 0.2 * df.loc[costed, "AA_In"]
+    + 0.1 * df.loc[costed, "AA_Out"]
+)
+or_blend = (
+    0.7 * df.loc[costed, "OR_Cache"]
+    + 0.2 * df.loc[costed, "OR_In"]
+    + 0.1 * df.loc[costed, "OR_Out"]
+)
+if aa_blend.isna().any() or or_blend.isna().any() or (aa_blend <= 0).any():
+    raise ValueError("Costed models need complete tariffs and a positive AA blend")
+ratio = or_blend / aa_blend
+estimated_cost = df.loc[costed, "AA_Total_Cost"] * ratio
+for column, calculated, tolerance in (
+    ("AA_Blend", aa_blend, 0.00001),
+    ("OR_Blend", or_blend, 0.00001),
+    ("Ratio", ratio, 0.000002),
+    ("Est_OR_Total_Cost", estimated_cost, 0.011),
+):
+    mismatch = (df.loc[costed, column] - calculated).abs() > tolerance
+    if mismatch.any():
+        affected = df.loc[costed].loc[mismatch, ["Model", "Effort"]]
+        raise ValueError(f"{column} does not match the methodology for: {affected.to_dict('records')}")
+    df.loc[costed, column] = calculated
+
 colors = {
     "GPT-5.6 Luna": "#1f77b4",
     "GPT-5.6 Terra": "#ff7f0e",
@@ -127,7 +160,7 @@ ax.grid(True, which="minor", alpha=0.08)
 
 ax.set_xlabel(
     "Estimated total OpenRouter API cost to run the AA Intelligence Index (USD, log scale)\n"
-    "AA evaluation workload repriced at current non-promotional OpenRouter tariffs"
+    "AA evaluation workload repriced at selected non-promotional OpenRouter provider tariffs"
 )
 ax.set_ylabel("Artificial Analysis Intelligence Index v4.3 series")
 ax.set_title(
@@ -161,8 +194,8 @@ ax.text(
 
 footer_1 = (
     "Eurobotics methodology v1.6: Y = AA Intelligence Index v4.3 series (current v4.3.2). "
-    "X = AA measured total evaluation cost repriced to current non-promotional OpenRouter "
-    "tariffs via the ratio of 7:2:1 blended prices (70% cache-read / 20% input / 10% output). "
+    "X = AA measured total evaluation cost repriced to selected non-promotional OpenRouter "
+    "provider tariffs via the ratio of 7:2:1 blended prices (70% cache-read / 20% input / 10% output). "
     "This is a reproducible estimate, not an exact OpenRouter invoice."
 )
 footer_2 = (

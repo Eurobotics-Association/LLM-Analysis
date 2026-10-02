@@ -17,6 +17,8 @@ The chart maps Artificial Analysis (AA) **Intelligence Index v4.3 series** again
 
 Each blend is `0.7 × cache-read + 0.2 × uncached-input + 0.1 × output`, using USD per million tokens. The CSV contains the source tariffs, both blends, ratio, and estimated total for every costed point. If AA provides no comparable current total evaluation cost, no x-coordinate is invented.
 
+The renderer recomputes both blends, the ratio, and every plotted x-coordinate from the AA total and tariff columns. It stops if a rounded derived CSV value differs from the recomputation, or if a reference-only model has an x-coordinate. Thus the chart cannot silently plot a stale or manually altered derived cost.
+
 AA's total includes cache-write charges, while the 7:2:1 blend does not. The result is an estimate of the same evaluation workload at selected OpenRouter provider tariffs, not a quote or invoice. Provider routing, discounts, long-context pricing, and benchmark revisions can change actual spend.
 
 ### GPT-6 effort data
@@ -28,6 +30,8 @@ AA's total includes cache-write charges, while the 7:2:1 blend does not. The res
 | GPT-6 Astra | Max | 52.7 | $5,324 |
 
 The new Sol and Luna OpenRouter blends match AA's reference blends, so the ratio is 1.0. Their [standard provider tariffs](https://openrouter.ai/openai/gpt-6-sol) and [Luna tariffs](https://openrouter.ai/openai/gpt-6-luna) show no promotion on the selected OpenAI endpoint.
+
+**Provider selection:** Each row uses the named provider in the price snapshot below and the CSV's `Price_Basis` field, usually the model vendor or another named standard provider. This is a consistent non-promotional comparison, **not** an OpenRouter lowest-price search. A different non-promotional provider may offer a lower tariff. The model-page URL contains several provider quotes and may change after the snapshot date; the table records the selected tariff as checked on 2 October.
 
 ### OpenRouter price snapshot — 2 October 2026
 
@@ -55,6 +59,14 @@ USD per 1M tokens. Each link points to the audited model listing. The baseline s
 | [Phi-4](https://openrouter.ai/microsoft/phi-4) | Standard listing | $0.07 | $0.14 | — | Intelligence reference only |
 
 The reference-only models have no comparable current AA total evaluation cost, so pricing is documented without claiming a computed x-position. Mistral Small 3.2 uses the Mistral standard provider's complete cache tariff; the OpenRouter headline $0.075/$0.20 route does not state a cache-read rate.
+
+### Why open-weight API models can cost more
+
+Open weights do not set the price of a hosted API. The selected provider still pays for inference hardware and sets its own tariff; this chart does not model self-hosting. On 2 October, Luna's selected OpenAI 7:2:1 tariff was **$0.077/M**, versus **$0.0921/M** for DeepSeek V4.1 Flash on DeepSeek and **$0.101/M** for GLM-5.3 Flash on Z.ai. The cache-read component is cheaper for DeepSeek, while GLM and Luna share the same output price. See the linked provider quotes above.
+
+AA also measured different token use on the same evaluation suite. [AA's Luna Max / DeepSeek comparison](https://artificialanalysis.ai/models/comparisons/gpt-6-luna-vs-deepseek-v4-1-flash) reports 144M versus 253M output tokens and total costs of $122 versus $477 at AA's reference tariffs. Repricing DeepSeek's $477 by the selected OpenRouter/AA blend ratio of 0.5 gives about **$238**. [AA's Luna Max / GLM comparison](https://artificialanalysis.ai/models/comparisons/gpt-6-luna-vs-glm-5-3-flash) reports 144M versus 181M output tokens and $122 versus $280; repricing GLM to Z.ai's selected tariff gives about **$288**. Output counts illustrate workload efficiency but are only one part of the bill: input, cache read, cache write, and token mix also matter.
+
+Those points also have different capability scores: Luna Max is about 38 on AA's Index, DeepSeek Flash about 40, and GLM Flash about 42. The plotted costs describe this benchmark workload at specified providers. They do not establish a general ranking for every real workload.
 
 ### Publication
 

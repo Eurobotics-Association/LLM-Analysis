@@ -13,6 +13,8 @@ LLM-Analysis is a public Eurobotics project comparing language models for DevOps
 - **Blend:** 70% cache read + 20% uncached input + 10% output. Estimated OpenRouter cost = AA total cost × (OpenRouter blend / AA reference blend).
 - **Effort:** GPT-5.6 and GPT-6 variants are plotted as separate effort points, so both intelligence and evaluation cost change along each curve.
 
+The renderer recomputes the blends and estimated costs from the CSV's source tariffs and checks them against its stored derived columns. Provider choices are named in the [price snapshot](docs/methodology.md); this is a selected standard-provider comparison, not the cheapest route across OpenRouter. The chart compares hosted API costs, not the cost of self-hosting open weights.
+
 GPT-6 Luna now spans **Index 22–38 at about $11–$122**; GPT-6 Sol spans **Index 34–48 at about $269–$1,536**. AA publishes rounded total costs for these points. GPT-6 Astra Max is also included at Index 52.7 and about $5,324. [AA GPT-6 Luna](https://artificialanalysis.ai/models/releases/gpt-6-luna), [AA GPT-6 Sol](https://artificialanalysis.ai/models/releases/gpt-6-sol), [AA Astra comparison](https://artificialanalysis.ai/models/comparisons/gpt-6-sol-low-vs-gpt-6-astra).
 
 The [2 October price audit](docs/methodology.md) checks every charted model against OpenRouter. GPT-5.6 Sol uses its **$4/$20 undiscounted** tariff despite the 50% offer. GLM-5.3 Flash uses Z.ai's current **$0.15/$0.50** list tariff; the old $0.09/$0.30 rate is promotional today. Mistral Small 3.2 is now an intelligence-only reference because AA marks its score as estimated and no longer publishes a comparable current total evaluation cost. Its OpenRouter URL now identifies the actual 3.2 endpoint.
