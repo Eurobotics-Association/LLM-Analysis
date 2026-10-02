@@ -1,62 +1,63 @@
 # Eurobotics LLM comparison methodology
 
-## Version 1.5 — 25 September 2026
+## Version 1.6 — 2 October 2026
 
-The main Eurobotics chart combines two independent sources:
+The chart maps Artificial Analysis (AA) **Intelligence Index v4.3 series** against the estimated OpenRouter cost to run AA's complete evaluation workload. The latest AA pages use **v4.3.2**. Existing v1.5 Intelligence Index observations are retained; GPT-6 Sol, GPT-6 Luna, and Astra Max use the currently published v4.3.2 observations. Historical Coding Agent Index values are never used.
 
-- **Capability / Y-axis:** Artificial Analysis Intelligence Index v4.3.
-- **Market pricing / X-axis:** current **non-promotional** OpenRouter API pricing.
-- **Workload / effort effect:** Artificial Analysis measured total cost to run the Intelligence Index at each reasoning effort.
+### Changes from v1.5
 
-## Changes from v1.4
+- Added GPT-6 Sol and GPT-6 Luna as complete Low, Medium, High, XHigh, and Max effort curves. AA's published index and total evaluation costs are rounded to whole units for these new rows; both axes move by effort. [AA Sol release](https://artificialanalysis.ai/models/releases/gpt-6-sol), [AA Luna release](https://artificialanalysis.ai/models/releases/gpt-6-luna), [AA effort comparisons](https://artificialanalysis.ai/models/comparisons/gpt-6-sol-high-vs-gpt-6-sol-xhigh).
+- Added GPT-6 Astra Max (Index 52.7, AA cost $5,324) from [AA's comparison](https://artificialanalysis.ai/models/comparisons/gpt-6-sol-low-vs-gpt-6-astra).
+- Audited each model's standard, non-promotional OpenRouter tariff on 2 October 2026. GLM-5.3 Flash's old $0.09/$0.30 rate now appears as a promotion; the first-party Z.ai tariff is $0.15/$0.50 with $0.03 cache read. GLM-5.3 uses Mistral's listed $0.14 cache-read rate at $1.40/$4.40. [GLM Flash providers](https://openrouter.ai/z-ai/glm-5.3-flash), [GLM providers](https://openrouter.ai/z-ai/glm-5.3), [Mistral pricing](https://docs.mistral.ai/inference/pricing).
+- Corrected the Mistral Small 3.2 model URL. The previous `mistral-small-2603` page identifies **Mistral Small 4**. AA now marks Small 3.2's Intelligence Index as **estimated** and does not publish a current comparable total evaluation cost. Small 3.2 is therefore an intelligence reference line only. [AA Small 3.2](https://artificialanalysis.ai/models/mistral-small-3-2), [OpenRouter Small 3.2](https://openrouter.ai/mistralai/mistral-small-3.2-24b-instruct).
 
-1. **GPT-6 Astra added as a full effort curve** (Low / Medium / High / XHigh — AA publishes no max variant for Astra). OpenRouter lists `openai/gpt-6-astra` at **$10/M input, $50/M output, $1/M cache read with `discount: 0`** — identical to AA's reference tariff, so the repricing ratio is 1.0 and the estimated costs equal AA's measured totals: **$1,536.78 / $2,434.12 / $2,925.01 / $3,802.98** for Low→XHigh. Index values: 45.78 / 49.57 / 50.92 / 52.39. Astra therefore plots above and to the right of GPT-5.6 Sol, consistent with being the successor flagship.
+### Repricing
 
-## Carried over from v1.4 (unchanged)
+`Estimated OpenRouter total evaluation cost = AA measured total cost × (OpenRouter blended tariff / AA reference blended tariff)`
 
-- Sol priced at its un-discounted list tariff $4/$20 (see AGENTS.md section 7).
-- Claude Sonnet 5, Mistral Medium 3.5, Mistral Small 3.2 as single points; Llama 3.3 70B, Phi-4 and Qwen3 Coder 30B as intelligence-reference-only lines.
-- Timestamped artifact names (`eurobotics_YYMMDD_HHSS`) and a stable `latest` alias refreshed on every render.
-- Clickable repo and AA links in the PDF; generation timestamp printed on the chart; disclaimer footer.
+Each blend is `0.7 × cache-read + 0.2 × uncached-input + 0.1 × output`, using USD per million tokens. The CSV contains the source tariffs, both blends, ratio, and estimated total for every costed point. If AA provides no comparable current total evaluation cost, no x-coordinate is invented.
 
-## Repricing formula
+AA's total includes cache-write charges, while the 7:2:1 blend does not. The result is an estimate of the same evaluation workload at selected OpenRouter provider tariffs, not a quote or invoice. Provider routing, discounts, long-context pricing, and benchmark revisions can change actual spend.
 
-`Estimated OpenRouter total evaluation cost = AA total evaluation cost × (OpenRouter blended tariff / AA reference blended tariff)`
+### GPT-6 effort data
 
-The blended tariff uses the 7:2:1 convention: `70% cache-read + 20% uncached input + 10% output`.
+| Model | Effort | AA Index | AA total cost / estimated OpenRouter cost |
+|---|---|---:|---:|
+| GPT-6 Luna | Low / Medium / High / XHigh / Max | 22 / 30 / 33 / 35 / 38 | $11 / $31 / $48 / $67 / $122 |
+| GPT-6 Sol | Low / Medium / High / XHigh / Max | 34 / 40 / 42 / 44 / 48 | $269 / $416 / $605 / $855 / $1,536 |
+| GPT-6 Astra | Max | 52.7 | $5,324 |
 
-For most of the current set (Luna, Terra, Sol at list, GLM-5.3, Gemini 3.1 Pro, GPT-6 Astra, Claude Sonnet 5, Claude Opus 5, Claude Fable 5.1, Mistral Medium 3.5) the OpenRouter list tariff equals AA's reference tariff, so the ratio is 1.0 and AA's measured cost is used directly. Exceptions: GLM-5.3 Flash (ratio 0.62), DeepSeek V4.1 Flash (0.50), Mistral Small 3.2 (2.01).
+The new Sol and Luna OpenRouter blends match AA's reference blends, so the ratio is 1.0. Their [standard provider tariffs](https://openrouter.ai/openai/gpt-6-sol) and [Luna tariffs](https://openrouter.ai/openai/gpt-6-luna) show no promotion on the selected OpenAI endpoint.
 
-## Important limitation
+### OpenRouter price snapshot — 2 October 2026
 
-This is a **repricing estimate**, not an exact OpenRouter invoice. The complete per-model/per-effort token matrix split across cache read, cache write, uncached input, reasoning and answer tokens is not exposed as one simple downloadable table, so Eurobotics uses the 7:2:1 blended-tariff ratio as the reproducible repricing factor. Additionally, OpenRouter charges a cache-write tariff that this blend omits; see AGENTS.md section 7.4 for the planned refinement.
+USD per 1M tokens. Each link points to the audited model listing. The baseline selects a standard provider, excluding temporary discounts, Flex, Fast, and free endpoints.
 
-## OpenRouter price snapshot (25 September 2026, non-promotional)
+| Model | Selected standard provider | Input | Output | Cache read | Status |
+|---|---|---:|---:|---:|---|
+| [GPT-5.6 Luna](https://openrouter.ai/openai/gpt-5.6-luna) | OpenAI | $0.20 | $1.20 | $0.02 | Unchanged |
+| [GPT-5.6 Terra](https://openrouter.ai/openai/gpt-5.6-terra) | OpenAI | $2.00 | $12.00 | $0.20 | Unchanged |
+| [GPT-5.6 Sol](https://openrouter.ai/openai/gpt-5.6-sol) | OpenAI list / Azure | $4.00 | $20.00 | $0.40 | OpenAI's $2/$10 is 50% off; excluded |
+| [GPT-6 Luna](https://openrouter.ai/openai/gpt-6-luna) | OpenAI | $0.10 | $0.50 | $0.01 | Added |
+| [GPT-6 Sol](https://openrouter.ai/openai/gpt-6-sol) | OpenAI | $2.00 | $10.00 | $0.20 | Added |
+| [GPT-6 Astra](https://openrouter.ai/openai/gpt-6-astra) | OpenAI | $10.00 | $50.00 | $1.00 | Unchanged |
+| [GLM-5.3 Flash](https://openrouter.ai/z-ai/glm-5.3-flash) | Z.ai | $0.15 | $0.50 | $0.03 | Repriced; old $0.09/$0.30 appears as a promo |
+| [GLM-5.3](https://openrouter.ai/z-ai/glm-5.3) | Mistral | $1.40 | $4.40 | $0.14 | Cache read updated |
+| [DeepSeek V4.1 Flash](https://openrouter.ai/deepseek/deepseek-v4.1-flash) | DeepSeek | $0.15 | $0.60 | $0.003 | Unchanged |
+| [Gemini 3.1 Pro Preview](https://openrouter.ai/google/gemini-3.1-pro-preview) | Google | $2.00 | $12.00 | $0.20 | Unchanged |
+| [Claude Sonnet 5](https://openrouter.ai/anthropic/claude-sonnet-5) | Anthropic | $2.00 | $10.00 | $0.20 | Unchanged |
+| [Claude Opus 5](https://openrouter.ai/anthropic/claude-opus-5) | Anthropic | $5.00 | $25.00 | $0.50 | Unchanged |
+| [Claude Fable 5.1](https://openrouter.ai/anthropic/claude-fable-5.1) | Anthropic | $10.00 | $50.00 | $0.25 | Unchanged |
+| [Mistral Medium 3.5](https://openrouter.ai/mistralai/mistral-medium-3-5) | Mistral | $1.50 | $7.50 | $0.15 | Unchanged; cache from [Mistral pricing](https://docs.mistral.ai/inference/pricing) |
+| [Mistral Small 3.2](https://openrouter.ai/mistralai/mistral-small-3.2-24b-instruct) | Mistral | $0.10 | $0.30 | $0.01 | Intelligence reference only |
+| [Qwen3 Coder 30B](https://openrouter.ai/qwen/qwen3-coder-30b-a3b-instruct) | Standard listing | $0.07 | $0.27 | — | Intelligence reference only |
+| [Llama 3.3 70B](https://openrouter.ai/meta-llama/llama-3.3-70b-instruct) | Standard listing | $0.10 | $0.32 | — | Intelligence reference only |
+| [Phi-4](https://openrouter.ai/microsoft/phi-4) | Standard listing | $0.07 | $0.14 | — | Intelligence reference only |
 
-| Model | Input / 1M | Output / 1M | Cache read / 1M | Discount field |
-|---|---:|---:|---:|---|
-| GLM-5.3 Flash | $0.09 | $0.30 | $0.018 | 0 |
-| DeepSeek V4.1 Flash | $0.15 | $0.60 | $0.003 | — |
-| GPT-5.6 Luna | $0.20 | $1.20 | $0.02 | — |
-| GPT-5.6 Terra | $2.00 | $12.00 | $0.20 | 0 |
-| GPT-5.6 Sol (list) | $4.00 | $20.00 | $0.40 | 0.5 on $2/$10 headline |
-| GPT-6 Astra | $10.00 | $50.00 | $1.00 | 0 |
-| GLM-5.3 | $1.40 | $4.40 | $0.26 | — |
-| Gemini 3.1 Pro | $2.00 | $12.00 | $0.20 | — |
-| Claude Sonnet 5 | $2.00 | $10.00 | $0.20 | — |
-| Claude Opus 5 | $5.00 | $25.00 | $0.50 | — |
-| Claude Fable 5.1 | $10.00 | $50.00 | $0.25 | — |
-| Mistral Medium 3.5 | $1.50 | $7.50 | $0.15 | — |
-| Mistral Small 3.2 (mistral-small-2603) | $0.15 | $0.60 | $0.015 | — |
+The reference-only models have no comparable current AA total evaluation cost, so pricing is documented without claiming a computed x-position. Mistral Small 3.2 uses the Mistral standard provider's complete cache tariff; the OpenRouter headline $0.075/$0.20 route does not state a cache-read rate.
 
-## How to detect a promotion (audit rule)
+### Publication
 
-The OpenRouter models API headline price is not proof of list price. Check the model page's pricing JSON for a `"discount"` field: a value like `0.5` means the headline is a temporary promotion and the true list price appears in the provider-level listing (and usually matches Artificial Analysis' reference tariff). Apply this check to every model before plotting.
+The generator writes timestamped PNG, PDF, and SVG files plus a stable `latest` alias. The README embeds the alias, and GitHub Actions commits the rendered artifacts after a source or data update. The PDF and SVG footer links to the [repository](https://github.com/Eurobotics-Association/LLM-Analysis) and [Artificial Analysis](https://artificialanalysis.ai/), includes the generation timestamp, and carries the informational disclaimer.
 
-## Sources
-
-- Artificial Analysis: https://artificialanalysis.ai/
-- OpenRouter: https://openrouter.ai/ (list prices, promotions excluded)
-
-The CSV under `data/` records the exact pricing URLs and all transformation fields used by the Matplotlib generator.
-
+Issues are [open for corrections and improvement requests](https://github.com/Eurobotics-Association/LLM-Analysis/issues).

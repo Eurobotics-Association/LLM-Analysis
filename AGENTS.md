@@ -48,6 +48,9 @@ Keep all existing models from methodology v1.3: GPT-5.6 Luna/Terra/Sol (full eff
 
 ## 5. Version history
 
+- **v1.6 — 2026-10-02:** GPT-6 Sol and Luna effort curves, 2 October non-promotional price audit, GLM-5.3 Flash and Mistral Small 3.2 corrections; AA v4.3.2 values for new models.
+- **v1.5 — 2026-09-25:** GPT-6 Astra effort curve.
+- **v1.4 — 2026-09-18:** Sol list-price correction and expanded model set.
 - **v1.3 — 2026-09-18:** non-promotional pricing baseline; Claude Opus 5, Claude Fable 5.1, Gemini 3.1 Pro added; wrapped footer; AGENTS.md conventions introduced.
 - **v1.2 — 2026-09-18:** AA v4.3 × OpenRouter repricing with 7:2:1 blend (contained promotional prices; superseded).
 - **v1.1 and earlier:** historical, retained in `charts/historical/`.
@@ -60,14 +63,9 @@ A short disclaimer in small type must appear at the bottom of the diagram, wrapp
 
 > Disclaimer: For informational use only - do not use for budgeting. Pricing and benchmark data change frequently; verify current prices and model capability yourself. Eurobotics.org provides this information with no warranty. You are responsible for checking your own pricing and model intelligence requirements.
 
-### 6.2 GitHub Actions workflow issue (known defect)
+### 6.2 GitHub Actions rendering
 
-The `render-latest-chart.yml` workflow regenerates and commits `charts/latest/llm_cost_performance_latest.*` on every push that touches `src/` or `data/`. Problems for the next agent:
-
-1. **It bypasses the naming convention.** The workflow writes files without the `eurobotics_YYMMDD_HHSS` suffix (see section 1). Either update the script to use timestamped names, or render to timestamped filenames and keep a stable `latest` copy/alias so the README image link keeps working.
-2. **README coupling.** The README embeds a fixed chart path; if filenames become timestamped, the workflow (or the script) must update the README image/link line in the same commit, or the README must point at the stable alias.
-
-Additionally, the workflow only re-renders on push; it does not refresh source data from artificialanalysis.ai or openrouter.ai. Data refresh is still manual.
+The `render-latest-chart.yml` workflow regenerates a timestamped chart and a stable `latest` alias on pushes to `src/` or `data/`. The README links to the stable alias. The workflow does not refresh source data from Artificial Analysis or OpenRouter; price and benchmark refreshes remain an explicit audited step.
 
 ### 6.3 Expanded model set (exhaustive small/medium models)
 
@@ -115,3 +113,7 @@ OpenRouter charges a **cache-write tariff** (e.g. $2.50/M on OpenAI models) that
 
 The audit also verified GLM-5.3 Flash at **$0.09/$0.30 ($0.018 cache read), discount field 0** on OpenRouter's current page - a genuine list price, not a promo. The older $0.075/$0.25 promo (discount 0.5) still appears in page data but is not the headline. The chart's GLM Flash point is valid as-is.
 
+
+## 8. Tooling preference
+
+Use installed local plugins or MCP tools for the operation whenever a capable one is available. In particular, use the GitHub plugin for repository reads, writes, commits, workflow inspection, and readback verification; use source or browsing tools for live benchmark and pricing checks. Use terminal commands only for work that the available plugin or MCP tools cannot perform, such as local chart rendering or tests. Do not use a terminal command as a substitute for an available plugin or MCP operation.

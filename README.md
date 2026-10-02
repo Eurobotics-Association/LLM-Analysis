@@ -1,79 +1,26 @@
-# LLM-Analysis
+# Eurobotics LLM Cost / Intelligence Map
 
 ![Latest Eurobotics LLM cost / intelligence chart](charts/latest/llm_cost_performance_latest.svg)
 
-**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest_eurobotics_260925_0919.svg) · [PNG](charts/latest/llm_cost_performance_latest_eurobotics_260925_0919.png) · [PDF](charts/latest/llm_cost_performance_latest_eurobotics_260925_0919.pdf) · [source data](data/eurobotics_v15_aa_v43_openrouter_nopromo_eurobotics_260925_1130.csv) · [Matplotlib code](src/generate_latest_chart.py)
+**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest.svg) · [PNG](charts/latest/llm_cost_performance_latest.png) · [PDF](charts/latest/llm_cost_performance_latest.pdf) · [source data](data/eurobotics_v16_aa_v432_openrouter_nopromo_eurobotics_261002_1705.csv) · [Matplotlib code](src/generate_latest_chart.py)
 
-LLM-Analysis is a public Eurobotics project for comparing language models used in **DevOps, coding-adjacent agent work, autonomous engineering workflows and AI-assisted software operations**.
+LLM-Analysis is a public Eurobotics project comparing language models for DevOps, coding agents, autonomous engineering, and AI-assisted operations.
 
-## Eurobotics methodology v1.5 (current)
+## Methodology v1.6 (2 October 2026)
 
-- **Y-axis — capability:** Artificial Analysis **Intelligence Index v4.3**
-- **X-axis — estimated total API cost:** AA measured evaluation workload repriced to **current non-promotional OpenRouter pricing**
-- **Rendering:** Python + Matplotlib
-- **Chart artifacts** follow the `eurobotics_YYMMDD_HHSS` naming convention. See [AGENTS.md](AGENTS.md).
+- **Capability:** Artificial Analysis Intelligence Index v4.3 series. The new GPT-6 points use AA v4.3.2.
+- **Cost:** AA's measured total evaluation cost, repriced to non-promotional OpenRouter standard-provider tariffs.
+- **Blend:** 70% cache read + 20% uncached input + 10% output. Estimated OpenRouter cost = AA total cost × (OpenRouter blend / AA reference blend).
+- **Effort:** GPT-5.6 and GPT-6 variants are plotted as separate effort points, so both intelligence and evaluation cost change along each curve.
 
-The repricing formula:
+GPT-6 Luna now spans **Index 22–38 at about $11–$122**; GPT-6 Sol spans **Index 34–48 at about $269–$1,536**. AA publishes rounded total costs for these points. GPT-6 Astra Max is also included at Index 52.7 and about $5,324. [AA GPT-6 Luna](https://artificialanalysis.ai/models/releases/gpt-6-luna), [AA GPT-6 Sol](https://artificialanalysis.ai/models/releases/gpt-6-sol), [AA Astra comparison](https://artificialanalysis.ai/models/comparisons/gpt-6-sol-low-vs-gpt-6-astra).
 
-> Estimated OpenRouter total evaluation cost = AA total evaluation cost × (OpenRouter blended tariff / AA reference blended tariff)
+The [2 October price audit](docs/methodology.md) checks every charted model against OpenRouter. GPT-5.6 Sol uses its **$4/$20 undiscounted** tariff despite the 50% offer. GLM-5.3 Flash uses Z.ai's current **$0.15/$0.50** list tariff; the old $0.09/$0.30 rate is promotional today. Mistral Small 3.2 is now an intelligence-only reference because AA marks its score as estimated and no longer publishes a comparable current total evaluation cost. Its OpenRouter URL now identifies the actual 3.2 endpoint.
 
-with the blended tariff defined as 70% cache-read + 20% uncached input + 10% output. See [docs/methodology.md](docs/methodology.md).
-
-## Pricing policy
-
-The baseline uses **normal (non-promotional) OpenRouter list pricing**. The Sol price was audited after v1.3 and corrected: OpenRouter's API headline ($2/$10) carries a `"discount": 0.5` field; the true list price is **$4/M input, $20/M output**, matching Artificial Analysis' reference tariff. The chart now uses the un-discounted price and carries an on-chart annotation about it. See [AGENTS.md](AGENTS.md) section 7 for the full audit.
-
-## Model set (v1.4)
-
-- GPT-5.6 Luna — Low / Medium / High / XHigh / Max (curve)
-- GPT-5.6 Terra — Low / Medium / High / XHigh / Max (curve)
-- GPT-5.6 Sol — Low / Medium / High / XHigh / Max (curve, un-discounted list price)
-- GPT-6 Astra — Low / Medium / High / XHigh (curve; Index 45.8 to 52.4, est. $1,537 to $3,803; no max variant published)
-- Claude Sonnet 5 (max) — single point (Index 38.4, est. $6,998)
-- Claude Opus 5 (Max) — single point (Index 50.7, est. $7,275)
-- Claude Fable 5.1 (Max) — single point (Index 53.4, est. $13,129)
-- Gemini 3.1 Pro Preview — single point (Index 30.4, est. $1,310)
-- GLM-5.3 (Max) — single point (Index 44.9, est. $2,503)
-- GLM-5.3 Flash — single point (Index 41.9, est. $173)
-- DeepSeek V4.1 Flash (Max) — single point (Index 39.5, est. $238)
-- Mistral Medium 3.5 (Max) — single point (Index 14.9, est. $1,160)
-- Mistral Small 3.2 (Max) — single point (Index 7.0, est. $327 at current OpenRouter tariff)
-
-Intelligence reference only (AA publishes no comparable total evaluation cost): **Qwen3 Coder 30B** (Index 9.6), **Llama 3.3 70B** (Index 7.7), **Phi-4** (Index 5.9).
-
-## Why effort levels move both directions
-
-Reasoning effort changes both the AA Index (vertical) and the measured token workload (horizontal). Higher effort consumes more tokens even at an unchanged per-token tariff, so GPT curves run up and to the right.
-
-## Sources
-
-- Artificial Analysis: https://artificialanalysis.ai/
-- OpenRouter: https://openrouter.ai/
-- Repository: https://github.com/Eurobotics-Association/LLM-Analysis (issues open for corrections and suggestions)
-
-## Disclaimer
-
-This is for informational use only. Do not use for budgeting. Check pricing by yourself. Eurobotics.org provides this information with no warranty and you are responsible for checking your own pricing and model intelligence requirements.
+The chart is informational only and must not be used for budgeting. Verify current prices and model capability for your own requirements. Eurobotics.org provides no warranty. [Open an issue](https://github.com/Eurobotics-Association/LLM-Analysis/issues) to request a correction or improvement.
 
 ## Reproduce
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python src/generate_latest_chart.py
-```
+Run `python src/generate_latest_chart.py` after installing `requirements.txt`. The renderer writes timestamped PNG, PDF, and SVG files in `charts/latest/` and refreshes the stable `latest` aliases linked above.
 
-## Repository structure
-
-- [`charts/latest/`](charts/latest/) — latest ready-to-use chart (timestamped filenames)
-- [`data/`](data/) — auditable source and derived data
-- [`src/`](src/) — Matplotlib generator
-- [`docs/`](docs/) — methodology
-- [`charts/historical/`](charts/historical/) — historical charts retained for reference
-
-## License
-
-- **Code:** MIT License
-- **Charts, documentation and curated data:** CC BY 4.0 (see `LICENSE-CONTENT.md`)
-
+See [methodology](docs/methodology.md), [data](data/), and [contributor conventions](AGENTS.md).

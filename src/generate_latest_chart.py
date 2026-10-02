@@ -1,18 +1,19 @@
 from pathlib import Path
 import datetime
 import textwrap
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator, FuncFormatter
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data" / "eurobotics_v15_aa_v43_openrouter_nopromo_eurobotics_260925_1130.csv"
+DATA = ROOT / "data" / "eurobotics_v16_aa_v432_openrouter_nopromo_eurobotics_261002_1705.csv"
 
-now = datetime.datetime.now()
+now = datetime.datetime.now(ZoneInfo("Europe/Paris"))
 STAMP = "eurobotics_{0:%y%m%d}_{0:%H%M}".format(now)
 OUT = ROOT / "charts" / "latest" / ("llm_cost_performance_latest_" + STAMP)
-GEN_LINE = "Generated: {0:%Y-%m-%d %H:%M} CET (Europe/Paris)".format(now)
+GEN_LINE = "Generated: {0:%Y-%m-%d %H:%M:%S %Z}".format(now)
 
 df = pd.read_csv(DATA)
 
@@ -21,6 +22,8 @@ colors = {
     "GPT-5.6 Terra": "#ff7f0e",
     "GPT-5.6 Sol": "#d62728",
     "GPT-6 Astra": "#ff1493",
+    "GPT-6 Sol": "#6a3d9a",
+    "GPT-6 Luna": "#008080",
     "GLM-5.3 Flash": "#17becf",
     "DeepSeek V4.1 Flash": "#2ca02c",
     "GLM-5.3": "#bcbd22",
@@ -39,6 +42,8 @@ markers = {
     "GPT-5.6 Terra": "s",
     "GPT-5.6 Sol": "D",
     "GPT-6 Astra": "*",
+    "GPT-6 Sol": "d",
+    "GPT-6 Luna": "o",
     "GLM-5.3 Flash": "P",
     "DeepSeek V4.1 Flash": "X",
     "GLM-5.3": "^",
@@ -52,7 +57,8 @@ markers = {
 
 fig, ax = plt.subplots(figsize=(16, 10))
 
-for model in ["GPT-5.6 Luna", "GPT-5.6 Terra", "GPT-5.6 Sol", "GPT-6 Astra"]:
+for model in ["GPT-5.6 Luna", "GPT-5.6 Terra", "GPT-5.6 Sol",
+              "GPT-6 Luna", "GPT-6 Sol", "GPT-6 Astra"]:
     d = df[df.Model == model].sort_values("Est_OR_Total_Cost")
     ax.plot(
         d.Est_OR_Total_Cost, d.AA_Index,
@@ -68,7 +74,7 @@ for model in ["GPT-5.6 Luna", "GPT-5.6 Terra", "GPT-5.6 Sol", "GPT-6 Astra"]:
         )
 
 single_points = ["GLM-5.3 Flash", "DeepSeek V4.1 Flash", "GLM-5.3",
-                 "Gemini 3.1 Pro", "Mistral Medium 3.5", "Mistral Small 3.2",
+                 "Gemini 3.1 Pro", "Mistral Medium 3.5",
                  "Claude Sonnet 5", "Claude Opus 5", "Claude Fable 5.1"]
 for model in single_points:
     r = df[df.Model == model].iloc[0]
@@ -87,21 +93,21 @@ for model in single_points:
     )
 
 ref_lines = [
-    ("Qwen3 Coder 30B A3B", 9.6, "#7f7f7f"),
-    ("Llama 3.3 70B (no AA eval cost published)", 7.66, "#4daf4a"),
-    ("Phi-4 (no AA eval cost published)", 5.92, "#a65628"),
+    ("Qwen3 Coder 30B A3B (no AA evaluation cost)", 9.6, "#7f7f7f"),
+    ("Mistral Small 3.2 (estimated index; no current evaluation cost)", 8.0, "#999933"),
+    ("Llama 3.3 70B (no AA evaluation cost)", 7.66, "#4daf4a"),
+    ("Phi-4 (no AA evaluation cost)", 5.92, "#a65628"),
 ]
-for label_text, yv, cv in ref_lines:
+for slot, (label_text, yv, cv) in enumerate(reversed(ref_lines)):
     ax.axhline(yv, color=cv, linestyle="--", alpha=0.55)
-    yfrac = (yv - 4.0) / (56.0 - 4.0)
-    ax.text(0.012, yfrac + 0.012, label_text,
+    ax.text(0.012, 0.025 + slot * 0.036, label_text,
             transform=ax.transAxes, fontsize=8.3, color=cv, va="bottom",
             bbox=dict(boxstyle="round,pad=.2", facecolor="white", edgecolor=cv, alpha=0.9))
 
 ax.set_xscale("log")
-ax.set_xlim(20, 16000)
+ax.set_xlim(8, 16000)
 ax.set_ylim(4, 56)
-ticks = [25, 50, 75, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000,
+ticks = [10, 15, 25, 50, 75, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000,
          5000, 7500, 10000, 15000]
 ax.xaxis.set_major_locator(FixedLocator(ticks))
 ax.xaxis.set_major_formatter(FuncFormatter(lambda v, p: "${:,.0f}".format(v)))
@@ -112,10 +118,10 @@ ax.set_xlabel(
     "Estimated total OpenRouter API cost to run the AA Intelligence Index (USD, log scale)\n"
     "AA evaluation workload repriced at current non-promotional OpenRouter tariffs"
 )
-ax.set_ylabel("Artificial Analysis Intelligence Index v4.3")
+ax.set_ylabel("Artificial Analysis Intelligence Index v4.3 series")
 ax.set_title(
     "Eurobotics LLM Cost / Intelligence Map\n"
-    "AA Intelligence Index v4.3 x non-promotional OpenRouter pricing",
+    "AA Intelligence Index v4.3 series x non-promotional OpenRouter pricing",
     fontsize=16, pad=14,
 )
 
@@ -136,15 +142,21 @@ ax.text(
     bbox=dict(boxstyle="round,pad=.35", facecolor="white", alpha=0.88),
 )
 
+ax.text(
+    0.68, 0.58, "(*) GPT-5.6 Sol: undiscounted $4/$20",
+    transform=ax.transAxes, fontsize=8, color=colors["GPT-5.6 Sol"],
+    bbox=dict(boxstyle="round,pad=.2", facecolor="white", alpha=0.85),
+)
+
 footer_1 = (
-    "Eurobotics methodology v1.5: Y = Artificial Analysis Intelligence Index v4.3. "
+    "Eurobotics methodology v1.6: Y = AA Intelligence Index v4.3 series (current v4.3.2). "
     "X = AA measured total evaluation cost repriced to current non-promotional OpenRouter "
     "tariffs via the ratio of 7:2:1 blended prices (70% cache-read / 20% input / 10% output). "
     "This is a reproducible estimate, not an exact OpenRouter invoice."
 )
 footer_2 = (
-    "(*) Sol is priced at its un-discounted list tariff ($4/$20) as of Sept. 18 2026; a temporary discount was in effect and is not reflected. "
-    "GPT effort levels (Low to Max) move both vertically and horizontally because higher effort consumes more tokens."
+    "(*) GPT-5.6 Sol uses its undiscounted $4/$20 list tariff; OpenRouter still shows a 50% promotion. "
+    "GPT effort levels move both vertically and horizontally as effort increases."
 )
 footer_3 = (
     "Disclaimer: For informational use only - do not use for budgeting. Pricing and benchmark "
@@ -155,7 +167,7 @@ footer_3 = (
 REPO_URL = "https://github.com/Eurobotics-Association/LLM-Analysis"
 AA_URL = "https://artificialanalysis.ai/"
 footer_4 = (
-    "Sources: " + AA_URL + " | Matplotlib | " + GEN_LINE
+    "Sources: " + AA_URL + " | OpenRouter price check: 2 Oct 2026 | Matplotlib | " + GEN_LINE
 )
 footer_5 = "Repository: " + REPO_URL
 wrap_at = 168
@@ -168,7 +180,6 @@ for i, line in enumerate(footer_lines):
     fig.text(0.05, 0.010 + line_height * (n - 1 - i), line, fontsize=8.1, va="bottom")
 
 bottom_margin = 0.030 + line_height * n
-REPO_URL2 = REPO_URL
 for artist in list(ax.texts) + list(fig.texts):
     txt = artist.get_text()
     if REPO_URL in txt:
