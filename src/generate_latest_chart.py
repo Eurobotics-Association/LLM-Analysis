@@ -66,11 +66,17 @@ for model in ["GPT-5.6 Luna", "GPT-5.6 Terra", "GPT-5.6 Sol",
         color=colors[model], label=model,
     )
     for _, r in d.iterrows():
+        offset = (6, 6)
+        if model == "GPT-6 Astra":
+            offset = {"Low": (-8, -18), "Medium": (-35, 8),
+                      "High": (-24, 10), "XHigh": (8, 11), "Max": (8, -18)}[r.Effort]
+        elif model == "GPT-5.6 Sol" and r.Effort in {"XHigh", "Max"}:
+            offset = (8, -16)
         ax.annotate(
-            "{0}\n{1:g}".format(r.Effort, r.AA_Index),
+            "{0} {1:g}".format(r.Effort, r.AA_Index),
             (r.Est_OR_Total_Cost, r.AA_Index),
-            xytext=(6, 5), textcoords="offset points",
-            fontsize=8, color=colors[model],
+            xytext=offset, textcoords="offset points",
+            fontsize=7.5, color=colors[model],
         )
 
 single_points = ["GLM-5.3 Flash", "DeepSeek V4.1 Flash", "GLM-5.3",
@@ -85,9 +91,14 @@ for model in single_points:
     ax.vlines(x, 4, y, color=c, linestyle=":", linewidth=1.5)
     ax.scatter([x], [y], s=130, color=c, marker=markers[model],
                edgecolor="black", linewidth=0.6, zorder=5, label=model)
+    label_offset = (8, 7)
+    if model == "GLM-5.3 Flash":
+        label_offset = (8, 15)
+    elif model == "DeepSeek V4.1 Flash":
+        label_offset = (8, -24)
     ax.annotate(
         "{0} ({1})\nIndex {2:g} | est. ${3:,.0f}".format(model, r.Effort, y, x),
-        (x, y), xytext=(8, 7), textcoords="offset points",
+        (x, y), xytext=label_offset, textcoords="offset points",
         fontsize=8.2, color=c,
         bbox=dict(boxstyle="round,pad=.2", facecolor="white", edgecolor=c, alpha=0.9),
     )
@@ -137,7 +148,7 @@ ax.legend(hh, ll, loc="lower right", fontsize=8.5, title="Model / family")
 
 ax.text(
     0.012, 0.97,
-    "More attractive NW arrow: higher intelligence / lower estimated total API cost",
+    "Upper left: higher intelligence and lower estimated API cost",
     transform=ax.transAxes, va="top", fontsize=10, fontweight="bold",
     bbox=dict(boxstyle="round,pad=.35", facecolor="white", alpha=0.88),
 )
