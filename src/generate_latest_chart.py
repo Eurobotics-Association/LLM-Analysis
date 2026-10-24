@@ -247,7 +247,7 @@ readme_path = ROOT / "README.md"
 readme = readme_path.read_text(encoding="utf-8")
 for extension in ("svg", "png", "pdf"):
     readme = re.sub(
-        rf"charts/latest/llm_cost_performance_latest(?:_eurobotics_\\d{{6}}_\\d{{4}})?\\.{extension}",
+        rf"charts/latest/llm_cost_performance_latest(?:_eurobotics_\d{{6}}_\d{{4}})?\.{extension}",
         f"charts/latest/{OUT.name}.{extension}",
         readme,
     )
