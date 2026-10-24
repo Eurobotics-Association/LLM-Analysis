@@ -1,6 +1,7 @@
 from pathlib import Path
 import datetime
 import textwrap
+import re
 from zoneinfo import ZoneInfo
 
 import pandas as pd
@@ -8,7 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator, FuncFormatter
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data" / "eurobotics_v16_aa_v432_openrouter_nopromo_eurobotics_261002_1705.csv"
+DATA = ROOT / "data" / "eurobotics_v17_aa_v432_openrouter_nopromo_eurobotics_261024_1608.csv"
 
 now = datetime.datetime.now(ZoneInfo("Europe/Paris"))
 STAMP = "eurobotics_{0:%y%m%d}_{0:%H%M}".format(now)
@@ -56,16 +57,18 @@ colors = {
     "GPT-5.6 Sol": "#d62728",
     "GPT-6 Astra": "#ff1493",
     "GPT-6 Sol": "#6a3d9a",
+    "GPT-6.1 Sol": "#6a3d9a",
     "GPT-6 Luna": "#008080",
     "GLM-5.3 Flash": "#17becf",
     "DeepSeek V4.1 Flash": "#2ca02c",
     "GLM-5.3": "#bcbd22",
     "Gemini 3.1 Pro": "#9467bd",
-    "Claude Sonnet 5": "#e7298a",
+    "Gemini 4 Argon": "#4c78a8",
+    "Claude Sonnet 5.5": "#e7298a",
     "Claude Opus 5": "#8c564b",
     "Claude Fable 5.1": "#e377c2",
-    "Mistral Medium 3.5": "#666666",
-    "Mistral Small 3.2": "#999933",
+    "Mistral Large 4": "#666666",
+    "Mistral Small 4": "#999933",
     "Qwen3 Coder 30B": "#7f7f7f",
     "Llama 3.3 70B": "#4daf4a",
     "Phi-4": "#a65628",
@@ -76,22 +79,24 @@ markers = {
     "GPT-5.6 Sol": "D",
     "GPT-6 Astra": "*",
     "GPT-6 Sol": "d",
+    "GPT-6.1 Sol": "d",
     "GPT-6 Luna": "o",
     "GLM-5.3 Flash": "P",
     "DeepSeek V4.1 Flash": "X",
     "GLM-5.3": "^",
     "Gemini 3.1 Pro": "v",
-    "Claude Sonnet 5": "p",
+    "Gemini 4 Argon": "v",
+    "Claude Sonnet 5.5": "p",
     "Claude Opus 5": "p",
     "Claude Fable 5.1": "h",
-    "Mistral Medium 3.5": "d",
-    "Mistral Small 3.2": "d",
+    "Mistral Large 4": "d",
+    "Mistral Small 4": "d",
 }
 
 fig, ax = plt.subplots(figsize=(16, 10))
 
 for model in ["GPT-5.6 Luna", "GPT-5.6 Terra", "GPT-5.6 Sol",
-              "GPT-6 Luna", "GPT-6 Sol", "GPT-6 Astra"]:
+              "GPT-6 Luna", "GPT-6 Sol", "GPT-6.1 Sol", "GPT-6 Astra"]:
     d = df[df.Model == model].sort_values("Est_OR_Total_Cost")
     ax.plot(
         d.Est_OR_Total_Cost, d.AA_Index,
@@ -113,8 +118,8 @@ for model in ["GPT-5.6 Luna", "GPT-5.6 Terra", "GPT-5.6 Sol",
         )
 
 single_points = ["GLM-5.3 Flash", "DeepSeek V4.1 Flash", "GLM-5.3",
-                 "Gemini 3.1 Pro", "Mistral Medium 3.5",
-                 "Claude Sonnet 5", "Claude Opus 5", "Claude Fable 5.1"]
+                 "Gemini 3.1 Pro", "Gemini 4 Argon", "Mistral Large 4", "Mistral Small 4",
+                 "Claude Sonnet 5.5", "Claude Opus 5", "Claude Fable 5.1"]
 for model in single_points:
     r = df[df.Model == model].iloc[0]
     x = float(r.Est_OR_Total_Cost)
@@ -138,7 +143,7 @@ for model in single_points:
 
 ref_lines = [
     ("Qwen3 Coder 30B A3B (no AA evaluation cost)", 9.6, "#7f7f7f"),
-    ("Mistral Small 3.2 (estimated index; no current evaluation cost)", 8.0, "#999933"),
+    
     ("Llama 3.3 70B (no AA evaluation cost)", 7.66, "#4daf4a"),
     ("Phi-4 (no AA evaluation cost)", 5.92, "#a65628"),
 ]
@@ -165,7 +170,7 @@ ax.set_xlabel(
 ax.set_ylabel("Artificial Analysis Intelligence Index v4.3 series")
 ax.set_title(
     "Eurobotics LLM Cost / Intelligence Map\n"
-    "AA Intelligence Index v4.3 series x non-promotional OpenRouter pricing",
+    "AA Intelligence Index v4.3.2 x undiscounted OpenRouter pricing",
     fontsize=16, pad=14,
 )
 
@@ -193,13 +198,13 @@ ax.text(
 )
 
 footer_1 = (
-    "Eurobotics methodology v1.6: Y = AA Intelligence Index v4.3 series (current v4.3.2). "
+    "Eurobotics methodology v1.7: Y = AA Intelligence Index v4.3 series (current v4.3.2). "
     "X = AA measured total evaluation cost repriced to selected non-promotional OpenRouter "
     "provider tariffs via the ratio of 7:2:1 blended prices (70% cache-read / 20% input / 10% output). "
     "This is a reproducible estimate, not an exact OpenRouter invoice."
 )
 footer_2 = (
-    "(*) GPT-5.6 Sol uses its undiscounted $4/$20 list tariff; OpenRouter still shows a 50% promotion. "
+    "(*) All plotted OpenRouter tariffs are undiscounted list prices; GPT-5.6 Sol and Gemini 4 Argon promotions are excluded. "
     "GPT effort levels move both vertically and horizontally as effort increases."
 )
 footer_3 = (
@@ -211,7 +216,7 @@ footer_3 = (
 REPO_URL = "https://github.com/Eurobotics-Association/LLM-Analysis"
 AA_URL = "https://artificialanalysis.ai/"
 footer_4 = (
-    "Sources: " + AA_URL + " | OpenRouter price check: 2 Oct 2026 | Matplotlib | " + GEN_LINE
+    "Sources: " + AA_URL + " | OpenRouter price check: 24 Oct 2026 | Matplotlib | " + GEN_LINE
 )
 footer_5 = "Repository: " + REPO_URL
 wrap_at = 168
@@ -236,10 +241,15 @@ fig.savefig(str(OUT) + ".png", dpi=220, bbox_inches="tight")
 fig.savefig(str(OUT) + ".pdf", bbox_inches="tight")
 fig.savefig(str(OUT) + ".svg", bbox_inches="tight")
 
-# Stable alias for README embedding (AGENTS.md section 6.2):
-import shutil
-ALIAS = ROOT / "charts" / "latest" / "llm_cost_performance_latest"
-shutil.copy(str(OUT) + ".png", str(ALIAS) + ".png")
-shutil.copy(str(OUT) + ".pdf", str(ALIAS) + ".pdf")
-shutil.copy(str(OUT) + ".svg", str(ALIAS) + ".svg")
+# The timestamped artifact is authoritative. Keep README links on the rendered snapshot,
+# so a downloaded PNG, PDF, or SVG remains identifiable outside the repository.
+readme_path = ROOT / "README.md"
+readme = readme_path.read_text(encoding="utf-8")
+for extension in ("svg", "png", "pdf"):
+    readme = re.sub(
+        rf"charts/latest/llm_cost_performance_latest(?:_eurobotics_\\d{{6}}_\\d{{4}})?\\.{extension}",
+        f"charts/latest/{OUT.name}.{extension}",
+        readme,
+    )
+readme_path.write_text(readme, encoding="utf-8")
 

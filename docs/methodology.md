@@ -1,8 +1,15 @@
 # Eurobotics LLM comparison methodology
 
-## Version 1.6 — 2 October 2026
+## Version 1.7 — 24 October 2026
 
 The chart maps Artificial Analysis (AA) **Intelligence Index v4.3 series** against the estimated OpenRouter cost to run AA's complete evaluation workload. The latest AA pages use **v4.3.2**. Existing v1.5 Intelligence Index observations are retained; GPT-6 Sol, GPT-6 Luna, and Astra Max use the currently published v4.3.2 observations. Historical Coding Agent Index values are never used.
+
+### Changes from v1.6
+
+- Replaced Claude Sonnet 5 with **Claude Sonnet 5.5** (AA Index 56.00), Mistral Medium 3.5 with **Mistral Large 4** (38.38), and Mistral Small 3.2 with **Mistral Small 4** (11.27). All have published AA total evaluation costs and `discount: 0` selected OpenRouter tariffs.
+- Added **Gemini 4 Argon** (AA Index 52.56) and GPT-6.1 Sol's Low, Medium, High, XHigh, and Max effort curve (42.08 / 47.78 / 50.24 / 51.04 / 51.83). Gemini's headline price has `discount: 0.5`; this revision uses its $4/$20/$0.20 undiscounted tariff.
+- Re-checked every newly added or replaced OpenRouter model on 24 October 2026. A row is excluded unless both a current AA Index/total evaluation cost and a selected undiscounted OpenRouter tariff are published.
+- Canonical PNG, PDF, and SVG artifacts now have timestamped filenames; the renderer updates README links to that exact snapshot.
 
 ### Changes from v1.5
 
@@ -33,7 +40,7 @@ The new Sol and Luna OpenRouter blends match AA's reference blends, so the ratio
 
 **Provider selection:** Each row uses the named provider in the price snapshot below and the CSV's `Price_Basis` field, usually the model vendor or another named standard provider. This is a consistent non-promotional comparison, **not** an OpenRouter lowest-price search. A different non-promotional provider may offer a lower tariff. The model-page URL contains several provider quotes and may change after the snapshot date; the table records the selected tariff as checked on 2 October.
 
-### OpenRouter price snapshot — 2 October 2026
+### OpenRouter price snapshot — 24 October 2026
 
 USD per 1M tokens. Each link points to the audited model listing. The baseline selects a standard provider, excluding temporary discounts, Flex, Fast, and free endpoints.
 
@@ -49,11 +56,13 @@ USD per 1M tokens. Each link points to the audited model listing. The baseline s
 | [GLM-5.3](https://openrouter.ai/z-ai/glm-5.3) | Mistral | $1.40 | $4.40 | $0.14 | Cache read updated |
 | [DeepSeek V4.1 Flash](https://openrouter.ai/deepseek/deepseek-v4.1-flash) | DeepSeek | $0.15 | $0.60 | $0.003 | Unchanged |
 | [Gemini 3.1 Pro Preview](https://openrouter.ai/google/gemini-3.1-pro-preview) | Google | $2.00 | $12.00 | $0.20 | Unchanged |
-| [Claude Sonnet 5](https://openrouter.ai/anthropic/claude-sonnet-5) | Anthropic | $2.00 | $10.00 | $0.20 | Unchanged |
+| [Claude Sonnet 5.5](https://openrouter.ai/anthropic/claude-sonnet-5.5) | Anthropic | $2.00 | $10.00 | $0.10 | `discount: 0` |
 | [Claude Opus 5](https://openrouter.ai/anthropic/claude-opus-5) | Anthropic | $5.00 | $25.00 | $0.50 | Unchanged |
 | [Claude Fable 5.1](https://openrouter.ai/anthropic/claude-fable-5.1) | Anthropic | $10.00 | $50.00 | $0.25 | Unchanged |
-| [Mistral Medium 3.5](https://openrouter.ai/mistralai/mistral-medium-3-5) | Mistral | $1.50 | $7.50 | $0.15 | Unchanged; cache from [Mistral pricing](https://docs.mistral.ai/inference/pricing) |
-| [Mistral Small 3.2](https://openrouter.ai/mistralai/mistral-small-3.2-24b-instruct) | Mistral | $0.10 | $0.30 | $0.01 | Intelligence reference only |
+| [Mistral Large 4](https://openrouter.ai/mistralai/mistral-large-4-0) | Mistral | $1.36 | $4.18 | $0.14 | `discount: 0` |
+| [Mistral Small 4](https://openrouter.ai/mistralai/mistral-small-2603) | Mistral | $0.15 | $0.60 | $0.015 | `discount: 0` |
+| [Gemini 4 Argon](https://openrouter.ai/google/gemini-4-argon) | Google | $4.00 | $20.00 | $0.20 | Undiscounted; displayed $2/$10 has `discount: 0.5` |
+| [GPT-6.1 Sol](https://openrouter.ai/openai/gpt-6.1-sol) | OpenAI | $2.00 | $10.00 | $0.10 | `discount: 0` |
 | [Qwen3 Coder 30B](https://openrouter.ai/qwen/qwen3-coder-30b-a3b-instruct) | Standard listing | $0.07 | $0.27 | — | Intelligence reference only |
 | [Llama 3.3 70B](https://openrouter.ai/meta-llama/llama-3.3-70b-instruct) | Standard listing | $0.10 | $0.32 | — | Intelligence reference only |
 | [Phi-4](https://openrouter.ai/microsoft/phi-4) | Standard listing | $0.07 | $0.14 | — | Intelligence reference only |

@@ -33,9 +33,9 @@ Footer text must stay wrapped to the chart width (see `src/generate_latest_chart
 
 Add to the plotted model list from v1.3 onward:
 
-- **Claude Sonnet 5** — verify the exact current version name and AA Intelligence Index on artificialanalysis.ai before plotting, and its non-promotional OpenRouter tariff. Plot as a single point at max effort unless AA publishes multiple effort levels.
+- **Claude Sonnet 5.5** — verify the exact current version name and AA Intelligence Index on artificialanalysis.ai before plotting, and its non-promotional OpenRouter tariff. Plot as a single point at max effort unless AA publishes multiple effort levels.
 
-Keep all existing models from methodology v1.3: GPT-5.6 Luna/Terra/Sol (full effort curves), GLM-5.3 Flash, GLM-5.3 Max, DeepSeek V4.1 Flash, Gemini 3.1 Pro, Claude Opus 5, Claude Fable 5.1, and Qwen3 Coder 30B as intelligence-reference only.
+Keep all existing models from methodology v1.3: GPT-5.6 Luna/Terra/Sol (full effort curves), GLM-5.3 Flash, GLM-5.3 Max, DeepSeek V4.1 Flash, Gemini 3.1 Pro, Gemini 4 Argon, Claude Opus 5, Claude Fable 5.1, and Qwen3 Coder 30B as intelligence-reference only.
 
 ## 4. Methodology invariants (do not regress)
 
@@ -48,6 +48,7 @@ Keep all existing models from methodology v1.3: GPT-5.6 Luna/Terra/Sol (full eff
 
 ## 5. Version history
 
+- **v1.7 — 2026-10-24:** GPT-6.1 Sol effort curve; Sonnet 5.5, Gemini 4 Argon, Mistral Large 4, and Mistral Small 4; undiscounted OpenRouter price audit; timestamped canonical artifacts.
 - **v1.6 — 2026-10-02:** GPT-6 Sol and Luna effort curves, 2 October non-promotional price audit, GLM-5.3 Flash and Mistral Small 3.2 corrections; AA v4.3.2 values for new models.
 - **v1.5 — 2026-09-25:** GPT-6 Astra effort curve.
 - **v1.4 — 2026-09-18:** Sol list-price correction and expanded model set.
@@ -65,7 +66,7 @@ A short disclaimer in small type must appear at the bottom of the diagram, wrapp
 
 ### 6.2 GitHub Actions rendering
 
-The `render-latest-chart.yml` workflow regenerates a timestamped chart and a stable `latest` alias on pushes to `src/` or `data/`. The README links to the stable alias. The workflow does not refresh source data from Artificial Analysis or OpenRouter; price and benchmark refreshes remain an explicit audited step.
+The `render-latest-chart.yml` workflow regenerates timestamped chart artifacts on pushes to `src/` or `data/`, and updates README links to that exact timestamped snapshot. Do not publish a bare `latest` artifact filename. The workflow does not refresh source data from Artificial Analysis or OpenRouter; price and benchmark refreshes remain an explicit audited step.
 
 ### 6.3 Expanded model set (exhaustive small/medium models)
 
@@ -105,9 +106,9 @@ The diagram must carry a small note near the Sol curve:
 
 > (*) About SOL: Price is un-discounted on Sept. 18 2026 - note that there was some temporary discount not taken into account for this diagram.
 
-### 7.4 Related methodology note (do at next revision)
+### 7.4 Issues govern pending methodology work
 
-OpenRouter charges a **cache-write tariff** (e.g. $2.50/M on OpenAI models) that the 7:2:1 blended-tariff formula (cache-read/input/output) does not include, while AA measured costs do include cache-write cost. This slightly understates cache-heavy reasoning models. Consider a 7:2:1:1 blend (adding 10% cache-write) or an explicit correction in a future methodology version.
+All proposed methodology, model-set, and chart improvements must be logged as public repository Issues before implementation. The cache-write blend review is tracked in the repository Issues; AGENTS.md records the current binding method only.
 
 ### 7.5 GLM-5.3 Flash verification (no change needed)
 
