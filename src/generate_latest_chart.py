@@ -9,7 +9,7 @@ from matplotlib.ticker import FuncFormatter, LogLocator
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / 'data/eurobotics_v18_aa_v5_openrouter_nopromo_eurobotics_261030_1727.csv'
+DATA = ROOT / 'data/eurobotics_v18_aa_v5_openrouter_nopromo_eurobotics_261030_1759.csv'
 now = datetime.datetime.now(ZoneInfo('Europe/Paris'))
 name = f'llm_cost_performance_latest_eurobotics_{now:%y%m%d_%H%M}'
 output = ROOT / 'charts/latest' / name
@@ -67,7 +67,7 @@ repo='https://github.com/Eurobotics-Association/LLM-Analysis'
 aa_url='https://artificialanalysis.ai/'
 footers=[
 'Methodology v1.8: AA Intelligence Index v5 and AA measured total evaluation cost, repriced with the ratio of selected non-promotional OpenRouter and AA 7:2:1 blends (70% cache read / 20% input / 10% output). Cache-write and tiered prices limit accuracy; this is an estimate, not an invoice.',
-'GPT effort labels are measured points; missing Luna Medium is not interpolated. Rounded Astra High and XHigh scores are equal. Reference lines have no verified comparable OpenRouter cost. See methodology for omissions and pricing caveats.',
+'GPT effort labels are measured points. Rounded Astra High and XHigh scores are equal. Reference lines have no verified comparable OpenRouter cost. See methodology for omissions and pricing caveats.',
 'Disclaimer: For informational use only; do not use for budgeting. Pricing and benchmark data change frequently. Verify prices and capability for your own requirements. Eurobotics.org provides this information without warranty.',
 f'Sources: {aa_url} | OpenRouter audit: 30 October 2026 | Generated: {now:%Y-%m-%d %H:%M:%S %Z}',
 f'Repository: {repo}'

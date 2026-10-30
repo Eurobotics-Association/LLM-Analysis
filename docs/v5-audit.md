@@ -21,6 +21,8 @@ Accessed 30 October 2026. Recheck before publication.
 | Mistral Large 4 High | 26 | 1359 | 0.70 / 2.10 / 0.07 | [AA comparison](https://artificialanalysis.ai/models/comparisons/mistral-large-4-vs-glm-5-3) |
 | Claude Fable 5.1 Max, default fallback | 49 | 13327 | 10 / 50 / 0.25 | [AA comparison](https://artificialanalysis.ai/models/comparisons/claude-fable-5-1-high-vs-claude-fable-5-1) |
 
+GPT-6 Luna Medium was subsequently verified at Index 18 and total evaluation cost $40 in the [AA v5 comparison](https://artificialanalysis.ai/models/comparisons/claude-haiku-5-5-medium-vs-gpt-6-luna-medium) and is included in the current dataset.
+
 ## OpenRouter checks and remaining work
 
 - [GPT-6.1 Terra](https://openrouter.ai/openai/gpt-6.1-terra) lists OpenAI standard at 1 / 5 / 0.05; Fast and Flex are excluded.
