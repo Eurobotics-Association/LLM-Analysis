@@ -1,5 +1,23 @@
 # Eurobotics LLM comparison methodology
 
+## Version 1.8 — 30 October 2026
+
+The chart uses **AA Intelligence Index v5** and AA's published total cost to run its complete v5 evaluation, excluding repeats. v5 changed the test suite, so v4.3 scores and totals are not comparable and are retained only in historical snapshots. Values in the [source CSV](../data/eurobotics_v18_aa_v5_openrouter_nopromo_eurobotics_261030_1727.csv) are rounded published values; links and audit dates are included per row. Supporting observations are in the [working audit](v5-audit.md).
+
+### Changes and coverage
+
+GPT-5.6 Luna, Terra and Sol are removed from the current chart at the owner's request. GPT-6.1 Terra's five effort levels and Kimi K3.1 Pro are added; DeepSeek V4.1 Flash is replaced by the October 1017 snapshot, and Claude Opus 5 by Opus 5.5. The complete GPT-6.1 Sol and Astra effort series are updated to v5. AA rounds Astra High and XHigh both to 55; the chart does not invent a vertical difference. Luna Medium is omitted because a comparable v5 score and total were not verified; the renderer does not connect across that gap.
+
+Gemini 4 Carbon is an intelligence-only reference because its OpenRouter provider price was not verified. Haiku 5.5 is an intelligence-only reference because AA's launch report identified a long-context price-tier limitation whose resolution has not been verified. An AA score is never assigned a fabricated cost. GPT-6 Sol, Gemini 3.1 Pro, Mistral Small 4, Qwen3 Coder 30B, Llama 3.3 and Phi-4 are omitted from the v5 chart because a comparable v5 score was not verified in the accessible source; their v4.3 values remain in previous snapshots. This does not establish that AA has never measured them.
+
+### Price audit and limitations
+
+The CSV records the 30 October AA and OpenRouter prices, per million tokens, and selected standard provider. Terra uses OpenAI $1/$5/$0.05, Kimi Moonshot $2/$10/$0.20, GLM-5.3 Flash Z.ai $0.15/$0.50/$0.03, and DeepSeek 1017 SiliconFlow $0.30/$1.20/$0.006 (input/output/cache read). Mistral Large 4's selected Mistral standard tariff is $0.70/$2.10/$0.07. Other available providers may be cheaper; this is not a lowest-price search. The Argon baseline uses the pre-discount Google AI Studio tariff $4/$20/$0.20 rather than the 50% offer. Kimi's weights status differs between source descriptions and has not been independently confirmed.
+
+The renderer computes the ratio of the two 7:2:1 blended tariffs and multiplies it by AA's measured total, checking the CSV's stored results. This approximation assumes that the ratio is representative of the evaluation's token mix. AA total cost includes cache writes but the blend omits them; applying a 7:2:1:1 blend without measured write volumes and corresponding tariffs would not resolve this reliably. Retain 7:2:1 pending the review in issue #5; do not interpret the estimate as a quote or invoice. Context-tier pricing, routing and fallback choices can also change results.
+
+All chart formats show their generation timestamp; the PDF and SVG include clickable AA and repository links. Timestamped filenames are authoritative and README links point to one snapshot. The chart is informational only and must not be used for budgeting.
+
 ## Version 1.7 — 24 October 2026
 
 The chart maps Artificial Analysis (AA) **Intelligence Index v4.3 series** against the estimated OpenRouter cost to run AA's complete evaluation workload. The latest AA pages use **v4.3.2**. Existing v1.5 Intelligence Index observations are retained; GPT-6 Sol, GPT-6 Luna, and Astra Max use the currently published v4.3.2 observations. Historical Coding Agent Index values are never used.

@@ -1,255 +1,89 @@
 from pathlib import Path
 import datetime
-import textwrap
 import re
+import textwrap
 from zoneinfo import ZoneInfo
 
-import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FixedLocator, FuncFormatter
+from matplotlib.ticker import FuncFormatter, LogLocator
+import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data" / "eurobotics_v17_aa_v432_openrouter_nopromo_eurobotics_261024_1608.csv"
-
-now = datetime.datetime.now(ZoneInfo("Europe/Paris"))
-STAMP = "eurobotics_{0:%y%m%d}_{0:%H%M}".format(now)
-OUT = ROOT / "charts" / "latest" / ("llm_cost_performance_latest_" + STAMP)
-GEN_LINE = "Generated: {0:%Y-%m-%d %H:%M:%S %Z}".format(now)
-
+DATA = ROOT / 'data/eurobotics_v18_aa_v5_openrouter_nopromo_eurobotics_261030_1727.csv'
+now = datetime.datetime.now(ZoneInfo('Europe/Paris'))
+name = f'llm_cost_performance_latest_eurobotics_{now:%y%m%d_%H%M}'
+output = ROOT / 'charts/latest' / name
 df = pd.read_csv(DATA)
+costed = df.AA_Total_Cost.notna()
+if df.loc[~costed, 'Est_OR_Total_Cost'].notna().any():
+    raise ValueError('Reference-only models cannot have an estimated cost')
+aa = .7 * df.loc[costed, 'AA_Cache'] + .2 * df.loc[costed, 'AA_In'] + .1 * df.loc[costed, 'AA_Out']
+orate = .7 * df.loc[costed, 'OR_Cache'] + .2 * df.loc[costed, 'OR_In'] + .1 * df.loc[costed, 'OR_Out']
+if aa.isna().any() or orate.isna().any() or (aa <= 0).any():
+    raise ValueError('Missing tariff or invalid AA blend')
+for column, computed, tolerance in [('AA_Blend', aa, .00001), ('OR_Blend', orate, .00001), ('Ratio', orate / aa, .000002), ('Est_OR_Total_Cost', df.loc[costed, 'AA_Total_Cost'] * orate / aa, .011)]:
+    if ((df.loc[costed, column] - computed).abs() > tolerance).any():
+        raise ValueError(f'{column} does not match source tariffs')
+    df.loc[costed, column] = computed
 
-# Derive the plotted x-coordinate from source prices at render time. The CSV keeps
-# the rounded derived columns for inspection; a mismatch stops publication.
-costed = df["AA_Total_Cost"].notna()
-uncosted = ~costed
-if df.loc[uncosted, "Est_OR_Total_Cost"].notna().any():
-    raise ValueError("Reference-only models must not have an estimated x-coordinate")
-
-aa_blend = (
-    0.7 * df.loc[costed, "AA_Cache"]
-    + 0.2 * df.loc[costed, "AA_In"]
-    + 0.1 * df.loc[costed, "AA_Out"]
-)
-or_blend = (
-    0.7 * df.loc[costed, "OR_Cache"]
-    + 0.2 * df.loc[costed, "OR_In"]
-    + 0.1 * df.loc[costed, "OR_Out"]
-)
-if aa_blend.isna().any() or or_blend.isna().any() or (aa_blend <= 0).any():
-    raise ValueError("Costed models need complete tariffs and a positive AA blend")
-ratio = or_blend / aa_blend
-estimated_cost = df.loc[costed, "AA_Total_Cost"] * ratio
-for column, calculated, tolerance in (
-    ("AA_Blend", aa_blend, 0.00001),
-    ("OR_Blend", or_blend, 0.00001),
-    ("Ratio", ratio, 0.000002),
-    ("Est_OR_Total_Cost", estimated_cost, 0.011),
-):
-    mismatch = (df.loc[costed, column] - calculated).abs() > tolerance
-    if mismatch.any():
-        affected = df.loc[costed].loc[mismatch, ["Model", "Effort"]]
-        raise ValueError(f"{column} does not match the methodology for: {affected.to_dict('records')}")
-    df.loc[costed, column] = calculated
-
-colors = {
-    "GPT-5.6 Luna": "#1f77b4",
-    "GPT-5.6 Terra": "#ff7f0e",
-    "GPT-5.6 Sol": "#d62728",
-    "GPT-6 Astra": "#ff1493",
-    "GPT-6 Sol": "#6a3d9a",
-    "GPT-6.1 Sol": "#6a3d9a",
-    "GPT-6 Luna": "#008080",
-    "GLM-5.3 Flash": "#17becf",
-    "DeepSeek V4.1 Flash": "#2ca02c",
-    "GLM-5.3": "#bcbd22",
-    "Gemini 3.1 Pro": "#9467bd",
-    "Gemini 4 Argon": "#4c78a8",
-    "Claude Sonnet 5.5": "#e7298a",
-    "Claude Opus 5": "#8c564b",
-    "Claude Fable 5.1": "#e377c2",
-    "Mistral Large 4": "#666666",
-    "Mistral Small 4": "#999933",
-    "Qwen3 Coder 30B": "#7f7f7f",
-    "Llama 3.3 70B": "#4daf4a",
-    "Phi-4": "#a65628",
-}
-markers = {
-    "GPT-5.6 Luna": "o",
-    "GPT-5.6 Terra": "s",
-    "GPT-5.6 Sol": "D",
-    "GPT-6 Astra": "*",
-    "GPT-6 Sol": "d",
-    "GPT-6.1 Sol": "d",
-    "GPT-6 Luna": "o",
-    "GLM-5.3 Flash": "P",
-    "DeepSeek V4.1 Flash": "X",
-    "GLM-5.3": "^",
-    "Gemini 3.1 Pro": "v",
-    "Gemini 4 Argon": "v",
-    "Claude Sonnet 5.5": "p",
-    "Claude Opus 5": "p",
-    "Claude Fable 5.1": "h",
-    "Mistral Large 4": "d",
-    "Mistral Small 4": "d",
-}
-
-fig, ax = plt.subplots(figsize=(16, 10))
-
-for model in ["GPT-5.6 Luna", "GPT-5.6 Terra", "GPT-5.6 Sol",
-              "GPT-6 Luna", "GPT-6 Sol", "GPT-6.1 Sol", "GPT-6 Astra"]:
-    d = df[df.Model == model].sort_values("Est_OR_Total_Cost")
-    ax.plot(
-        d.Est_OR_Total_Cost, d.AA_Index,
-        marker=markers[model], linewidth=2.6, markersize=8,
-        color=colors[model], label=model,
-    )
+colors = ['#0072b2','#d55e00','#cc79a7','#009e73','#56b4e9','#e69f00','#332288','#882255','#44aa99','#117733','#aa4499','#999933','#666666']
+fig, ax = plt.subplots(figsize=(16, 10.5))
+curves = ['GPT-6.1 Terra', 'GPT-6.1 Sol', 'GPT-6 Astra', 'GPT-6 Luna']
+effort_order = {'Low': 0, 'Medium': 1, 'High': 2, 'XHigh': 3, 'Max': 4}
+for i, model in enumerate(curves):
+    d = df[(df.Model == model) & costed].copy()
+    d['order'] = d.Effort.map(effort_order)
+    d = d.sort_values('order')
+    # A missing effort does not imply an observed intermediate curve.
+    for (_, a), (_, b) in zip(d.iloc[:-1].iterrows(), d.iloc[1:].iterrows()):
+        if b['order'] == a['order'] + 1:
+            ax.plot([a.Est_OR_Total_Cost, b.Est_OR_Total_Cost], [a.AA_Index, b.AA_Index], color=colors[i], linewidth=1.8, zorder=2)
+    ax.scatter(d.Est_OR_Total_Cost, d.AA_Index, s=48, color=colors[i], label=model, zorder=3)
     for _, r in d.iterrows():
-        offset = (6, 6)
-        if model == "GPT-6 Astra":
-            offset = {"Low": (-8, -18), "Medium": (-35, 8),
-                      "High": (-24, 10), "XHigh": (8, 11), "Max": (8, -18)}[r.Effort]
-        elif model == "GPT-5.6 Sol" and r.Effort in {"XHigh", "Max"}:
-            offset = (8, -16)
-        ax.annotate(
-            "{0} {1:g}".format(r.Effort, r.AA_Index),
-            (r.Est_OR_Total_Cost, r.AA_Index),
-            xytext=offset, textcoords="offset points",
-            fontsize=7.5, color=colors[model],
-        )
+        offset = (4, 5)
+        if model == 'GPT-6 Astra' and r.Effort == 'XHigh':
+            offset = (4, -12)
+        ax.annotate(r.Effort, (r.Est_OR_Total_Cost, r.AA_Index), xytext=offset, textcoords='offset points', color=colors[i], fontsize=7)
 
-single_points = ["GLM-5.3 Flash", "DeepSeek V4.1 Flash", "GLM-5.3",
-                 "Gemini 3.1 Pro", "Gemini 4 Argon", "Mistral Large 4", "Mistral Small 4",
-                 "Claude Sonnet 5.5", "Claude Opus 5", "Claude Fable 5.1"]
-for model in single_points:
-    r = df[df.Model == model].iloc[0]
-    x = float(r.Est_OR_Total_Cost)
-    y = float(r.AA_Index)
-    c = colors[model]
-    ax.axhline(y, color=c, alpha=0.15, linewidth=1.1)
-    ax.vlines(x, 4, y, color=c, linestyle=":", linewidth=1.5)
-    ax.scatter([x], [y], s=130, color=c, marker=markers[model],
-               edgecolor="black", linewidth=0.6, zorder=5, label=model)
-    label_offset = (8, 7)
-    if model == "GLM-5.3 Flash":
-        label_offset = (8, 15)
-    elif model == "DeepSeek V4.1 Flash":
-        label_offset = (8, -24)
-    ax.annotate(
-        "{0} ({1})\nIndex {2:g} | est. ${3:,.0f}".format(model, r.Effort, y, x),
-        (x, y), xytext=label_offset, textcoords="offset points",
-        fontsize=8.2, color=c,
-        bbox=dict(boxstyle="round,pad=.2", facecolor="white", edgecolor=c, alpha=0.9),
-    )
+for i, (_, r) in enumerate(df[costed & ~df.Model.isin(curves)].iterrows()):
+    ax.scatter(r.Est_OR_Total_Cost, r.AA_Index, marker=['s','D','^','v','P','X','h','p','*'][i % 9], s=75, color=colors[(i+4) % len(colors)], edgecolor='white', linewidth=.6, label=r.Model, zorder=4)
+for _, r in df[~costed].iterrows():
+    ax.axhline(r.AA_Index, color='#777777', linewidth=.8, linestyle='--', alpha=.65)
+    ax.text(0.01, r.AA_Index + .3, f'{r.Model}: {r.AA_Index:g} (intelligence reference only)', transform=ax.get_yaxis_transform(), fontsize=8, color='#555555', va='bottom', bbox={'facecolor':'white','edgecolor':'none','alpha':.8})
 
-ref_lines = [
-    ("Qwen3 Coder 30B A3B (no AA evaluation cost)", 9.6, "#7f7f7f"),
-    
-    ("Llama 3.3 70B (no AA evaluation cost)", 7.66, "#4daf4a"),
-    ("Phi-4 (no AA evaluation cost)", 5.92, "#a65628"),
+ax.set_xscale('log')
+ax.set_xlim(5, 25000)
+ax.set_ylim(4, 64)
+ax.xaxis.set_major_locator(LogLocator(base=10, subs=(1, 2, 5)))
+ax.xaxis.set_major_formatter(FuncFormatter(lambda v, p: f'${v:,.0f}'))
+ax.grid(True, which='major', alpha=.25)
+ax.set_xlabel('Estimated OpenRouter cost for the complete AA evaluation (USD, logarithmic scale)')
+ax.set_ylabel('Artificial Analysis Intelligence Index v5')
+ax.set_title('Eurobotics LLM Cost / Intelligence Map\nAA Index v5 × selected non-promotional OpenRouter provider prices', fontsize=16, pad=12)
+ax.legend(loc='upper left', bbox_to_anchor=(1.01, 1), frameon=False, fontsize=8.5, title='Models')
+ax.text(.012, .98, 'Higher intelligence / lower cost ↖', transform=ax.transAxes, va='top', fontsize=9, bbox={'facecolor':'white','edgecolor':'none','alpha':.85})
+
+repo='https://github.com/Eurobotics-Association/LLM-Analysis'
+aa_url='https://artificialanalysis.ai/'
+footers=[
+'Methodology v1.8: AA Intelligence Index v5 and AA measured total evaluation cost, repriced with the ratio of selected non-promotional OpenRouter and AA 7:2:1 blends (70% cache read / 20% input / 10% output). Cache-write and tiered prices limit accuracy; this is an estimate, not an invoice.',
+'GPT effort labels are measured points; missing Luna Medium is not interpolated. Rounded Astra High and XHigh scores are equal. Reference lines have no verified comparable OpenRouter cost. See methodology for omissions and pricing caveats.',
+'Disclaimer: For informational use only; do not use for budgeting. Pricing and benchmark data change frequently. Verify prices and capability for your own requirements. Eurobotics.org provides this information without warranty.',
+f'Sources: {aa_url} | OpenRouter audit: 30 October 2026 | Generated: {now:%Y-%m-%d %H:%M:%S %Z}',
+f'Repository: {repo}'
 ]
-for slot, (label_text, yv, cv) in enumerate(reversed(ref_lines)):
-    ax.axhline(yv, color=cv, linestyle="--", alpha=0.55)
-    ax.text(0.012, 0.025 + slot * 0.036, label_text,
-            transform=ax.transAxes, fontsize=8.3, color=cv, va="bottom",
-            bbox=dict(boxstyle="round,pad=.2", facecolor="white", edgecolor=cv, alpha=0.9))
-
-ax.set_xscale("log")
-ax.set_xlim(8, 16000)
-ax.set_ylim(4, 56)
-ticks = [10, 15, 25, 50, 75, 100, 150, 200, 300, 500, 750, 1000, 1500, 2000, 3000,
-         5000, 7500, 10000, 15000]
-ax.xaxis.set_major_locator(FixedLocator(ticks))
-ax.xaxis.set_major_formatter(FuncFormatter(lambda v, p: "${:,.0f}".format(v)))
-ax.grid(True, which="major", alpha=0.33)
-ax.grid(True, which="minor", alpha=0.08)
-
-ax.set_xlabel(
-    "Estimated total OpenRouter API cost to run the AA Intelligence Index (USD, log scale)\n"
-    "AA evaluation workload repriced at selected non-promotional OpenRouter provider tariffs"
-)
-ax.set_ylabel("Artificial Analysis Intelligence Index v4.3 series")
-ax.set_title(
-    "Eurobotics LLM Cost / Intelligence Map\n"
-    "AA Intelligence Index v4.3.2 x undiscounted OpenRouter pricing",
-    fontsize=16, pad=14,
-)
-
-handles, labels = ax.get_legend_handles_labels()
-seen = set()
-hh, ll = [], []
-for h, l in zip(handles, labels):
-    if l not in seen:
-        hh.append(h)
-        ll.append(l)
-        seen.add(l)
-ax.legend(hh, ll, loc="lower right", fontsize=8.5, title="Model / family")
-
-ax.text(
-    0.012, 0.97,
-    "Upper left: higher intelligence and lower estimated API cost",
-    transform=ax.transAxes, va="top", fontsize=10, fontweight="bold",
-    bbox=dict(boxstyle="round,pad=.35", facecolor="white", alpha=0.88),
-)
-
-ax.text(
-    0.68, 0.58, "(*) GPT-5.6 Sol: undiscounted $4/$20",
-    transform=ax.transAxes, fontsize=8, color=colors["GPT-5.6 Sol"],
-    bbox=dict(boxstyle="round,pad=.2", facecolor="white", alpha=0.85),
-)
-
-footer_1 = (
-    "Eurobotics methodology v1.7: Y = AA Intelligence Index v4.3 series (current v4.3.2). "
-    "X = AA measured total evaluation cost repriced to selected non-promotional OpenRouter "
-    "provider tariffs via the ratio of 7:2:1 blended prices (70% cache-read / 20% input / 10% output). "
-    "This is a reproducible estimate, not an exact OpenRouter invoice."
-)
-footer_2 = (
-    "(*) All plotted OpenRouter tariffs are undiscounted list prices; GPT-5.6 Sol and Gemini 4 Argon promotions are excluded. "
-    "GPT effort levels move both vertically and horizontally as effort increases."
-)
-footer_3 = (
-    "Disclaimer: For informational use only - do not use for budgeting. Pricing and benchmark "
-    "data change frequently; verify current prices and model capability yourself. Eurobotics.org "
-    "provides this information with no warranty. You are responsible for checking your own "
-    "pricing and model intelligence requirements."
-)
-REPO_URL = "https://github.com/Eurobotics-Association/LLM-Analysis"
-AA_URL = "https://artificialanalysis.ai/"
-footer_4 = (
-    "Sources: " + AA_URL + " | OpenRouter price check: 24 Oct 2026 | Matplotlib | " + GEN_LINE
-)
-footer_5 = "Repository: " + REPO_URL
-wrap_at = 168
-footer_lines = (textwrap.wrap(footer_1, wrap_at) + textwrap.wrap(footer_2, wrap_at)
-                + textwrap.wrap(footer_3, wrap_at) + textwrap.wrap(footer_4, wrap_at)
-                + textwrap.wrap(footer_5, wrap_at))
-n = len(footer_lines)
-line_height = 0.017
-for i, line in enumerate(footer_lines):
-    fig.text(0.05, 0.010 + line_height * (n - 1 - i), line, fontsize=8.1, va="bottom")
-
-bottom_margin = 0.030 + line_height * n
-for artist in list(ax.texts) + list(fig.texts):
-    txt = artist.get_text()
-    if REPO_URL in txt:
-        artist.set_url(REPO_URL)
-    elif "artificialanalysis.ai" in txt:
-        artist.set_url(AA_URL)
-
-plt.tight_layout(rect=[0.03, bottom_margin, 0.98, 0.96])
-fig.savefig(str(OUT) + ".png", dpi=220, bbox_inches="tight")
-fig.savefig(str(OUT) + ".pdf", bbox_inches="tight")
-fig.savefig(str(OUT) + ".svg", bbox_inches="tight")
-
-# The timestamped artifact is authoritative. Keep README links on the rendered snapshot,
-# so a downloaded PNG, PDF, or SVG remains identifiable outside the repository.
-readme_path = ROOT / "README.md"
-readme = readme_path.read_text(encoding="utf-8")
-for extension in ("svg", "png", "pdf"):
-    readme = re.sub(
-        rf"charts/latest/llm_cost_performance_latest(?:_eurobotics_\d{{6}}_\d{{4}})?\.{extension}",
-        f"charts/latest/{OUT.name}.{extension}",
-        readme,
-    )
-readme_path.write_text(readme, encoding="utf-8")
-
+lines=[line for f in footers for line in textwrap.wrap(f, 160)]
+for i, line in enumerate(lines):
+    t=fig.text(.055, .015 + .016*(len(lines)-i-1), line, fontsize=7.8, va='bottom')
+    if repo in line: t.set_url(repo)
+    elif aa_url in line: t.set_url(aa_url)
+fig.subplots_adjust(left=.075, right=.80, top=.89, bottom=.10 + .016*len(lines))
+for ext in ('png','pdf','svg'):
+    fig.savefig(f'{output}.{ext}', dpi=200, bbox_inches='tight')
+plt.close(fig)
+readme_path=ROOT/'README.md'
+readme=readme_path.read_text(encoding='utf-8')
+for ext in ('svg','png','pdf'):
+    readme=re.sub(rf'charts/latest/llm_cost_performance_latest(?:_eurobotics_\d{{6}}_\d{{4}})?\.{ext}', f'charts/latest/{name}.{ext}', readme)
+readme_path.write_text(readme, encoding='utf-8')
+print(name)
