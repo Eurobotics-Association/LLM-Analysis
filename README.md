@@ -10,6 +10,10 @@ The cost axis must use the lowest available eligible non-promotional **OpenRoute
 
 Omit a model entirely if its necessary OpenRouter prices or comparable benchmark token usage cannot be verified. Benchmark scores and token measurements can come from an external evaluation, but benchmark-provider tariffs are not OpenRouter prices. See [methodology](docs/methodology.md) and [issue #9](https://github.com/Eurobotics-Association/LLM-Analysis/issues/9).
 
+## LiveBench proposal under review
+
+A [LiveBench 2.0 feasibility audit](docs/livebench-feasibility.md) proposes using comparable LiveBench scores and repricing the same recorded usage with eligible OpenRouter tariffs. The available public description does not establish the token-category records required to calculate a compliant point. The existing chart remains withdrawn and publication remains suspended. See [issue #10](https://github.com/Eurobotics-Association/LLM-Analysis/issues/10).
+
 ## Pending evidence
 
 Artificial Analysis documents detailed evaluation token counts as Pro-only; public benchmark totals and a fixed blended ratio alone do not establish a defensible per-category OpenRouter cost. Its documented token counts may still require provider-specific cache and write details. We are checking which information is available before rebuilding the dataset. [AA API reference](https://artificialanalysis.ai/data-api/docs/reference)
