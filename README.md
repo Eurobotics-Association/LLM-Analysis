@@ -6,7 +6,7 @@ The [previous v1.8 snapshot](charts/latest/llm_cost_performance_latest_eurobotic
 
 ## Review-only alternative
 
-A [draft output-token price diagram](charts/preview/aa_v5_output_price_preview_eurobotics_261030_2243.svg) and [tariff table](data/aa_v5_openrouter_output_rates_eurobotics_261030_2243.csv) propose a simpler AA v5 score versus OpenRouter output-token price view. It is a dated prototype, **not a task-cost estimate**. Compare input, cache, tier, and provider details before interpreting it. Its AA score was not necessarily measured on the priced route. See the [proposal methodology](docs/token-price-methodology.md) and [issue #13](https://github.com/Eurobotics-Association/LLM-Analysis/issues/13). This preview is not approved for publication.
+A [draft output-token price diagram](charts/preview/aa_v5_output_price_preview_eurobotics_261030_2251.svg) and [tariff table](data/aa_v5_openrouter_output_rates_eurobotics_261030_2251.csv) propose a simpler AA v5 score versus OpenRouter output-token price view. It is a dated prototype, **not a task-cost estimate**. Compare input, cache, tier, and provider details before interpreting it. Its AA score was not necessarily measured on the priced route. See the [proposal methodology](docs/token-price-methodology.md) and [issue #13](https://github.com/Eurobotics-Association/LLM-Analysis/issues/13). This preview is not approved for publication.
 
 ## Prior task-cost policy
 
