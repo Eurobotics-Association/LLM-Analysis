@@ -35,15 +35,18 @@ Add to the plotted model list from v1.3 onward:
 
 - **Claude Sonnet 5.5** — verify the exact current version name and AA Intelligence Index on artificialanalysis.ai before plotting, and its non-promotional OpenRouter tariff. Plot as a single point at max effort unless AA publishes multiple effort levels.
 
-Keep all existing models from methodology v1.3: GPT-5.6 Luna/Terra/Sol (full effort curves), GLM-5.3 Flash, GLM-5.3 Max, DeepSeek V4.1 Flash, Gemini 3.1 Pro, Gemini 4 Argon, Claude Opus 5, Claude Fable 5.1, and Qwen3 Coder 30B as intelligence-reference only.
+Consider the existing model set and newer releases, including GLM, DeepSeek, GPT, Gemini, Claude, Mistral, Kimi, Qwen, Llama and Phi. The owner requested removal of GPT-5.6 from the current chart. Plot a model only when the requirements in section 4 can be met; retain earlier snapshots as historical.
 
 ## 4. Methodology invariants (do not regress)
 
 - Y-axis: Artificial Analysis Intelligence Index v4.3 (or its documented successor version).
-- X-axis: AA measured total evaluation cost repriced to **non-promotional** OpenRouter tariffs via the 7:2:1 blended-tariff ratio.
+- X-axis: a transparent estimate of the cost of the comparable measured benchmark workload using only verified, available, **non-promotional OpenRouter provider tariffs**. Benchmark-provider tariffs are not OpenRouter prices and must never be presented as such.
+- Select the cheapest eligible OpenRouter provider for the measured token mix, considering uncached input, cache read, output, cache write and any tiered charges that apply. Exclude promotional, free, batch, flex, priority or other special-purpose routes from the standard baseline. Record provider, model variant, all relevant rates, discount status, availability, source and audit timestamp. Check all eligible routes, not only a model headline. If routes trade off different token-category rates, there may be no universally cheapest route: calculate against the actual workload rather than selecting by a single token rate.
+- Reprice actual, comparable benchmark usage by token category and OpenRouter tariff; do not infer an exact workload cost from a 7:2:1 blend, use AA's total unchanged merely because blend ratios match, or invent missing token counts, cache hit rates or cache-write prices. Clearly identify estimates and uncertainty. Do not double-count reasoning tokens when included in output tokens.
+- If a model's eligible OpenRouter prices or the benchmark usage required for a defensible cost are not verified, omit the model entirely, including intelligence-only reference lines. Document exclusions and reasons. Do not use another provider's pricing as an OpenRouter substitute.
 - Never mix historical Coding Agent Index values with the current Intelligence Index.
 - Never use promotional prices in the baseline.
-- GPT effort levels must move both vertically and horizontally.
+- Plot only verified GPT effort points and do not invent differences where source values are rounded equal; the line must connect only comparable observed effort points.
 - Update `docs/methodology.md` and the README in the same change, and commit/push so GitHub actually contains the files (verify by reading back via the GitHub API).
 
 ## 5. Version history
@@ -77,7 +80,7 @@ Add these models as single points (max effort, or their only published point), v
 - **Llama 3.3**
 - **Phi-4**
 
-These join the existing set in section 3 (Claude Sonnet 5 included). If AA does not publish a comparable total evaluation cost for one of them, plot it as an intelligence reference line only (same treatment as Qwen3 Coder 30B) and note why in the CSV and methodology doc.
+These are candidates alongside section 3. If comparable benchmark usage and eligible OpenRouter prices are unavailable, omit the model from the chart and document the reason, as required in section 4.
 
 ### 6.4 Public feedback channel
 
@@ -94,15 +97,13 @@ The v1.3 chart intended to use non-promotional OpenRouter prices, but **GPT-5.6 
 - Artificial Analysis independently lists OpenAI's Sol tariff as **$4 / $20** (cache hit $0.40), confirming the OpenRouter $2/$10 figure is the temporary 50% promotion, not a structural list price.
 - For contrast, GPT-5.6 Terra's page shows `discount: 0` at $2/$12; Terra was correctly at list price. This is why the published chart made Sol appear artificially cheap and overlapping Terra's cost range.
 
-### 7.2 The fix (mandatory from now on)
+### 7.2 Historical fix (superseded by section 4)
 
-- **Sol must always be priced at its un-discounted OpenRouter tariff: $4.00/M input, $20.00/M output, $0.40/M cache read** (unless a future audit shows OpenRouter has made that the actual list price with no discount field).
-- With the list tariff, the Sol OpenRouter/AA blended ratio is **1.0** (blended $3.08 = AA blended $3.08), so Sol's estimated costs equal the AA measured totals: roughly **$637 / $997 / $1,487 / $2,082 / $3,465** for Low to Max. The Sol curve sits to the **right of Terra**, consistent with its higher Intelligence Index (47 vs 42).
-- Any model whose OpenRouter page shows a `discount` field on its headline price must be repriced to the pre-discount listing (or the provider list price) for the baseline. The headline API price alone is not proof of list price.
+The earlier audit identified a promotional headline. Current tariffs and providers must be audited afresh using section 4; the old 7:2:1 extrapolation is historical, not a current cost calculation.
 
-### 7.3 On-chart annotation
+### 7.3 Historical annotation
 
-The diagram must carry a small note near the Sol curve:
+The historical diagram carried this note; do not apply it to a current chart without a current audit:
 
 > (*) About SOL: Price is un-discounted on Sept. 18 2026 - note that there was some temporary discount not taken into account for this diagram.
 
@@ -110,9 +111,9 @@ The diagram must carry a small note near the Sol curve:
 
 All proposed methodology, model-set, and chart improvements must be logged as public repository Issues before implementation. The cache-write blend review is tracked in the repository Issues; AGENTS.md records the current binding method only.
 
-### 7.5 GLM-5.3 Flash verification (no change needed)
+### 7.5 Historical GLM-5.3 Flash verification
 
-The audit also verified GLM-5.3 Flash at **$0.09/$0.30 ($0.018 cache read), discount field 0** on OpenRouter's current page - a genuine list price, not a promo. The older $0.075/$0.25 promo (discount 0.5) still appears in page data but is not the headline. The chart's GLM Flash point is valid as-is.
+The 18 September audit recorded a then-current rate. Those figures do not establish current provider pricing or promotional status; re-audit all eligible OpenRouter providers under section 4.
 
 
 ## 8. Tooling preference

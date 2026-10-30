@@ -1,5 +1,16 @@
 # Eurobotics LLM comparison methodology
 
+## Current status — 30 October 2026
+
+**The v1.8 cost chart is withdrawn pending issue #9.** It selected named providers rather than the best eligible non-promotional OpenRouter route, and applied a 7:2:1 blended-price ratio to a benchmark total instead of repricing the actual workload token categories. Do not interpret its x-coordinates as best available OpenRouter costs or as invoices. Sections describing v1.8 and earlier below are historical records, not current publication rules.
+
+The corrected policy is documented in [AGENTS.md](../AGENTS.md): benchmark usage must be repriced with verified eligible OpenRouter provider rates, including applicable input, output, cache and tiered charges. Compare eligible providers on the actual token mix; do not use benchmark-provider rates as OpenRouter rates or invent missing usage data. Models without the required evidence are omitted from the diagram. Record the provider and endpoint, availability, discount status, all relevant rates, benchmark model/effort, data source and audit time.
+
+Artificial Analysis documents detailed evaluation token counts as Pro-only, and its cost methodology combines reported tokens with live measurements of typical cache-hit rates. It is not yet established that the public information includes the required per-category input, cache-read and cache-write quantities. A fixed blended ratio cannot recover them. See [AA API reference](https://artificialanalysis.ai/data-api/docs/reference), [AA benchmarking methodology](https://artificialanalysis.ai/methodology/intelligence-benchmarking), and [issue #9](https://github.com/Eurobotics-Association/LLM-Analysis/issues/9).
+
+For illustration, the OpenRouter endpoint API on 30 October returned GLM-5.3 Flash Z.ai rates of $0.15 input / $0.50 output / $0.03 cache read per million tokens, while other undiscounted routes included Relace at $0.018 / $0.1402 / $0.018 and OpenInference FP4 at $0.0189 / $0.0569 / $0.0172. These are price components, not computed benchmark costs. Their relative total depends on the workload, cache-write charges and route compatibility; OpenInference's FP4 quantization is not evidence that it reproduces AA's measured model quality. Recheck live availability and discount fields before selecting any route. [OpenRouter endpoint data](https://openrouter.ai/api/v1/models/z-ai/glm-5.3-flash/endpoints)
+
+
 ## Version 1.8 — 30 October 2026
 
 The chart uses **AA Intelligence Index v5** and AA's published total cost to run its complete v5 evaluation, excluding repeats. v5 changed the test suite, so v4.3 scores and totals are not comparable and are retained only in historical snapshots. Values in the [source CSV](../data/eurobotics_v18_aa_v5_openrouter_nopromo_eurobotics_261030_1759.csv) are rounded published values; links and audit dates are included per row. Supporting observations are in the [working audit](v5-audit.md).
