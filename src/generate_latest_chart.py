@@ -41,7 +41,7 @@ for i, model in enumerate(curves):
     ax.scatter(d.Est_OR_Total_Cost, d.AA_Index, s=48, color=colors[i], label=model, zorder=3)
     for _, r in d.iterrows():
         offset = (4, 5)
-        if model == 'GPT-6 Astra' and r.Effort == 'XHigh':
+        if model in {'GPT-6 Astra', 'GPT-6.1 Terra'} and r.Effort == 'XHigh':
             offset = (4, -12)
         ax.annotate(r.Effort, (r.Est_OR_Total_Cost, r.AA_Index), xytext=offset, textcoords='offset points', color=colors[i], fontsize=7)
 
