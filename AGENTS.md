@@ -27,7 +27,7 @@ The main diagram must contain, in addition to the existing methodology footer:
    Use `matplotlib` URL support (`ax.text(..., url=...)`) so PDF/SVG viewers open them on click.
 3. **The generation date and time** printed on the chart (e.g. "Generated: 2026-09-18 14:45:32 CET") so anyone can tell when the snapshot was produced. Use the actual UTC or Europe/Paris timestamp of the render, not a hardcoded date.
 
-Footer text must stay wrapped to the chart width (see `src/generate_latest_chart.py` `textwrap` block).
+Footer text must stay wrapped to the chart width.
 
 ## 3. Model set
 
@@ -37,17 +37,16 @@ Add to the plotted model list from v1.3 onward:
 
 Consider the existing model set and newer releases, including GLM, DeepSeek, GPT, Gemini, Claude, Mistral, Kimi, Qwen, Llama and Phi. The owner requested removal of GPT-5.6 from the current chart. Plot a model only when the requirements in section 4 can be met; retain earlier snapshots as historical.
 
-## 4. Methodology invariants (do not regress)
+## 4. Proposed token-price methodology
 
-- Y-axis: Artificial Analysis Intelligence Index v4.3 (or its documented successor version).
-- X-axis: a transparent estimate of the cost of the comparable measured benchmark workload using only verified, available, **non-promotional OpenRouter provider tariffs**. Benchmark-provider tariffs are not OpenRouter prices and must never be presented as such.
-- Select the cheapest eligible OpenRouter provider for the measured token mix, considering uncached input, cache read, output, cache write and any tiered charges that apply. Exclude promotional prices; do not assume a free or special-purpose route is a promotion, but verify its eligibility, availability and compatibility with the benchmark workload, and disclose its constraints. Record provider, model variant, all relevant rates, discount status, availability, source and audit timestamp. Check all eligible routes, not only a model headline. If routes trade off different token-category rates, there may be no universally cheapest route: calculate against the actual workload rather than selecting by a single token rate.
-- Reprice actual, comparable benchmark usage by token category and OpenRouter tariff; do not infer an exact workload cost from a 7:2:1 blend, use AA's total unchanged merely because blend ratios match, or invent missing token counts, cache hit rates or cache-write prices. Clearly identify estimates and uncertainty. Do not double-count reasoning tokens when included in output tokens.
-- If a model's eligible OpenRouter prices or the benchmark usage required for a defensible cost are not verified, omit the model entirely, including intelligence-only reference lines. Document exclusions and reasons. Do not use another provider's pricing as an OpenRouter substitute.
-- Never mix historical Coding Agent Index values with the current Intelligence Index.
-- Never use promotional prices in the baseline.
-- Plot only verified GPT effort points and do not invent differences where source values are rounded equal; the line must connect only comparable observed effort points.
-- Update `docs/methodology.md` and the README in the same change, and commit/push so GitHub actually contains the files (verify by reading back via the GitHub API).
+- Y-axis: one documented version of the Artificial Analysis Intelligence Index, with source and model/effort recorded. Do not mix benchmark versions or historical Coding Agent Index values.
+- X-axis: USD per million **output** tokens, on a clearly labeled logarithmic scale. This is a tariff, not a cost per task, dollar value per unit of intelligence, or a bill. Display a prominent warning that different models and efforts use different token quantities.
+- For each exact model, select the lowest available non-promotional OpenRouter output tariff among eligible routes supporting reasoning effort. Record the selected provider/endpoint, quantization, service tier and constraints; Flex is not a promotion but may have restrictions. Discounted, unavailable, unsupported and unverified routes do not qualify. This rule minimizes the output rate only and does not establish the cheapest total cost for any workload.
+- Record the same route's input, cached-input and cache-write rates, including unknowns and context/time-tier overrides; do not combine the lowest rates from different providers. Prompt, cache, output and tool costs are not captured by the output axis alone.
+- AA scores may have been measured using a different endpoint, quantization or harness. Disclose that the price is an associated route quote, not proof that endpoint attains the AA score. Model versions and effort support must be verified. Omit a point if a comparable AA score or eligible OpenRouter output price is not verified.
+- Effort points for a single model share the same tariff when the route and tier are unchanged; label each point and connect only observed comparable values. Never move them horizontally by an invented task-cost estimate.
+- Use timestamped artifacts, actual render time, clickable source and repository links, and an informational disclaimer. Update README and methodology together. Until approved, keep the legacy renderer and automated publication guard disabled.
+- Use Issues for corrections and improvement requests; audit time-sensitive prices, availability and benchmark data before publication.
 
 ## 5. Version history
 
