@@ -22,8 +22,8 @@ The main diagram must contain, in addition to the existing methodology footer:
 
 1. **A clickable link to this repository** (in the PDF/SVG output it must be a real hyperlink, not just text):
    https://github.com/Eurobotics-Association/LLM-Analysis
-2. **A clickable link to the Artificial Analysis Intelligence Index page**:
-   https://artificialanalysis.ai/
+2. **A clickable link to the benchmark source used for the plotted scores**:
+   https://livebench.ai/#/methodology
    Use `matplotlib` URL support (`ax.text(..., url=...)`) so PDF/SVG viewers open them on click.
 3. **The generation date and time** printed on the chart (e.g. "Generated: 2026-09-18 14:45:32 CET") so anyone can tell when the snapshot was produced. Use the actual UTC or Europe/Paris timestamp of the render, not a hardcoded date.
 
@@ -33,13 +33,13 @@ Footer text must stay wrapped to the chart width (see `src/generate_latest_chart
 
 Add to the plotted model list from v1.3 onward:
 
-- **Claude Sonnet 5.5** — verify the exact current version name and AA Intelligence Index on artificialanalysis.ai before plotting, and its non-promotional OpenRouter tariff. Plot as a single point at max effort unless AA publishes multiple effort levels.
+- **Claude Sonnet 5.5** — verify the exact current version name and comparable LiveBench score before plotting, and its non-promotional OpenRouter tariff. Plot as a single point at max effort unless AA publishes multiple effort levels.
 
 Consider the existing model set and newer releases, including GLM, DeepSeek, GPT, Gemini, Claude, Mistral, Kimi, Qwen, Llama and Phi. The owner requested removal of GPT-5.6 from the current chart. Plot a model only when the requirements in section 4 can be met; retain earlier snapshots as historical.
 
 ## 4. Methodology invariants (do not regress)
 
-- Y-axis: Artificial Analysis Intelligence Index v4.3 (or its documented successor version).
+- Y-axis: a clearly identified LiveBench release's comparable overall score or a clearly identified consistent suite score. Scores from different releases, benchmark versions, configurations, or scopes must not be mixed. The proposed change remains under review; publishing stays suspended until the evidence and renderer pass the requirements below.
 - X-axis: a transparent estimate of the cost of the comparable measured benchmark workload using only verified, available, **non-promotional OpenRouter provider tariffs**. Benchmark-provider tariffs are not OpenRouter prices and must never be presented as such.
 - Select the cheapest eligible OpenRouter provider for the measured token mix, considering uncached input, cache read, output, cache write and any tiered charges that apply. Exclude promotional prices; do not assume a free or special-purpose route is a promotion, but verify its eligibility, availability and compatibility with the benchmark workload, and disclose its constraints. Record provider, model variant, all relevant rates, discount status, availability, source and audit timestamp. Check all eligible routes, not only a model headline. If routes trade off different token-category rates, there may be no universally cheapest route: calculate against the actual workload rather than selecting by a single token rate.
 - Reprice actual, comparable benchmark usage by token category and OpenRouter tariff; do not infer an exact workload cost from a 7:2:1 blend, use AA's total unchanged merely because blend ratios match, or invent missing token counts, cache hit rates or cache-write prices. Clearly identify estimates and uncertainty. Do not double-count reasoning tokens when included in output tokens.
@@ -69,11 +69,11 @@ A short disclaimer in small type must appear at the bottom of the diagram, wrapp
 
 ### 6.2 GitHub Actions rendering
 
-The `render-latest-chart.yml` workflow regenerates timestamped chart artifacts on pushes to `src/` or `data/`, and updates README links to that exact timestamped snapshot. Do not publish a bare `latest` artifact filename. The workflow does not refresh source data from Artificial Analysis or OpenRouter; price and benchmark refreshes remain an explicit audited step.
+The `render-latest-chart.yml` workflow regenerates timestamped chart artifacts on pushes to `src/` or `data/`, and updates README links to that exact timestamped snapshot. Do not publish a bare `latest` artifact filename. The workflow does not refresh source data from LiveBench or OpenRouter; price and benchmark refreshes remain an explicit audited step.
 
 ### 6.3 Expanded model set (exhaustive small/medium models)
 
-Add these models as single points (max effort, or their only published point), verifying current AA Intelligence Index v4.3 values and non-promotional OpenRouter tariffs before plotting:
+Add these models as single points (max effort, or their only published point), verifying comparable LiveBench scores, benchmark usage and non-promotional OpenRouter tariffs before plotting:
 
 - **Mistral Small 3**
 - **Mistral Medium 3.5**
