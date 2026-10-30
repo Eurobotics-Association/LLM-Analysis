@@ -1,8 +1,8 @@
 # Eurobotics LLM Cost / Intelligence Map
 
-![Latest Eurobotics LLM cost / intelligence chart](charts/latest/llm_cost_performance_latest_eurobotics_261030_1759.svg)
+![Latest Eurobotics LLM cost / intelligence chart](charts/latest/llm_cost_performance_latest_eurobotics_261030_1801.svg)
 
-**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest_eurobotics_261030_1759.svg) · [PNG](charts/latest/llm_cost_performance_latest_eurobotics_261030_1759.png) · [PDF](charts/latest/llm_cost_performance_latest_eurobotics_261030_1759.pdf) · [source data](data/eurobotics_v18_aa_v5_openrouter_nopromo_eurobotics_261030_1759.csv) · [renderer](src/generate_latest_chart.py)
+**Latest chart:** [SVG](charts/latest/llm_cost_performance_latest_eurobotics_261030_1801.svg) · [PNG](charts/latest/llm_cost_performance_latest_eurobotics_261030_1801.png) · [PDF](charts/latest/llm_cost_performance_latest_eurobotics_261030_1801.pdf) · [source data](data/eurobotics_v18_aa_v5_openrouter_nopromo_eurobotics_261030_1759.csv) · [renderer](src/generate_latest_chart.py)
 
 LLM-Analysis compares language models for DevOps, coding agents, autonomous engineering and AI-assisted operations.
 
