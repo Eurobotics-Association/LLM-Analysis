@@ -10,7 +10,11 @@ The cost axis must use the lowest available eligible non-promotional **OpenRoute
 
 Omit a model entirely if its necessary OpenRouter prices or comparable benchmark token usage cannot be verified. Benchmark scores and token measurements can come from an external evaluation, but benchmark-provider tariffs are not OpenRouter prices. See [methodology](docs/methodology.md) and [issue #9](https://github.com/Eurobotics-Association/LLM-Analysis/issues/9).
 
-## LiveBench proposal under review
+## DeepSWE proposal under review
+
+A [DeepSWE trial-level audit](docs/deepswe-feasibility.md) investigates software-engineering effort curves and their OpenRouter repricing. Several required model, cache, provider and tier details are not yet established, and an independent review found significant v1.1 grading issues. No replacement cost diagram is published; see [issue #12](https://github.com/Eurobotics-Association/LLM-Analysis/issues/12).
+
+## Earlier LiveBench proposal
 
 A [LiveBench 2.0 feasibility audit](docs/livebench-feasibility.md) proposes using comparable LiveBench scores and repricing the same recorded usage with eligible OpenRouter tariffs. The available public description does not establish the token-category records required to calculate a compliant point. The existing chart remains withdrawn and publication remains suspended. See [issue #10](https://github.com/Eurobotics-Association/LLM-Analysis/issues/10).
 
