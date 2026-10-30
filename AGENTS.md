@@ -68,11 +68,11 @@ A short disclaimer in small type must appear at the bottom of the diagram, wrapp
 
 ### 6.2 GitHub Actions rendering
 
-The `render-latest-chart.yml` workflow regenerates timestamped chart artifacts on pushes to `src/` or `data/`, and updates README links to that exact timestamped snapshot. Do not publish a bare `latest` artifact filename. The workflow does not refresh source data from Artificial Analysis or OpenRouter; price and benchmark refreshes remain an explicit audited step.
+The `render-latest-chart.yml` workflow is suspended while the methodology is under review. A future approved workflow must regenerate timestamped chart artifacts and update README links to the exact snapshot. Do not publish a bare `latest` artifact filename. The workflow does not refresh source data from Artificial Analysis or OpenRouter; price and benchmark refreshes remain an explicit audited step.
 
 ### 6.3 Expanded model set (exhaustive small/medium models)
 
-Add these models as single points (max effort, or their only published point), verifying current AA Intelligence Index v4.3 values and non-promotional OpenRouter tariffs before plotting:
+Add these models as single points (max effort, or their only published point), verifying current AA Intelligence Index values and non-promotional OpenRouter tariffs before plotting:
 
 - **Mistral Small 3**
 - **Mistral Medium 3.5**
