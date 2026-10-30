@@ -79,6 +79,6 @@ Those points also have different capability scores: Luna Max is about 38 on AA's
 
 ### Publication
 
-The generator writes timestamped PNG, PDF, and SVG files plus a stable `latest` alias. The README embeds the alias, and GitHub Actions commits the rendered artifacts after a source or data update. The PDF and SVG footer links to the [repository](https://github.com/Eurobotics-Association/LLM-Analysis) and [Artificial Analysis](https://artificialanalysis.ai/), includes the generation timestamp, and carries the informational disclaimer.
+The generator writes timestamped PNG, PDF, and SVG files. The README links to the same timestamped snapshot, and GitHub Actions commits the rendered artifacts after a source or data update. Every format carries a visible generation timestamp. The PDF and SVG footer links to the [repository](https://github.com/Eurobotics-Association/LLM-Analysis) and [Artificial Analysis](https://artificialanalysis.ai/) and carries the informational disclaimer.
 
 Issues are [open for corrections and improvement requests](https://github.com/Eurobotics-Association/LLM-Analysis/issues).
