@@ -13,6 +13,10 @@ For illustration, the OpenRouter endpoint API on 30 October returned GLM-5.3 Fla
 For DeepSeek V4.1 Flash 1017 the same endpoint audit returned an undiscounted Morph FP8 route at $0.022 input / $0.192 output / $0.004 cache read per million tokens, far below the previously selected SiliconFlow rates of $0.30 / $1.20 / $0.006. Other routes trade off categories; the DeepSeek provider's rates vary by time. This observation is not a benchmark-cost calculation or proof of identical model behavior across providers. [OpenRouter endpoint data](https://openrouter.ai/api/v1/models/deepseek/deepseek-v4.1-flash-1017/endpoints)
 
 
+## LiveBench proposal — under review
+
+[LiveBench 2.0 feasibility audit](livebench-feasibility.md) describes the proposed replacement benchmark, its weights, limitations, observed model coverage, required usage records and OpenRouter repricing rules. Publicly described per-suite costs are insufficient to establish a per-token OpenRouter repricing. No compliant replacement point is established yet; the publication guard remains active. See [issue #10](https://github.com/Eurobotics-Association/LLM-Analysis/issues/10).
+
 ## Version 1.8 — 30 October 2026
 
 The chart uses **AA Intelligence Index v5** and AA's published total cost to run its complete v5 evaluation, excluding repeats. v5 changed the test suite, so v4.3 scores and totals are not comparable and are retained only in historical snapshots. Values in the [source CSV](../data/eurobotics_v18_aa_v5_openrouter_nopromo_eurobotics_261030_1759.csv) are rounded published values; links and audit dates are included per row. Supporting observations are in the [working audit](v5-audit.md).
