@@ -10,6 +10,8 @@ Artificial Analysis documents detailed evaluation token counts as Pro-only, and 
 
 For illustration, the OpenRouter endpoint API on 30 October returned GLM-5.3 Flash Z.ai rates of $0.15 input / $0.50 output / $0.03 cache read per million tokens, while other undiscounted routes included Relace at $0.018 / $0.1402 / $0.018 and OpenInference FP4 at $0.0189 / $0.0569 / $0.0172. These are price components, not computed benchmark costs. Their relative total depends on the workload, cache-write charges and route compatibility; OpenInference's FP4 quantization is not evidence that it reproduces AA's measured model quality. Recheck live availability and discount fields before selecting any route. [OpenRouter endpoint data](https://openrouter.ai/api/v1/models/z-ai/glm-5.3-flash/endpoints)
 
+For DeepSeek V4.1 Flash 1017 the same endpoint audit returned an undiscounted Morph FP8 route at $0.022 input / $0.192 output / $0.004 cache read per million tokens, far below the previously selected SiliconFlow rates of $0.30 / $1.20 / $0.006. Other routes trade off categories; the DeepSeek provider's rates vary by time. This observation is not a benchmark-cost calculation or proof of identical model behavior across providers. [OpenRouter endpoint data](https://openrouter.ai/api/v1/models/deepseek/deepseek-v4.1-flash-1017/endpoints)
+
 
 ## Version 1.8 — 30 October 2026
 

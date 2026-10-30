@@ -28,10 +28,18 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # The v1.8 renderer uses the withdrawn blended-price method. Re-enable
+      # rendering and publication only after issue #9 supplies a verified
+      # OpenRouter-priced dataset and an updated renderer.
+      - name: Explain suspended chart publication
+        run: echo 'Chart rendering suspended pending the OpenRouter pricing audit in issue #9.'
+
       - name: Generate charts
+        if: ${{ false }}
         run: python src/generate_latest_chart.py
 
       - name: Commit rendered charts
+        if: ${{ false }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

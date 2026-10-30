@@ -14,6 +14,6 @@ Omit a model entirely if its necessary OpenRouter prices or comparable benchmark
 
 Artificial Analysis documents detailed evaluation token counts as Pro-only; public benchmark totals and a fixed blended ratio alone do not establish a defensible per-category OpenRouter cost. Its documented token counts may still require provider-specific cache and write details. We are checking which information is available before rebuilding the dataset. [AA API reference](https://artificialanalysis.ai/data-api/docs/reference)
 
-The existing renderer and GitHub workflow reproduce the **withdrawn** v1.8 methodology and must not be used to publish a replacement until updated. The new chart will require timestamped artifacts, visible generation time, clickable source links and the informational disclaimer in [AGENTS.md](AGENTS.md).
+The existing renderer reproduces the **withdrawn** v1.8 methodology and must not be used to publish a replacement until updated. Automated rendering and publication are suspended pending the audit, so a source change cannot silently republish the old method. The new chart will require timestamped artifacts, visible generation time, clickable source links and the informational disclaimer in [AGENTS.md](AGENTS.md).
 
 [Open an issue](https://github.com/Eurobotics-Association/LLM-Analysis/issues) for corrections and improvement requests.

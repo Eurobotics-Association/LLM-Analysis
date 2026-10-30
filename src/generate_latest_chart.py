@@ -1,4 +1,5 @@
 from pathlib import Path
+raise SystemExit('Chart rendering is suspended: the v1.8 pricing method is withdrawn. Complete the OpenRouter pricing audit in issue #9 before publishing a replacement.')
 import datetime
 import re
 import textwrap
