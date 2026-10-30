@@ -8,7 +8,7 @@
 - [LiveBench v1 source repository](https://github.com/LiveBench/LiveBench) and [original paper](https://arxiv.org/abs/2406.19314): these describe the earlier benchmark and do not establish that the 2.0 harness, tasks, or telemetry are publicly available or use identical methods.
 - [OpenRouter GLM endpoint API](https://openrouter.ai/api/v1/models/z-ai/glm-5.3-flash/endpoints), [DeepSeek endpoint API](https://openrouter.ai/api/v1/models/deepseek/deepseek-v4.1-flash-1017/endpoints), and [GPT-6.1 Sol endpoint API](https://openrouter.ai/api/v1/models/openai/gpt-6.1-sol/endpoints). Endpoint listings and availability change; a fresh full audit is required before choosing any route.
 
-The LiveBench 2.0 methodology describes public files containing per-model/per-suite scores, cost and task counts, subcategory scores, release notes and category weights. It does not state that those files include uncached input, cache-read, cache-write or output token counts per model and request. On inspection the documented directly constructed cost/table URLs returned 404; the GitHub connector also returned 404 for the referenced `LiveBench/new-livebench` repository. These access failures do not prove the records do not exist elsewhere. The rendered leaderboard and methodology were accessible. No sufficiently detailed usage data was verified for any model, including those below.
+The LiveBench 2.0 methodology describes public files containing per-model/per-suite scores, cost and task counts, subcategory scores, release notes and category weights. It does not state that those files include uncached input, cache-read, cache-write or output token counts per model and request. On inspection the documented directly constructed cost/table URLs returned 404; the GitHub connector also returned 404 for the referenced `LiveBench/new-livebench` repository. A third-party catalog cites a different path, `https://livebench.ai/data/20261025/table.csv`; browser access to that path was blocked, so it has not been independently checked. These access failures do not prove the records do not exist elsewhere. The rendered leaderboard and methodology were accessible. No sufficiently detailed usage data was verified for any model, including those below.
 
 ## What the current leaderboard shows
 
@@ -16,10 +16,10 @@ These are LiveBench scores, not OpenRouter prices. They were read from the 25 Oc
 
 | Display name | Overall score | Agentic | Coding | Observed configuration |
 |---|---:|---:|---:|---|
-| GPT-6.1 Sol | 84.1 | 68.7 | 96.0 | Highest supported effort per LiveBench's general rule; exact row-specific configuration still to verify |
-| GPT-6.1 Terra | 77.8 | 48.6 | 94.3 | Same qualification |
-| DeepSeek V4.1 Flash 1017 | 74.0 | 40.9 | 96.0 | Same qualification |
-| GLM-5.3 Flash | 62.1 | 19.0 | 80.6 | Same qualification |
+| GPT-6.1 Sol | 84.1 | 68.7 | 96.0 | max (expanded row) |
+| GPT-6.1 Terra | 77.8 | 48.6 | 94.3 | max (expanded row) |
+| DeepSeek V4.1 Flash 1017 | 74.0 | 40.9 | 96.0 | max (expanded row) |
+| GLM-5.3 Flash | 62.1 | 19.0 | 80.6 | max (expanded row) |
 
 LiveBench reports seven suites: agentic (18 tasks), coding (29), browser use (25), research (22), design (25), reasoning (202 questions), and data analysis (150 questions). The published overall is a weighted mean of available suite scores: agentic weight 2, coding and design 1.5 each, the remaining suites 1 each. Missing suites are omitted from the mean, while a measured zero counts. A fault that recurs on a rerun is scored zero; one run per suite is reported. These choices, task mixture, model/tool scaffold, version, provider and effort can materially affect comparison. A single run does not establish uncertainty or a universal intelligence score.
 
@@ -39,3 +39,24 @@ LiveBench's displayed cost-per-successful-task divides its cost per task by its 
 No compliant point or replacement diagram is established by this audit. First obtain the 2.0 per-request records, provider/quantization identities, effort settings, scoring and task coverage for the four models above. Check whether cache write and context tiers are recorded and whether the results correspond to the same task set. Then perform a complete contemporaneous OpenRouter provider audit. If records are unavailable, an independently scoped LiveBench evaluation run through OpenRouter could produce usage and scores together, subject to task/harness availability and a separately approved spending budget; it would be a new evaluation, not a reconstruction of the published leaderboard.
 
 Corrections and improvement requests are welcome through [repository issues](https://github.com/Eurobotics-Association/LLM-Analysis/issues).
+
+## Follow-up: public answers and reproducibility (30 October 2026)
+
+The [LiveBench model-answer dataset card](https://huggingface.co/datasets/livebench/model_answer/blob/main/README.md) describes question ID, answer ID, model ID, answer choices, timestamp, category and task. Its published schema does **not** list per-call prompt, output, cached-read or cache-write tokens. Its description references the original benchmark, and no evidence located so far establishes that it contains the October 2026 2.0 trajectories. It cannot be used to reconstruct 2.0 billing. This is an observation about this specific dataset card, not proof that LiveBench has never made usage data available.
+
+The [public LiveBench repository](https://github.com/LiveBench/LiveBench) documents running the earlier harness against an OpenAI-compatible endpoint, which could include OpenRouter, but its README and answer dataset do not establish that the 2.0 tasks, harness, hidden graders or current leaderboard run records are available. The seven-suite 2.0 benchmark cannot be treated as reproducible from that earlier code without further evidence. A new run on the public earlier release would be **LiveBench v1**, and its score must not be presented as a 2.0 score or joined with 2.0 cost records.
+
+## Bounded pilot proposal, if a usable public task set is confirmed
+
+This is a design for review, not an executed experiment or a budget estimate.
+
+1. Pin and archive the precise public release, harness revision, tasks, grading rules and permitted data license. Check that the four target models support the identical prompts, tools, modalities and effort settings. Pick a small fixed common task sample first; a sample is a feasibility check, not a full benchmark or chart-ready result. Avoid untrusted code execution on the user's normal workspace; use an appropriately isolated disposable runner for coding or agent tasks.
+2. Fix the task order, retry/error policy, output/context caps, exact model and effort and record the configuration. Select one audited, eligible non-promotional OpenRouter provider endpoint per model. For an observed provider comparison, capture its full slug and avoid silent fallback; OpenRouter's [provider routing documentation](https://openrouter.ai/docs/guides/routing/provider-selection) describes `provider.order`, `allow_fallbacks: false` and `require_parameters`. A base provider slug can match multiple endpoints; pin the full endpoint variant where necessary.
+3. Instrument **every call**, including retries and helper model calls, with run ID, task ID, attempt, UTC timestamp, model and effort, requested and actual provider, endpoint/variant, generation ID, outcome, input/output tokens, cache-read and cache-write counts and TTL, tier context, charge and any separately billable items. Store the provider price snapshot with source and timestamp, and retain the raw usage response and applicable generation metadata for reconciliation. Do not assume missing fields mean zero. [OpenRouter's caching guide](https://openrouter.ai/blog/tutorials/prompt-caching-sticky-routing/) documents the response cache-read/write fields and the generation record. Confirm behavior on the selected endpoints before assuming all fields are available.
+4. Reconcile per-call OpenRouter-reported cost against the matching provider tariff and token-category accounting; investigate discrepancies, caching, long-context tiers and rounding. Track failed or missing responses explicitly. A bill from one endpoint cannot validate an estimate at a different endpoint; changing provider may change cache behavior, token use and task success. Price-only counterfactuals require a clear, verified compatibility basis.
+5. Produce a review-only report with per-model task coverage, success or partial-score definition, token totals, cost per attempted task, exact configuration and known omissions. Record which tasks are common, compare uncertainty if repeated runs are feasible, and never present the pilot as the LiveBench 2.0 leaderboard.
+6. Before any paid run, specify an explicit spending ceiling and stop policy, including allowance for retries and calls already in flight. Task lengths and 2.0 usage are not established, so the sources do not support a trustworthy dollar estimate or guarantee that an application-level cap is a hard billing cap. Verify account-level controls and availability of credentials without exposing them. No API calls or spending were performed for this audit.
+
+## Outcome of the follow-up
+
+Expanded LiveBench 2.0 rows identify all four inspected models as **max effort**; the DeepSeek row additionally specifies the 1017 version. The minimum evidence to produce a valid OpenRouter-priced 2.0 diagram remains unavailable in the sources inspected. A reproducible v1 pilot is a possible separate experiment, conditional on obtaining a specific complete task set, testing the harness and telemetry, and agreeing a spend limit. It will not reconstruct the 2.0 leaderboard.
