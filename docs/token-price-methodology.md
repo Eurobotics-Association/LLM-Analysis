@@ -2,7 +2,7 @@
 
 **Review-only prototype — 30 October 2026.** This proposes a different question from the withdrawn v1.8 chart: what output-token tariff is quoted for a model with a given AA score? It **does not measure or estimate the cost of a task**, a benchmark run, an invoice, or Codex subscription usage.
 
-[Preview SVG](../charts/preview/aa_v5_output_price_preview_eurobotics_261030_2243.svg) · [Selected-route CSV](../data/aa_v5_openrouter_output_rates_eurobotics_261030_2243.csv) · [Full endpoint snapshot](../data/openrouter_endpoints_eurobotics_261030_2242.json) · [Issue #13](https://github.com/Eurobotics-Association/LLM-Analysis/issues/13)
+[Preview SVG](../charts/preview/aa_v5_output_price_preview_eurobotics_261030_2251.svg) · [Selected-route CSV](../data/aa_v5_openrouter_output_rates_eurobotics_261030_2251.csv) · [Full endpoint snapshot](../data/openrouter_endpoints_eurobotics_261030_2242.json) · [Issue #13](https://github.com/Eurobotics-Association/LLM-Analysis/issues/13)
 
 ## Measures and selection
 
