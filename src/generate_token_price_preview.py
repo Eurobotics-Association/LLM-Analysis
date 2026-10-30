@@ -69,13 +69,38 @@ svg += [f'<text x="{(L+R)/2}" y="{B+58}" text-anchor="middle" font-size="18">USD
 groups={}
 for p in points: groups.setdefault(p['model'],[]).append(p)
 colors=['#2563eb','#16a34a','#dc2626','#9333ea','#d97706','#0891b2','#e11d48','#4f46e5','#0f766e','#a16207','#7c3aed','#be123c','#475569','#0284c7']
+shapes=['circle','square','diamond','triangle','triangle-down','plus','cross','pentagon','hexagon','star','triangle-left','triangle-right','octagon','four-star']
+def marker(shape,x,y,color,title=''):
+    size=8
+    if shape=='circle': element=f'<circle cx="{x}" cy="{y}" r="{size}"'
+    else:
+        vertices={
+            'square':[(-1,-1),(1,-1),(1,1),(-1,1)],
+            'diamond':[(0,-1.3),(1.1,0),(0,1.3),(-1.1,0)],
+            'triangle':[(0,-1.3),(1.2,1),(-1.2,1)],
+            'triangle-down':[(-1.2,-1),(1.2,-1),(0,1.3)],
+            'plus':[(-.35,-1.25),(.35,-1.25),(.35,-.35),(1.25,-.35),(1.25,.35),(.35,.35),(.35,1.25),(-.35,1.25),(-.35,.35),(-1.25,.35),(-1.25,-.35),(-.35,-.35)],
+            'cross':[(-1.1,-.7),(-.7,-1.1),(0,-.4),(.7,-1.1),(1.1,-.7),(.4,0),(1.1,.7),(.7,1.1),(0,.4),(-.7,1.1),(-1.1,.7),(-.4,0)],
+            'triangle-left':[(-1.3,0),(1,-1.2),(1,1.2)],
+            'triangle-right':[(1.3,0),(-1,-1.2),(-1,1.2)],
+            'four-star':[(0,-1.45),(.35,-.35),(1.45,0),(.35,.35),(0,1.45),(-.35,.35),(-1.45,0),(-.35,-.35)],
+        }
+        if shape in ('pentagon','hexagon','octagon'):
+            sides={'pentagon':5,'hexagon':6,'octagon':8}[shape]
+            coords=[(1.2*math.cos(-math.pi/2+2*math.pi*j/sides),1.2*math.sin(-math.pi/2+2*math.pi*j/sides)) for j in range(sides)]
+        elif shape=='star':
+            coords=[((1.35 if j%2==0 else .55)*math.cos(-math.pi/2+math.pi*j/5),(1.35 if j%2==0 else .55)*math.sin(-math.pi/2+math.pi*j/5)) for j in range(10)]
+        else: coords=vertices[shape]
+        positions=' '.join(f'{x+size*a:.2f},{y+size*b:.2f}' for a,b in coords)
+        element=f'<polygon points="{positions}"'
+    return element+f' fill="{color}" stroke="white" stroke-width="1.5"><title>{escape(title)}</title>'+('</circle>' if shape=='circle' else '</polygon>')
 svg += ['<text x="1080" y="168" font-size="20" font-weight="bold">Model / selected route</text>']
 for i,(model,rows) in enumerate(groups.items()):
-    color=colors[i%len(colors)]; X=xp(float(rows[0]['output_per_m'])); ys=[yp(r['aa_index']) for r in rows]
+    color=colors[i%len(colors)]; shape=shapes[i%len(shapes)]; X=xp(float(rows[0]['output_per_m'])); ys=[yp(r['aa_index']) for r in rows]
     if len(rows)>1:svg.append(f'<line x1="{X}" x2="{X}" y1="{min(ys)}" y2="{max(ys)}" stroke="{color}" stroke-width="3"/>')
     for p,y in zip(rows,ys):
-        title=escape(f"{model} · {p['effort']} · score {p['aa_index']} · output ${p['output_per_m']}/M · {p['endpoint']}")
-        svg.append(f'<circle cx="{X}" cy="{y}" r="7" fill="{color}" stroke="white" stroke-width="2"><title>{title}</title></circle>')
+        title=f"{model} · {p['effort']} · score {p['aa_index']} · output ${p['output_per_m']}/M · {p['endpoint']}"
+        svg.append(marker(shape,X,y,color,title))
     if len(rows)>1:
         by_score = {}
         for p,y in zip(rows,ys): by_score.setdefault(y, []).append(p['effort'])
@@ -84,7 +109,7 @@ for i,(model,rows) in enumerate(groups.items()):
             svg.append(f'<text x="{X+12}" y="{y+5}" class="tiny" fill="{color}">{escape(label)}</text>')
     # Right-hand legend keeps overlapping model labels legible.
     Y=195+i*37; route=rows[0]['endpoint']; tier=rows[0]['tier'];quant=rows[0]['quantization']
-    svg += [f'<circle cx="1085" cy="{Y-5}" r="6" fill="{color}"/>',f'<text x="1100" y="{Y}" class="label">{escape(model)}</text>',f'<text x="1100" y="{Y+16}" class="tiny">{escape(route)} · {escape(tier)} · {escape(quant)}</text>']
+    svg += [marker(shape,1085,Y-5,color,model),f'<text x="1100" y="{Y}" class="label">{escape(model)}</text>',f'<text x="1100" y="{Y+16}" class="tiny">{escape(route)} · {escape(tier)} · {escape(quant)}</text>']
 svg += [f'<text x="75" y="835" class="small">L / M / H / XH / Max are effort levels; hover SVG points for details. AA did not measure every priced route.</text>',
         '<text x="75" y="860" class="small">Prices are the lowest quoted eligible non-promotional output rate, not the lowest total workload cost. Flex may have restrictions.</text>',
         '<text x="75" y="885" class="small">Input, cache-read, cache-write, tier overrides, quantization and exact provider are in the companion CSV. Missing rates are blank.</text>',
