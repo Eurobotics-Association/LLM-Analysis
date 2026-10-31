@@ -29,6 +29,10 @@ The main diagram must contain, in addition to the existing methodology footer:
 
 Footer text must stay wrapped to the chart width.
 
+### 2.1 README publication layout
+
+The README must begin with the project title, a short plain-language explanation of the current diagram, and the current timestamped diagram embedded as an image. Place these before detailed methodology, audit history, datasets, or technical discussion, so visitors can understand the result immediately. Clearly state the chart's units, snapshot date and any essential limitation near the diagram. Keep links to the detailed methodology, data and previous snapshots below or alongside the short introduction. Preserve the explanation of methodology changes at the end of the README when applicable.
+
 ## 3. Model set
 
 Add to the plotted model list from v1.3 onward:
