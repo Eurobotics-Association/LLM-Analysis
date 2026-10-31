@@ -1,6 +1,6 @@
-# Proposed AA Intelligence Index × OpenRouter output-token tariff
+# AA Intelligence Index × OpenRouter output-token tariff
 
-**Review-only prototype — 30 October 2026.** This proposes a different question from the withdrawn v1.8 chart: what output-token tariff is quoted for a model with a given AA score? It **does not measure or estimate the cost of a task**, a benchmark run, an invoice, or Codex subscription usage.
+**Approved snapshot — 30 October 2026.** This diagram asks a different question from the withdrawn v1.8 chart: what output-token tariff is quoted for a model with a given AA score? It **does not measure or estimate the cost of a task**, a benchmark run, an invoice, or Codex subscription usage.
 
 [Preview SVG](../charts/preview/aa_v5_output_price_preview_eurobotics_261030_2251.svg) · [Selected-route CSV](../data/aa_v5_openrouter_output_rates_eurobotics_261030_2251.csv) · [Full endpoint snapshot](../data/openrouter_endpoints_eurobotics_261030_2242.json) · [Issue #13](https://github.com/Eurobotics-Association/LLM-Analysis/issues/13)
 
@@ -29,6 +29,6 @@ python3 src/generate_token_price_preview.py \
   /tmp/token-preview
 ```
 
-The script uses only the standard library and generates a timestamped SVG and CSV. Its endpoint selection is a transparent mechanical filter over a dated source; it does not validate availability for a user's account or independently prove benchmark equivalence. Review rate units, route access, promotions, pricing overrides and score provenance again before any public release. The preview is for owner review and is not an instruction to publish.
+The script uses only the standard library and generates a timestamped SVG and CSV. Its endpoint selection is a transparent mechanical filter over a dated source; it does not validate availability for a user's account or independently prove benchmark equivalence. Review rate units, route access, promotions, pricing overrides and score provenance again before any public release. The SVG retains the label from its original review preview; its scores and prices are a dated snapshot.
 
 [Issues are open for corrections and improvement requests.](https://github.com/Eurobotics-Association/LLM-Analysis/issues)
