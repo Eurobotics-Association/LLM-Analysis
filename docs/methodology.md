@@ -1,10 +1,10 @@
 # Eurobotics LLM comparison methodology
 
-## Current status — 30 October 2026
+## Task-cost chart status — 30 October 2026
 
 **The v1.8 cost chart is withdrawn pending issue #9.** It selected named providers rather than the best eligible non-promotional OpenRouter route, and applied a 7:2:1 blended-price ratio to a benchmark total instead of repricing the actual workload token categories. Do not interpret its x-coordinates as best available OpenRouter costs or as invoices. Sections describing v1.8 and earlier below are historical records, not current publication rules.
 
-The corrected policy is documented in [AGENTS.md](../AGENTS.md): benchmark usage must be repriced with verified eligible OpenRouter provider rates, including applicable input, output, cache and tiered charges. Compare eligible providers on the actual token mix; do not use benchmark-provider rates as OpenRouter rates or invent missing usage data. Models without the required evidence are omitted from the diagram. Record the provider and endpoint, availability, discount status, all relevant rates, benchmark model/effort, data source and audit time.
+For any future task-cost chart, the policy in [AGENTS.md](../AGENTS.md) requires that benchmark usage be repriced with verified eligible OpenRouter provider rates, including applicable input, output, cache and tiered charges. Compare eligible providers on the actual token mix; do not use benchmark-provider rates as OpenRouter rates or invent missing usage data. Models without the required evidence are omitted from the diagram. Record the provider and endpoint, availability, discount status, all relevant rates, benchmark model/effort, data source and audit time.
 
 Artificial Analysis documents detailed evaluation token counts as Pro-only, and its cost methodology combines reported tokens with live measurements of typical cache-hit rates. It is not yet established that the public information includes the required per-category input, cache-read and cache-write quantities. A fixed blended ratio cannot recover them. See [AA API reference](https://artificialanalysis.ai/data-api/docs/reference), [AA benchmarking methodology](https://artificialanalysis.ai/methodology/intelligence-benchmarking), and [issue #9](https://github.com/Eurobotics-Association/LLM-Analysis/issues/9).
 
@@ -13,9 +13,9 @@ For illustration, the OpenRouter endpoint API on 30 October returned GLM-5.3 Fla
 For DeepSeek V4.1 Flash 1017 the same endpoint audit returned an undiscounted Morph FP8 route at $0.022 input / $0.192 output / $0.004 cache read per million tokens, far below the previously selected SiliconFlow rates of $0.30 / $1.20 / $0.006. Other routes trade off categories; the DeepSeek provider's rates vary by time. This observation is not a benchmark-cost calculation or proof of identical model behavior across providers. [OpenRouter endpoint data](https://openrouter.ai/api/v1/models/deepseek/deepseek-v4.1-flash-1017/endpoints)
 
 
-## Alternative proposal — review only
+## Current published token-price diagram — 22 November 2026
 
-The [token-price proposal](token-price-methodology.md) pairs an AA Intelligence Index v5 snapshot with eligible OpenRouter output-token prices. It does not calculate cost per task. The previous chart remains withdrawn and automatic publication remains suspended pending review. See [issue #13](https://github.com/Eurobotics-Association/LLM-Analysis/issues/13).
+The approved [token-price methodology](token-price-methodology.md) pairs AA Intelligence Index v5.0.1 observations with eligible OpenRouter output-token prices. It does not calculate cost per task. The previous task-cost chart remains withdrawn and automatic publication remains suspended. The November refresh retains the prior models and adds five new models. See [issue #18](https://github.com/Eurobotics-Association/LLM-Analysis/issues/18).
 
 ## Version 1.8 — 30 October 2026
 
